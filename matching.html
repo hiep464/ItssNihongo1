@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // Bảng dữ liệu ghi thông tin của các nhân viên
+      const employees = [
+        {
+          name: "John",
+          rating: 4,
+          price: 100,
+          age: 30,
+          gender: "male",
+          skill: "JavaScript",
+          language: "English",
+        },
+        {
+          name: "Jane",
+          rating: 5,
+          price: 120,
+          age: 28,
+          gender: "female",
+          skill: "Python",
+          language: "English",
+        },
+        {
+          name: "Mike",
+          rating: 3,
+          price: 80,
+          age: 35,
+          gender: "male",
+          skill: "Java",
+          language: "English",
+        },
+        {
+          name: "Emily",
+          rating: 4.5,
+          price: 150,
+          age: 32,
+          gender: "female",
+          skill: "JavaScript",
+          language: "French",
+        },
+        // Thêm các nhân viên khác...
+      ];
+
+      // Hàm tính toán điểm phù hợp cho nhân viên dựa trên tiêu chí
+      function calculateMatchingScore(employee, filters) {
+        let matchingScore = 0;
+        let numFailedConditions = 0;
+
+        const { rating, price, age, gender, skill, language } = filters;
+
+        if (rating !== undefined) {
+          if (employee.rating >= rating) {
+            matchingScore++;
+          } else {
+            numFailedConditions++;
+          }
+        }
+
+        if (price !== undefined) {
+          if (employee.price <= price) {
+            matchingScore++;
+          } else {
+            numFailedConditions++;
+          }
+        }
+        if (age !== undefined) {
+          if (employee.age <= age) {
+            matchingScore++;
+          } else {
+            numFailedConditions++;
+          }
+        }
+        if (gender !== undefined) {
+          if (employee.gender === gender) {
+            matchingScore++;
+          } else {
+            numFailedConditions++;
+          }
+        }
+        if (skill !== undefined) {
+          if (employee.skill === skill) {
+            matchingScore++;
+          } else {
+            numFailedConditions++;
+          }
+        }
+        if (language !== undefined) {
+          if (employee.language === language) {
+            matchingScore++;
+          } else {
+            numFailedConditions++;
+          }
+        }
+
+        // console.log(numFailedConditions);
+        console.log(matchingScore);
+        return { matchingScore, numFailedConditions };
+      }
+
+      // Hàm tìm kiếm nhân viên phù hợp nhất với các tiêu chí
+      function searchEmployees(filters) {
+        const matchedEmployees = employees.filter((employee) => {
+          const { matchingScore, numFailedConditions } = calculateMatchingScore(
+            employee,
+            filters
+          );
+          return numFailedConditions < 1;
+        });
+
+        return matchedEmployees.sort((a, b) => {
+          const scoreA = calculateMatchingScore(a, filters);
+          const scoreB = calculateMatchingScore(b, filters);
+          return scoreB - scoreA;
+        });
+      }
+
+      function searchFailEmployees(filters) {
+        const matchedEmployees = employees.filter((employee) => {
+          const { matchingScore, numFailedConditions } = calculateMatchingScore(
+            employee,
+            filters
+          );
+          return numFailedConditions > 0;
+        });
+
+        matchedEmployees.sort((a, b) => {
+          const scoreA = calculateMatchingScore(a, filters);
+          const scoreB = calculateMatchingScore(b, filters);
+          return scoreB - scoreA;
+        });
+        output = matchedEmployees.slice(0, 3);
+        return output;
+      }
+      // Ví dụ sử dụng
+      const filters = {
+        rating: 4, // Đánh giá từ 4 sao trở lên
+        price: 120, // Giá cả tối đa là 120
+        age: 20, // Tuổi tối đa là 30
+        // gender: "female", // Giới tính là nữ
+        // skill: "JavaScript", // Kỹ năng là JavaScript
+        // language: "English", // Ngôn ngữ là tiếng Anh
+      };
+
+      let matchedEmployees = searchEmployees(filters);
+      if (matchedEmployees.length === 0) {
+        matchedEmployees = searchFailEmployees(filters);
+      }
+      console.log(matchedEmployees);
+    </script>
+  </body>
+</html>
