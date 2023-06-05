@@ -17,7 +17,9 @@ export default function HeaderRegister() {
                     <Button href="/login" color="inherit">
                         Login
                     </Button>
-                    <Button color="inherit">Signup</Button>
+                    <Button href="/signup" color="inherit">
+                        Signup
+                    </Button>
                 </Toolbar>
             </AppBar>
         </div>

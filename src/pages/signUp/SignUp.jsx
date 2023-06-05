@@ -67,19 +67,11 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="name"
-                                label="First Name"
+                                label="Name"
                                 name="name"
                                 autoFocus
                             />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="username"
-                                label="Last Name"
-                                name="username"
-                                autoFocus
-                            />
+
                             <TextField
                                 margin="normal"
                                 required
@@ -100,22 +92,30 @@ export default function SignUp() {
                                 id="password"
                                 autoComplete="current-password"
                             />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="confimPassword"
+                                label="Confim Password"
+                                type="password"
+                                id="confimPassword"
+                                autoComplete="confimPassword"
+                            />
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
                             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                                Log In
+                                Sign up
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
+                                    <Link href="#" variant="body2"></Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="#" variant="body2">
-                                        {"Don't have an account? Sign Up"}
+                                    <Link href="/login" variant="body2">
+                                        {"Don't have an account? Sign In"}
                                     </Link>
                                 </Grid>
                             </Grid>
