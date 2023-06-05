@@ -15,6 +15,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import Button from '@mui/material/Button';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -159,6 +161,9 @@ export default function HeadederMain() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                        <Button href="/home">
+                            <HomeRoundedIcon sx={{ color: 'white' }} fontSize="large" />
+                        </Button>{' '}
                         BABY BUDDIES
                     </Typography>
                     <Search>

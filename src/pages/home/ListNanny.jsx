@@ -89,7 +89,7 @@ export default function ListNanny() {
                                         <Button href="/login" size="small">
                                             View
                                         </Button>
-                                        <Button size="small">Edit</Button>
+                                        {/* <Button size="small">Edit</Button> */}
                                     </CardActions>
                                 </Card>
                             </Grid>
