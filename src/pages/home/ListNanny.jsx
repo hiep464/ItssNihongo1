@@ -86,7 +86,7 @@ export default function ListNanny() {
                                         <Typography>500,000 VND/30mins</Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button href="/login" size="small">
+                                        <Button href="/detail" size="small">
                                             View
                                         </Button>
                                         {/* <Button size="small">Edit</Button> */}
