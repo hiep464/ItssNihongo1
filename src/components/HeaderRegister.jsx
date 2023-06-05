@@ -12,7 +12,7 @@ export default function HeaderRegister() {
                 <Toolbar align="center">
                     <HomeRoundedIcon fontSize="large" />
                     <Typography ml={2} variant="h5" sx={{ flexGrow: 1 }} align="left">
-                        App
+                        BABY BUDDIES
                     </Typography>
                     <Button href="/login" color="inherit">
                         Login
