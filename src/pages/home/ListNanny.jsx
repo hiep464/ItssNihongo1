@@ -15,8 +15,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GradeIcon from '@mui/icons-material/Grade';
-import HeadederMain from '../../components/HeaderMain';
-import Footer from '../../components/Footer';
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -26,7 +24,6 @@ const defaultTheme = createTheme();
 export default function ListNanny() {
     return (
         <ThemeProvider theme={defaultTheme}>
-            <HeadederMain />
             <CssBaseline />
             <main>
                 {/* Hero unit */}
@@ -100,7 +97,6 @@ export default function ListNanny() {
                     </Grid>
                 </Container>
             </main>
-            <Footer />
         </ThemeProvider>
     );
 }

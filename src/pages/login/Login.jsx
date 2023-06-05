@@ -12,7 +12,6 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import HeaderRegister from '../../components/HeaderRegister';
 
 function Copyright(props) {
     return (
@@ -43,7 +42,6 @@ export default function Login() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <HeaderRegister />
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <Box
@@ -86,7 +84,7 @@ export default function Login() {
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
-                            <Button href="/" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                            <Button href="/home" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                                 Log In
                             </Button>
                             <Grid container>

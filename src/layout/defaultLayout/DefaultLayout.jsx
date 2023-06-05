@@ -1,7 +1,13 @@
+import Footer from '../../components/Footer';
+import HeadederMain from '../../components/HeaderMain';
 
 function DefaultLayout({ children }) {
     return (
-        children
+        <div>
+            <HeadederMain />
+            {children}
+            <Footer />
+        </div>
     );
 }
 

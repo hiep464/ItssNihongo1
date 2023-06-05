@@ -10,7 +10,9 @@ export default function HeaderRegister() {
         <div>
             <AppBar position="static">
                 <Toolbar align="center">
-                    <HomeRoundedIcon fontSize="large" />
+                    <Button href="/home">
+                        <HomeRoundedIcon sx={{ color: 'white' }} fontSize="large" />
+                    </Button>
                     <Typography ml={2} variant="h5" sx={{ flexGrow: 1 }} align="left">
                         BABY BUDDIES
                     </Typography>
