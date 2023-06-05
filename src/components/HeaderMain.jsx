@@ -167,7 +167,7 @@ export default function HeadederMain() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        <Button href="/">
+                        <Button href="/home">
                             <HomeRoundedIcon sx={{ color: 'white' }} fontSize="large" />
                         </Button>{' '}
                         BABY BUDDIES
