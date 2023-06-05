@@ -99,9 +99,15 @@ export default function HeadederMain() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Hired Nanny</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Button href="/profile">Profile</Button>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Button href="/hired">Hired Nanny</Button>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Button href="/">Logout</Button>
+            </MenuItem>
         </Menu>
     );
 
@@ -161,7 +167,7 @@ export default function HeadederMain() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        <Button href="/home">
+                        <Button href="/">
                             <HomeRoundedIcon sx={{ color: 'white' }} fontSize="large" />
                         </Button>{' '}
                         BABY BUDDIES
