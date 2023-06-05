@@ -1,5 +1,3 @@
-import Login from "../pages/login/Login"
+import Login from '../pages/login/Login';
 
-export const publicRoutes = [
-    {path: '/', element : Login},
-]
+export const publicRoutes = [{ path: '/login', element: Login }];
