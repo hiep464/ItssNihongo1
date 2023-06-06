@@ -17,7 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const defaultTheme = createTheme();
 
-export default function Login() {
+export default function SignUp() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -43,10 +43,20 @@ export default function Login() {
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <Typography inpography component="h1" variant="h5">
-                            Log In
+                        <Typography component="h1" variant="h5">
+                            Sign up
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="name"
+                                label="Name"
+                                name="name"
+                                autoFocus
+                            />
+
                             <TextField
                                 margin="normal"
                                 required
@@ -67,22 +77,30 @@ export default function Login() {
                                 id="password"
                                 autoComplete="current-password"
                             />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="confimPassword"
+                                label="Confim Password"
+                                type="password"
+                                id="confimPassword"
+                                autoComplete="confimPassword"
+                            />
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
-                            <Button href="/home" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                                Log In
+                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                                Sign up
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
+                                    <Link href="#" variant="body2"></Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="/signup" variant="body2">
-                                        {"Don't have an account? Sign Up"}
+                                    <Link href="/login" variant="body2">
+                                        {"Don't have an account? Sign In"}
                                     </Link>
                                 </Grid>
                             </Grid>
