@@ -65,7 +65,7 @@ export default function ListNanny() {
             setNannys(reponseJSON);
         };
         fetchData();
-    }, []);
+    }, [nannys]);
 
     // Tính tuổi
     function getAge(dateString) {
@@ -97,10 +97,11 @@ export default function ListNanny() {
         // Lấy phần tử thứ 3 trong mảng là thành phố
         var district = addressArray[addressArray.length - 2];
         var city = addressArray[addressArray.length - 1];
-        var result = district.concat(' ,', city);
+        var result = district.concat(',', city);
         return result;
     }
 
+    if (!nannys) return null;
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
@@ -295,7 +296,7 @@ export default function ListNanny() {
                                                 </Typography>
                                             </Typography>
                                             <Typography color={'#10a710'}>Morderate</Typography>
-                                            <Typography color={'#10a710'} sx={{ fontSize: '16px' }}>
+                                            <Typography color={'#10a710'} sx={{ fontSize: '14px' }}>
                                                 <AddLocationIcon fontSize="small" />
                                                 {getCity(nanny.address)}
                                             </Typography>
