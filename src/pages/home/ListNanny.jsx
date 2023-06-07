@@ -81,7 +81,7 @@ export default function ListNanny() {
             setNannys(reponseJSON);
         };
         fetchData();
-    }, []);
+    }, [nannys]);
 
     // Tính tuổi
     function getAge(dateString) {
@@ -110,6 +110,43 @@ export default function ListNanny() {
         console.log(language, rating, experience, salary)
     };
 
+    //lấy tên từ họ tên
+    function getFirstName(fullName) {
+        // Tách chuỗi thành mảng các từ
+        var nameArray = fullName.split(' ');
+
+        // Lấy phần tử cuối cùng trong mảng là tên
+        var firstName = nameArray[nameArray.length - 1];
+
+        return firstName;
+    }
+
+    function getCity(address) {
+        // Tách chuỗi thành mảng các phần tử
+        var addressArray = address.split(',');
+
+        // Lấy phần tử thứ 3 trong mảng là thành phố
+        var district = addressArray[addressArray.length - 2];
+        var city = addressArray[addressArray.length - 1];
+        var result = district.concat(',', city);
+        return result;
+    }
+
+    // tính số sao trung bình
+    function calculateAverageRating(reviews) {
+        var totalStars = 0;
+        var totalReviews = reviews.length;
+
+        for (var i = 0; i < totalReviews; i++) {
+            totalStars += reviews[i].star;
+        }
+
+        var averageRating = totalStars / totalReviews;
+        if (totalReviews === 0) return 0;
+        else return averageRating;
+    }
+
+    if (!nannys) return null;
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
@@ -341,18 +378,18 @@ export default function ListNanny() {
                                                 color={'#10a710'}
                                             >
                                                 <Typography>
-                                                    {nanny.full_name},{getAge(nanny.birthday)}
+                                                    {getFirstName(nanny.full_name)},{getAge(nanny.birthday)}
                                                 </Typography>
 
-                                                <Typography sx={{ ml: '10px', display: 'flex' }}>
-                                                    <Typography>5</Typography>
+                                                <Typography sx={{ ml: '50px', display: 'flex' }}>
+                                                    <Typography>{calculateAverageRating(nanny.rating)}</Typography>
                                                     <GradeIcon />
                                                 </Typography>
                                             </Typography>
                                             <Typography color={'#10a710'}>Morderate</Typography>
-                                            <Typography color={'#10a710'} sx={{ fontSize: '16px' }}>
+                                            <Typography color={'#10a710'} sx={{ fontSize: '14px' }}>
                                                 <AddLocationIcon fontSize="small" />
-                                                {nanny.address}
+                                                {getCity(nanny.address)}
                                             </Typography>
                                             <Typography color={'#000000'}>{nanny.salary} VND/30mins</Typography>
                                         </CardContent>
