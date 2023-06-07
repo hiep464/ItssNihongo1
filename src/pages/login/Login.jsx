@@ -12,9 +12,14 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
+const MyAppBar = styled(Button)({
+    backgroundColor: '#1d9a1d',
+    color: 'white',
+});
 const defaultTheme = createTheme();
 
 export default function Login() {
@@ -43,7 +48,7 @@ export default function Login() {
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <Typography inpography component="h1" variant="h5">
+                        <Typography inpography component="h1" variant="h5" color={'#1d9a1d'}>
                             Log In
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -71,17 +76,23 @@ export default function Login() {
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
-                            <Button href="/home" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                            <MyAppBar
+                                href="/home"
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2, ':hover': { backgroundColor: '#106510' } }}
+                            >
                                 Log In
-                            </Button>
+                            </MyAppBar>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
+                                    <Link href="#" variant="body2" color={'#1d9a1d'}>
                                         Forgot password?
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="/signup" variant="body2">
+                                    <Link href="/signup" variant="body2" color={'#1d9a1d'}>
                                         {"Don't have an account? Sign Up"}
                                     </Link>
                                 </Grid>

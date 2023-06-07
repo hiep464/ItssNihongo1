@@ -58,6 +58,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+const MyAppBar = styled(AppBar)({
+    backgroundColor: '#f2f2f2',
+    color: '#1d9a1d',
+});
+
 export default function HeadederMain() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -130,7 +135,7 @@ export default function HeadederMain() {
         >
             <MenuItem>
                 <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="error">
+                    <Badge badgeContent={4}>
                         <MailIcon />
                     </Badge>
                 </IconButton>
@@ -138,7 +143,7 @@ export default function HeadederMain() {
             </MenuItem>
             <MenuItem>
                 <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                    <Badge badgeContent={17} color="error">
+                    <Badge badgeContent={17}>
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
@@ -161,14 +166,14 @@ export default function HeadederMain() {
 
     return (
         <Box sx={{ flexGrow: 1 }} position="static">
-            <AppBar position="static">
+            <MyAppBar position="static">
                 <Toolbar>
                     <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
                         <Button href="/home">
-                            <HomeRoundedIcon sx={{ color: 'white' }} fontSize="large" />
+                            <HomeRoundedIcon sx={{ color: '#1d9a1d' }} fontSize="large" />
                         </Button>{' '}
                         BABY BUDDIES
                     </Typography>
@@ -181,12 +186,12 @@ export default function HeadederMain() {
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="error">
+                            <Badge badgeContent={4} color="success">
                                 <MailIcon />
                             </Badge>
                         </IconButton>
                         <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={17} color="error">
+                            <Badge badgeContent={17} color="success">
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
@@ -215,7 +220,8 @@ export default function HeadederMain() {
                         </IconButton>
                     </Box>
                 </Toolbar>
-            </AppBar>
+            </MyAppBar>
+
             {renderMobileMenu}
             {renderMenu}
         </Box>

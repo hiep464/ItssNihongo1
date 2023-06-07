@@ -4,14 +4,19 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import { styled, alpha } from '@mui/material/styles';
 
+const MyAppBar = styled(AppBar)({
+    backgroundColor: '#f2f2f2',
+    color: '#1d9a1d',
+});
 export default function HeaderRegister() {
     return (
         <div>
-            <AppBar position="static">
+            <MyAppBar position="static">
                 <Toolbar align="center">
                     <Button href="/">
-                        <HomeRoundedIcon sx={{ color: 'white' }} fontSize="large" />
+                        <HomeRoundedIcon sx={{ color: '#1d9a1d' }} fontSize="large" />
                     </Button>
                     <Typography ml={2} variant="h5" sx={{ flexGrow: 1 }} align="left">
                         BABY BUDDIES
@@ -23,7 +28,7 @@ export default function HeaderRegister() {
                         Signup
                     </Button>
                 </Toolbar>
-            </AppBar>
+            </MyAppBar>
         </div>
     );
 }
