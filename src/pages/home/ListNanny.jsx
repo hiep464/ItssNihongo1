@@ -101,6 +101,20 @@ export default function ListNanny() {
         return result;
     }
 
+    // tính số sao trung bình
+    function calculateAverageRating(reviews) {
+        var totalStars = 0;
+        var totalReviews = reviews.length;
+
+        for (var i = 0; i < totalReviews; i++) {
+            totalStars += reviews[i].star;
+        }
+
+        var averageRating = totalStars / totalReviews;
+        if (totalReviews === 0) return 0;
+        else return averageRating;
+    }
+
     if (!nannys) return null;
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -291,7 +305,7 @@ export default function ListNanny() {
                                                 </Typography>
 
                                                 <Typography sx={{ ml: '50px', display: 'flex' }}>
-                                                    <Typography>5</Typography>
+                                                    <Typography>{calculateAverageRating(nanny.rating)}</Typography>
                                                     <GradeIcon />
                                                 </Typography>
                                             </Typography>
