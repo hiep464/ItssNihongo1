@@ -1,5 +1,5 @@
 # Deploy
-Link: https://baby-buddies.vercel.app/
+Link: https://itss-nihongo1.vercel.app
 # Project structure
 ```bash
 .
