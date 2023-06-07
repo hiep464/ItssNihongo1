@@ -79,6 +79,28 @@ export default function ListNanny() {
         return age;
     }
 
+    //lấy tên từ họ tên
+    function getFirstName(fullName) {
+        // Tách chuỗi thành mảng các từ
+        var nameArray = fullName.split(' ');
+
+        // Lấy phần tử cuối cùng trong mảng là tên
+        var firstName = nameArray[nameArray.length - 1];
+
+        return firstName;
+    }
+
+    function getCity(address) {
+        // Tách chuỗi thành mảng các phần tử
+        var addressArray = address.split(',');
+
+        // Lấy phần tử thứ 3 trong mảng là thành phố
+        var district = addressArray[addressArray.length - 2];
+        var city = addressArray[addressArray.length - 1];
+        var result = district.concat(' ,', city);
+        return result;
+    }
+
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
@@ -264,10 +286,10 @@ export default function ListNanny() {
                                                 color={'#10a710'}
                                             >
                                                 <Typography>
-                                                    {nanny.full_name},{getAge(nanny.birthday)}
+                                                    {getFirstName(nanny.full_name)},{getAge(nanny.birthday)}
                                                 </Typography>
 
-                                                <Typography sx={{ ml: '10px', display: 'flex' }}>
+                                                <Typography sx={{ ml: '50px', display: 'flex' }}>
                                                     <Typography>5</Typography>
                                                     <GradeIcon />
                                                 </Typography>
@@ -275,7 +297,7 @@ export default function ListNanny() {
                                             <Typography color={'#10a710'}>Morderate</Typography>
                                             <Typography color={'#10a710'} sx={{ fontSize: '16px' }}>
                                                 <AddLocationIcon fontSize="small" />
-                                                {nanny.address}
+                                                {getCity(nanny.address)}
                                             </Typography>
                                             <Typography color={'#000000'}>{nanny.salary} VND/30mins</Typography>
                                         </CardContent>
