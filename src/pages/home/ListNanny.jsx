@@ -20,6 +20,8 @@ import IconButton from '@mui/material/IconButton';
 import Checkbox from '@mui/material/Checkbox';
 import Slider from '@mui/material/Slider';
 
+import AddLocationIcon from '@mui/icons-material/AddLocation';
+
 const cards = [1, 2, 3, 4, 5, 6, 7, 8];
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -54,6 +56,20 @@ function valuetext(value) {
 
 export default function ListNanny() {
     const [filter, setFilter] = React.useState(false);
+    const [nannys, setNannys] = React.useState([]);
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            const reponse = await fetch(
+                'https://babybuddies-be-dev.onrender.com/api/v1/getdata?fbclid=IwAR05wvwdZd0pOTBFqgnfEEBZKZCufSUf1BewzsNIoU05_IOAMByrcWu1FhA',
+            );
+            const reponseJSON = await reponse.json();
+            setNannys(reponseJSON);
+        };
+        fetchData();
+    }, []);
+
+    console.log(nannys);
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -212,52 +228,56 @@ export default function ListNanny() {
                         paddingBottom={3}
                         borderRadius={5}
                     >
-                        {cards.map((card) => (
-                            <Grid item key={card} xs={12} sm={6} md={3}>
-                                <Card
-                                    sx={{
-                                        height: '100%',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    <CardMedia
-                                        component="div"
+                        {nannys &&
+                            nannys.splice(0, 8).map((nanny) => (
+                                <Grid item key={nanny.id} xs={12} sm={6} md={3}>
+                                    <Card
                                         sx={{
-                                            // 16:9
-                                            pt: '56.25%',
+                                            height: '100%',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            cursor: 'pointer',
                                         }}
-                                        image="https://source.unsplash.com/random?wallpapers"
-                                    />
-                                    <CardContent sx={{ flexGrow: 1, textAlign: 'left' }} color="#063706">
-                                        <Typography
-                                            gutterBottom
-                                            variant="h5"
-                                            component="h2"
-                                            sx={{ display: 'flex' }}
-                                            color={'#10a710'}
-                                        >
-                                            <Typography>Lan, </Typography>
-                                            <Typography sx={{ ml: '5px' }}>25</Typography>
-                                            <Typography sx={{ ml: '100px', display: 'flex' }}>
-                                                <Typography>5</Typography>
-                                                <GradeIcon />
+                                    >
+                                        <CardMedia
+                                            component="div"
+                                            sx={{
+                                                // 16:9
+                                                pt: '56.25%',
+                                            }}
+                                            image="https://source.unsplash.com/random?wallpapers"
+                                        />
+                                        <CardContent sx={{ flexGrow: 1, textAlign: 'left' }} color="#063706">
+                                            <Typography
+                                                gutterBottom
+                                                variant="h5"
+                                                component="h2"
+                                                sx={{ display: 'flex' }}
+                                                color={'#10a710'}
+                                            >
+                                                <Typography>{nanny.full_name}, </Typography>
+                                                {/* <Typography sx={{ ml: '5px' }}>25</Typography> */}
+                                                <Typography sx={{ ml: '15px', display: 'flex' }}>
+                                                    <Typography>5</Typography>
+                                                    <GradeIcon />
+                                                </Typography>
                                             </Typography>
-                                        </Typography>
-                                        <Typography color={'#10a710'}>Morderate</Typography>
-                                        <Typography color={'#10a710'}>Đống đa, Hà Nội</Typography>
-                                        <Typography color={'#000000'}>500,000 VND/30mins</Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button href="/detail" size="small">
-                                            <Typography color={'#10a710'}>View</Typography>
-                                        </Button>
-                                        {/* <Button size="small">Edit</Button> */}
-                                    </CardActions>
-                                </Card>
-                            </Grid>
-                        ))}
+                                            <Typography color={'#10a710'}>Morderate</Typography>
+                                            <Typography color={'#10a710'} sx={{ fontSize: '16px' }}>
+                                                <AddLocationIcon fontSize="small" />
+                                                {nanny.address}
+                                            </Typography>
+                                            <Typography color={'#000000'}>{nanny.salary} VND/30mins</Typography>
+                                        </CardContent>
+                                        <CardActions>
+                                            <Button href="/detail" size="small">
+                                                <Typography color={'#10a710'}>View</Typography>
+                                            </Button>
+                                            {/* <Button size="small">Edit</Button> */}
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            ))}
                     </Grid>
                 </Container>
             </main>
