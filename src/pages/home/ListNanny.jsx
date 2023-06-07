@@ -8,7 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
+
 import Box from '@mui/material/Box';
 
 import Typography from '@mui/material/Typography';
@@ -58,8 +58,7 @@ export default function ListNanny() {
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
-            {
-                filter ? 
+            {filter ? (
                 <Typography
                     component="div"
                     sx={{
@@ -67,17 +66,20 @@ export default function ListNanny() {
                         top: '64px',
                         right: '0',
                         bottom: '0',
-                        width: '30vw',
+                        width: '21vw',
                         backgroundColor: 'rgba(41, 137, 66, 0.7)',
                         height: 'calc(100vh - 46px)',
                         zIndex: '1000',
                         color: 'white',
+                        padding: 3,
                     }}
                 >
-                    <Typography component="h3">Filter</Typography>
+                    <Typography component="h1" sx={{ fontSize: '25px' }}>
+                        Filter
+                    </Typography>
                     <Typography>
                         {/* <CheckBox> */}
-                        <Typography>
+                        <Typography gutterBottom>
                             <Typography component="h4">Language</Typography>
                             <Typography component="div">
                                 <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Japanese
@@ -93,7 +95,7 @@ export default function ListNanny() {
                             </Typography>
                         </Typography>
                         {/* Rating */}
-                        <Typography>
+                        <Typography gutterBottom>
                             <Typography component="h4">Rating</Typography>
                             <Typography>
                                 <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> 5*
@@ -112,7 +114,7 @@ export default function ListNanny() {
                             </Typography>
                         </Typography>
                         {/* Experience */}
-                        <Typography>
+                        <Typography gutterBottom>
                             <Typography component="h4">Experience</Typography>
                             <Typography>
                                 <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Newbie
@@ -125,7 +127,7 @@ export default function ListNanny() {
                             </Typography>
                         </Typography>
                         {/* Address */}
-                        <Typography>
+                        <Typography gutterBottom>
                             <Typography component="h4">Address</Typography>
                             <Typography>
                                 <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Đống Đa
@@ -154,7 +156,7 @@ export default function ListNanny() {
                             valueLabelDisplay="on"
                             min={100000}
                             max={2500000}
-                            sx={{width: '80%', marginLeft: '30px'}}
+                            sx={{ width: '80%', marginLeft: '30px' }}
                         />
                     </Typography>
                     <Typography>
@@ -162,56 +164,51 @@ export default function ListNanny() {
                             Apply
                         </Button>
                         <Button
-                            onClick={() => {setFilter(false)}}
+                            onClick={() => {
+                                setFilter(false);
+                            }}
                             variant="contained"
-                            sx={{ borderRadius: '20px', padding: '3px 20px', backgroundColor: '#d1d1d1', border: 'none' }}
+                            sx={{
+                                borderRadius: '20px',
+                                padding: '3px 20px',
+                                backgroundColor: '#d1d1d1',
+                                border: 'none',
+                                ml: 10,
+                            }}
                         >
                             Cancel
                         </Button>
                     </Typography>
                 </Typography>
-                : ''
-            }
+            ) : (
+                ''
+            )}
             <main>
-                {/* Hero unit */}
-                <Box
-                    sx={{
-                        bgcolor: 'background.paper',
-                        pt: 8,
-                        pb: 6,
-                    }}
-                >
-                    <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography
-                            textAlign="left"
-                            component="h1"
-                            variant="h2"
-                            align="left"
-                            color="text.primary"
-                            gutterBottom
-                        >
+                <Container sx={{ py: 8 }} maxWidth="lg">
+                    <Box display={'flex'} justifyContent={'space-between'}>
+                        <Typography variant="h4" sx={{ paddingTop: 1 }} color={'#1d9a1d'}>
                             List Nanny
                         </Typography>
-                        {/* <Stack
-              sx={{ pt: 4 }}
-              direction="row"
-              spacing={2}
-              justifyContent="center"
-            >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Secondary action</Button>
-            </Stack> */}
                         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                            <IconButton onClick={() => {setFilter(true)}}>
-                                <FilterAltIcon sx={{ width: '48px', height: '48px', color: '#177904' }} />
+                            <IconButton
+                                sx={{ paddingRight: 8 }}
+                                onClick={() => {
+                                    setFilter(true);
+                                }}
+                            >
+                                <FilterAltIcon sx={{ width: '48px', height: '48px', color: '#1d9a1d' }} />
                             </IconButton>
                         </Box>
-                    </Container>
-                </Box>
-
-                <Container sx={{ py: 8 }} maxWidth="lg">
+                    </Box>
                     {/* End hero unit */}
-                    <Grid container spacing={10}>
+                    <Grid
+                        container
+                        spacing={8}
+                        bgcolor={'#f2f2f2'}
+                        paddingRight={10}
+                        paddingBottom={3}
+                        borderRadius={5}
+                    >
                         {cards.map((card) => (
                             <Grid item key={card} xs={12} sm={6} md={3}>
                                 <Card
@@ -230,22 +227,28 @@ export default function ListNanny() {
                                         }}
                                         image="https://source.unsplash.com/random?wallpapers"
                                     />
-                                    <CardContent sx={{ flexGrow: 1, textAlign: 'left' }}>
-                                        <Typography gutterBottom variant="h5" component="h2" sx={{ display: 'flex' }}>
-                                            <Typography>Lan , </Typography>
+                                    <CardContent sx={{ flexGrow: 1, textAlign: 'left' }} color="#063706">
+                                        <Typography
+                                            gutterBottom
+                                            variant="h5"
+                                            component="h2"
+                                            sx={{ display: 'flex' }}
+                                            color={'#10a710'}
+                                        >
+                                            <Typography>Lan, </Typography>
                                             <Typography sx={{ ml: '5px' }}>25</Typography>
                                             <Typography sx={{ ml: '100px', display: 'flex' }}>
                                                 <Typography>5</Typography>
                                                 <GradeIcon />
                                             </Typography>
                                         </Typography>
-                                        <Typography>Morderate</Typography>
-                                        <Typography>Đống đa, Hà Nội</Typography>
-                                        <Typography>500,000 VND/30mins</Typography>
+                                        <Typography color={'#10a710'}>Morderate</Typography>
+                                        <Typography color={'#10a710'}>Đống đa, Hà Nội</Typography>
+                                        <Typography color={'#000000'}>500,000 VND/30mins</Typography>
                                     </CardContent>
                                     <CardActions>
                                         <Button href="/detail" size="small">
-                                            View
+                                            <Typography color={'#10a710'}>View</Typography>
                                         </Button>
                                         {/* <Button size="small">Edit</Button> */}
                                     </CardActions>

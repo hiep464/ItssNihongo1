@@ -130,7 +130,7 @@ export default function HeadederMain() {
         >
             <MenuItem>
                 <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="error">
+                    <Badge badgeContent={4}>
                         <MailIcon />
                     </Badge>
                 </IconButton>
@@ -138,7 +138,7 @@ export default function HeadederMain() {
             </MenuItem>
             <MenuItem>
                 <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                    <Badge badgeContent={17} color="error">
+                    <Badge badgeContent={17}>
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
@@ -158,6 +158,11 @@ export default function HeadederMain() {
             </MenuItem>
         </Menu>
     );
+
+    const MyComponent = styled('AppBar')({
+        color: '#1d9a1d',
+        backgroundColor: 'aliceblue',
+    });
 
     return (
         <Box sx={{ flexGrow: 1 }} position="static">
@@ -216,6 +221,7 @@ export default function HeadederMain() {
                     </Box>
                 </Toolbar>
             </AppBar>
+
             {renderMobileMenu}
             {renderMenu}
         </Box>
