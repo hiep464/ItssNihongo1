@@ -156,11 +156,14 @@ export default function ListNanny() {
                             valueLabelDisplay="on"
                             min={100000}
                             max={2500000}
-                            sx={{ width: '80%', marginLeft: '30px' }}
+                            sx={{ width: '80%', marginLeft: '30px', marginTop: '40px' }}
                         />
                     </Typography>
-                    <Typography>
-                        <Button variant="contained" sx={{ borderRadius: '20px', padding: '3px 20px' }}>
+                    <Typography sx={{ marginTop: '10px' }}>
+                        <Button
+                            variant="contained"
+                            sx={{ borderRadius: '20px', padding: '3px 20px', marginLeft: '20px' }}
+                        >
                             Apply
                         </Button>
                         <Button
@@ -191,8 +194,8 @@ export default function ListNanny() {
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                             <IconButton
-                                sx={{ paddingRight: 8 }}
-                                onClick={() => {
+                                sx={{ marginRight: 8 }}
+                                onClick={(e) => {
                                     setFilter(true);
                                 }}
                             >
