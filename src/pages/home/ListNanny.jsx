@@ -22,8 +22,6 @@ import Slider from '@mui/material/Slider';
 
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8];
-
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
@@ -69,7 +67,17 @@ export default function ListNanny() {
         fetchData();
     }, []);
 
-    console.log(nannys);
+    // Tính tuổi
+    function getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -255,9 +263,11 @@ export default function ListNanny() {
                                                 sx={{ display: 'flex' }}
                                                 color={'#10a710'}
                                             >
-                                                <Typography>{nanny.full_name}, </Typography>
-                                                {/* <Typography sx={{ ml: '5px' }}>25</Typography> */}
-                                                <Typography sx={{ ml: '15px', display: 'flex' }}>
+                                                <Typography>
+                                                    {nanny.full_name},{getAge(nanny.birthday)}
+                                                </Typography>
+
+                                                <Typography sx={{ ml: '10px', display: 'flex' }}>
                                                     <Typography>5</Typography>
                                                     <GradeIcon />
                                                 </Typography>
