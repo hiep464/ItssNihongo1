@@ -19,8 +19,14 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import IconButton from '@mui/material/IconButton';
 import Checkbox from '@mui/material/Checkbox';
 import Slider from '@mui/material/Slider';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 import AddLocationIcon from '@mui/icons-material/AddLocation';
+import axios from 'axios';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -33,12 +39,8 @@ const marks = [
         label: '100,000',
     },
     {
-        value: 300000,
-        label: '300,000',
-    },
-    {
         value: 1000000,
-        label: '1000,000',
+        label: '1,000,000',
     },
     {
         value: 2500000,
@@ -50,11 +52,25 @@ function valuetext(value) {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-// (value) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+function postData(url, data) {
+    return axios
+        .post(url, data)
+        .then((response) => {
+            console.log(response);
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
 
 export default function ListNanny() {
     const [filter, setFilter] = React.useState(false);
     const [nannys, setNannys] = React.useState([]);
+    const [language, setLanguage] = React.useState('');
+    const [rating, setRating] = React.useState('');
+    const [experience, setExperience] = React.useState('');
+    const [salary, setSalary] = React.useState('');
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -79,6 +95,21 @@ export default function ListNanny() {
         return age;
     }
 
+    const handleFilter = () => {
+        const formData = {
+            rating: rating,
+            language: language,
+            cookExp: experience,
+            careExp: experience,
+            salary: salary
+        }
+        setFilter(false);
+        postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
+            .then((data) => setNannys(data))
+            .catch((error) => console.error(error));
+        console.log(language, rating, experience, salary)
+    };
+
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
@@ -95,81 +126,119 @@ export default function ListNanny() {
                         height: 'calc(100vh - 46px)',
                         zIndex: '1000',
                         color: 'white',
-                        padding: 3,
+                        padding: 1,
                     }}
                 >
-                    <Typography component="h1" sx={{ fontSize: '25px' }}>
+                    <Typography component="h3" sx={{ fontSize: '20px' }}>
                         Filter
                     </Typography>
-                    <Typography>
-                        {/* <CheckBox> */}
+                    {/* <Typography>
                         <Typography gutterBottom>
                             <Typography component="h4">Language</Typography>
                             <Typography component="div">
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Japanese
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Japanese
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> English
+                                <Checkbox
+                                    checked={false}
+                                    onChange={(e) => {
+                                        console.log(e.target.value);
+                                    }}
+                                    {...label}
+                                    sx={{ height: '14px', width: '14px' }}
+                                    value={'English'}
+                                />{' '}
+                                English
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Korea
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Korea
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Chinese
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Chinese
                             </Typography>
                         </Typography>
-                        {/* Rating */}
                         <Typography gutterBottom>
                             <Typography component="h4">Rating</Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> 5*
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> 5*
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> 4*
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> 4*
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> 3*
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> 3*
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> 2*
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> 2*
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> 1*
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> 1*
                             </Typography>
                         </Typography>
-                        {/* Experience */}
                         <Typography gutterBottom>
                             <Typography component="h4">Experience</Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Newbie
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Newbie
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Morderate
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Morderate
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Year of experience
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Year of experience
                             </Typography>
                         </Typography>
-                        {/* Address */}
                         <Typography gutterBottom>
                             <Typography component="h4">Address</Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Đống Đa
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Đống Đa
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Hai Bà Trưng
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Hai Bà Trưng
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Cầu Giấy
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Cầu Giấy
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Tây Hồ
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Tây Hồ
                             </Typography>
                             <Typography>
-                                <Checkbox {...label} sx={{ height: '18px', width: '18px' }} /> Thanh Xuân
+                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Thanh Xuân
                             </Typography>
                         </Typography>
-                    </Typography>
+                    </Typography> */}
+                    
+                    <FormControl>
+                        <FormLabel id="demo-radio-buttons-group-label">Language</FormLabel>
+                        <RadioGroup onChange={(e) => {setLanguage(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
+                            <FormControlLabel value="Japanese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Japanese" />
+                            <FormControlLabel value="English" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="English" />
+                            <FormControlLabel value="Korean" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Korean" />
+                            <FormControlLabel value="Chinese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Chinese" />
+                        </RadioGroup>
+                        <FormLabel id="demo-radio-buttons-group-label">Rating</FormLabel>
+                        <RadioGroup onChange={(e) => {setRating(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
+                            <FormControlLabel value="5" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="5*" />
+                            <FormControlLabel value="4" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="4*" />
+                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="3*" />
+                            <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="2*" />
+                            <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="1*" />
+                        </RadioGroup>
+                        <FormLabel id="demo-radio-buttons-group-label">Experience</FormLabel>
+                        <RadioGroup onChange={(e) => {setExperience(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
+                            <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Newbie" />
+                            <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Morderate" />
+                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Year of experience" />
+                        </RadioGroup>
+                        <FormLabel id="demo-radio-buttons-group-label">Adress</FormLabel>
+                        <RadioGroup aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
+                            <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Đống Đa" />
+                            <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Hai Bà Trưng" />
+                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Cầu giấy" />
+                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Tây Hồ" />
+                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Thanh Xuân" />
+                        </RadioGroup>
+                    </FormControl>
+                    
                     <Typography>
                         <Slider
                             aria-label="Always visible"
@@ -180,13 +249,15 @@ export default function ListNanny() {
                             valueLabelDisplay="on"
                             min={100000}
                             max={2500000}
-                            sx={{ width: '80%', marginLeft: '30px', marginTop: '40px' }}
+                            sx={{ width: '80%', marginLeft: '30px' }}
+                            onChange={(e) => {setSalary(e.target.value)}}
                         />
                     </Typography>
-                    <Typography sx={{ marginTop: '10px' }}>
+                    <Typography>
                         <Button
                             variant="contained"
                             sx={{ borderRadius: '20px', padding: '3px 20px', marginLeft: '20px' }}
+                            onClick={handleFilter}
                         >
                             Apply
                         </Button>
@@ -212,7 +283,7 @@ export default function ListNanny() {
             )}
             <main>
                 <Container sx={{ py: 8 }} maxWidth="lg">
-                    <Box display={'flex'} justifyContent={'space-between'}>
+                    <Box display={'flex'} height={'64px'} justifyContent={'space-between'}>
                         <Typography variant="h4" sx={{ paddingTop: 1 }} color={'#1d9a1d'}>
                             List Nanny
                         </Typography>
@@ -223,7 +294,11 @@ export default function ListNanny() {
                                     setFilter(true);
                                 }}
                             >
-                                <FilterAltIcon sx={{ width: '48px', height: '48px', color: '#1d9a1d' }} />
+                                {
+                                    !filter ? 
+                                    <FilterAltIcon sx={{ width: '48px', height: '48px', color: '#1d9a1d' }} />
+                                    : ''
+                                }
                             </IconButton>
                         </Box>
                     </Box>
@@ -236,8 +311,10 @@ export default function ListNanny() {
                         paddingBottom={3}
                         borderRadius={5}
                     >
-                        {nannys &&
-                            nannys.splice(0, 8).map((nanny) => (
+                        {
+                        // nannys &&
+                            // nannys.splice(0, 8)
+                            nannys.map((nanny) => (
                                 <Grid item key={nanny.id} xs={12} sm={6} md={3}>
                                     <Card
                                         sx={{
