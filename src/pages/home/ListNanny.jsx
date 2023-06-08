@@ -27,8 +27,6 @@ import FormLabel from '@mui/material/FormLabel';
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 import axios from 'axios';
 
-import { omitBy, isUndefined, omit } from 'lodash';
-
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
@@ -342,7 +340,7 @@ export default function ListNanny() {
                                 label="Cầu giấy"
                             />
                             <FormControlLabel
-                                value="3"
+                                value="4"
                                 control={
                                     <Radio
                                         sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
@@ -351,7 +349,7 @@ export default function ListNanny() {
                                 label="Tây Hồ"
                             />
                             <FormControlLabel
-                                value="3"
+                                value="5"
                                 control={
                                     <Radio
                                         sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
