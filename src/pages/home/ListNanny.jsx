@@ -81,7 +81,7 @@ export default function ListNanny() {
             setNannys(reponseJSON);
         };
         fetchData();
-    }, [nannys]);
+    }, []);
 
     // Tính tuổi
     function getAge(dateString) {
@@ -101,13 +101,13 @@ export default function ListNanny() {
             language: language,
             cookExp: experience,
             careExp: experience,
-            salary: salary
-        }
+            salary: salary,
+        };
         setFilter(false);
         postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
             .then((data) => setNannys(data))
             .catch((error) => console.error(error));
-        console.log(language, rating, experience, salary)
+        console.log(language, rating, experience, salary);
     };
 
     //lấy tên từ họ tên
@@ -243,39 +243,193 @@ export default function ListNanny() {
                             </Typography>
                         </Typography>
                     </Typography> */}
-                    
+
                     <FormControl>
                         <FormLabel id="demo-radio-buttons-group-label">Language</FormLabel>
-                        <RadioGroup onChange={(e) => {setLanguage(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
-                            <FormControlLabel value="Japanese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Japanese" />
-                            <FormControlLabel value="English" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="English" />
-                            <FormControlLabel value="Korean" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Korean" />
-                            <FormControlLabel value="Chinese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Chinese" />
+                        <RadioGroup
+                            onChange={(e) => {
+                                setLanguage(e.target.value);
+                            }}
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel
+                                value="Japanese"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Japanese"
+                            />
+                            <FormControlLabel
+                                value="English"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="English"
+                            />
+                            <FormControlLabel
+                                value="Korean"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Korean"
+                            />
+                            <FormControlLabel
+                                value="Chinese"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Chinese"
+                            />
                         </RadioGroup>
                         <FormLabel id="demo-radio-buttons-group-label">Rating</FormLabel>
-                        <RadioGroup onChange={(e) => {setRating(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
-                            <FormControlLabel value="5" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="5*" />
-                            <FormControlLabel value="4" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="4*" />
-                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="3*" />
-                            <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="2*" />
-                            <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="1*" />
+                        <RadioGroup
+                            onChange={(e) => {
+                                setRating(e.target.value);
+                            }}
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel
+                                value="5"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="5*"
+                            />
+                            <FormControlLabel
+                                value="4"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="4*"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="3*"
+                            />
+                            <FormControlLabel
+                                value="2"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="2*"
+                            />
+                            <FormControlLabel
+                                value="1"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="1*"
+                            />
                         </RadioGroup>
                         <FormLabel id="demo-radio-buttons-group-label">Experience</FormLabel>
-                        <RadioGroup onChange={(e) => {setExperience(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
-                            <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Newbie" />
-                            <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Morderate" />
-                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Year of experience" />
+                        <RadioGroup
+                            onChange={(e) => {
+                                setExperience(e.target.value);
+                            }}
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel
+                                value="1"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Newbie"
+                            />
+                            <FormControlLabel
+                                value="2"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Morderate"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Year of experience"
+                            />
                         </RadioGroup>
                         <FormLabel id="demo-radio-buttons-group-label">Adress</FormLabel>
                         <RadioGroup aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
-                            <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Đống Đa" />
-                            <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Hai Bà Trưng" />
-                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Cầu giấy" />
-                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Tây Hồ" />
-                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Thanh Xuân" />
+                            <FormControlLabel
+                                value="1"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Đống Đa"
+                            />
+                            <FormControlLabel
+                                value="2"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Hai Bà Trưng"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Cầu giấy"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Tây Hồ"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Thanh Xuân"
+                            />
                         </RadioGroup>
                     </FormControl>
-                    
+
                     <Typography>
                         <Slider
                             aria-label="Always visible"
@@ -287,7 +441,9 @@ export default function ListNanny() {
                             min={100000}
                             max={2500000}
                             sx={{ width: '80%', marginLeft: '30px' }}
-                            onChange={(e) => {setSalary(e.target.value)}}
+                            onChange={(e) => {
+                                setSalary(e.target.value);
+                            }}
                         />
                     </Typography>
                     <Typography>
@@ -331,11 +487,11 @@ export default function ListNanny() {
                                     setFilter(true);
                                 }}
                             >
-                                {
-                                    !filter ? 
+                                {!filter ? (
                                     <FilterAltIcon sx={{ width: '48px', height: '48px', color: '#1d9a1d' }} />
-                                    : ''
-                                }
+                                ) : (
+                                    ''
+                                )}
                             </IconButton>
                         </Box>
                     </Box>
@@ -349,7 +505,7 @@ export default function ListNanny() {
                         borderRadius={5}
                     >
                         {
-                        // nannys &&
+                            // nannys &&
                             // nannys.splice(0, 8)
                             nannys.map((nanny) => (
                                 <Grid item key={nanny.id} xs={12} sm={6} md={3}>
@@ -401,7 +557,8 @@ export default function ListNanny() {
                                         </CardActions>
                                     </Card>
                                 </Grid>
-                            ))}
+                            ))
+                        }
                     </Grid>
                 </Container>
             </main>
