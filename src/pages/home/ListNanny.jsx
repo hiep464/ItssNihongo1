@@ -81,7 +81,7 @@ export default function ListNanny() {
             setNannys(reponseJSON);
         };
         fetchData();
-    }, [nannys]);
+    }, []);
 
     // Tính tuổi
     function getAge(dateString) {
@@ -98,11 +98,12 @@ export default function ListNanny() {
     const handleFilter = () => {
         const formData = {
             rating: rating,
-            language: language,
-            cookExp: experience,
-            careExp: experience,
+            userLanguage: language,
+            // cookExp: `${experience} years`,
+            // careExp: `${experience} years`,
             salary: salary
         }
+        console.log(formData)
         setFilter(false);
         postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
             .then((data) => setNannys(data))
@@ -246,14 +247,14 @@ export default function ListNanny() {
                     
                     <FormControl>
                         <FormLabel id="demo-radio-buttons-group-label">Language</FormLabel>
-                        <RadioGroup onChange={(e) => {setLanguage(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
+                        <RadioGroup value={language} onChange={(e) => {setLanguage(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
                             <FormControlLabel value="Japanese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Japanese" />
                             <FormControlLabel value="English" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="English" />
-                            <FormControlLabel value="Korean" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Korean" />
-                            <FormControlLabel value="Chinese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Chinese" />
+                            <FormControlLabel value="Vietnamese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Vietnamese" />
+                            {/* <FormControlLabel value="Chinese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Chinese" /> */}
                         </RadioGroup>
                         <FormLabel id="demo-radio-buttons-group-label">Rating</FormLabel>
-                        <RadioGroup onChange={(e) => {setRating(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
+                        <RadioGroup value={rating} onChange={(e) => {setRating(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
                             <FormControlLabel value="5" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="5*" />
                             <FormControlLabel value="4" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="4*" />
                             <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="3*" />
@@ -261,7 +262,7 @@ export default function ListNanny() {
                             <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="1*" />
                         </RadioGroup>
                         <FormLabel id="demo-radio-buttons-group-label">Experience</FormLabel>
-                        <RadioGroup onChange={(e) => {setExperience(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
+                        <RadioGroup value={experience} onChange={(e) => {setExperience(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
                             <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Newbie" />
                             <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Morderate" />
                             <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Year of experience" />
@@ -271,15 +272,15 @@ export default function ListNanny() {
                             <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Đống Đa" />
                             <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Hai Bà Trưng" />
                             <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Cầu giấy" />
-                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Tây Hồ" />
-                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Thanh Xuân" />
+                            <FormControlLabel value="4" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Tây Hồ" />
+                            <FormControlLabel value="5" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Thanh Xuân" />
                         </RadioGroup>
                     </FormControl>
                     
                     <Typography>
                         <Slider
                             aria-label="Always visible"
-                            defaultValue={100000}
+                            defaultValue={salary}
                             getAriaValueText={valuetext}
                             step={10000}
                             marks={marks}
@@ -301,6 +302,10 @@ export default function ListNanny() {
                         <Button
                             onClick={() => {
                                 setFilter(false);
+                                setRating('');
+                                setLanguage('');
+                                setExperience('');
+                                setSalary('');
                             }}
                             variant="contained"
                             sx={{
