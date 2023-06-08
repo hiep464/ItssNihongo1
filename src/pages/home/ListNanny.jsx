@@ -65,7 +65,7 @@ export default function ListNanny() {
             setNannys(reponseJSON);
         };
         fetchData();
-    }, [nannys]);
+    }, []);
 
     // Tính tuổi
     function getAge(dateString) {
