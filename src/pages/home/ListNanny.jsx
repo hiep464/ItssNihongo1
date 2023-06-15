@@ -27,6 +27,9 @@ import FormLabel from '@mui/material/FormLabel';
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 import axios from 'axios';
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
@@ -443,7 +446,7 @@ export default function ListNanny() {
                         {
                             // nannys &&
                             // nannys.splice(0, 8)
-                            nannys.map((nanny) => (
+                            nannys.splice(0, 8).map((nanny) => (
                                 <Grid item key={nanny.id} xs={12} sm={6} md={3}>
                                     <Card
                                         sx={{
@@ -496,6 +499,10 @@ export default function ListNanny() {
                             ))
                         }
                     </Grid>
+
+                    <Stack spacing={2} gutterBottom sx={{ mt: 3, alignItems: 'center' }}>
+                        <Pagination count={10} color="primary" />
+                    </Stack>
                 </Container>
             </main>
         </ThemeProvider>
