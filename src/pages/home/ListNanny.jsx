@@ -160,6 +160,7 @@ export default function ListNanny() {
                                         <Avatar
                                             sx={{
                                                 bgcolor: deepOrange[500],
+                                                fontWeight: 'bold',
                                                 width: '60px',
                                                 height: '60px',
                                                 fontSize: 30,
@@ -178,7 +179,7 @@ export default function ListNanny() {
                                                 bgcolor: deepOrange[500],
                                                 width: '60px',
                                                 height: '60px',
-                                                backgroundColor: '#ff3300',
+                                                backgroundColor: '#cd3813',
                                                 '&:hover': {
                                                     backgroundColor: '#eb6a4a',
                                                 },
