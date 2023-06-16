@@ -29,13 +29,6 @@ const commonStyle = {
     width: '380px',
     height: '570px',
 };
-const items = [
-    { id: 1, title: 'Trần Thị Ngà' },
-    { id: 2, title: 'Nguyễn Văn A' },
-    { id: 3, title: 'Hoàng Xuân Bách' },
-    { id: 4, title: 'Tống Hữu Thắm' },
-    { id: 5, title: 'Nguyễn Thế Đức' },
-];
 
 export default function ListNanny() {
     const [nannys, setNannys] = React.useState([]);
@@ -44,7 +37,8 @@ export default function ListNanny() {
     const itemsPerPage = 1;
 
     const handleNextPage = () => {
-        const totalPages = Math.ceil(items.length / itemsPerPage);
+        const totalPages = Math.ceil(nannys.length / itemsPerPage);
+        console.log(totalPages);
         setCurrentPage((prevPage) => (prevPage === totalPages ? prevPage : prevPage + 1));
     };
 
@@ -149,7 +143,16 @@ export default function ListNanny() {
                             <Grid item xs={2.4}>
                                 <Stack direction="column" spacing={2} sx={{ marginLeft: '120px', marginTop: '180px' }}>
                                     <Button disabled={currentPage === 1} onClick={handlePrevPage}>
-                                        <Avatar sx={{ width: '60px', height: '60px', backgroundColor: '#1a1aff' }}>
+                                        <Avatar
+                                            sx={{
+                                                width: '60px',
+                                                height: '60px',
+                                                backgroundColor: '#1a1aff',
+                                                '&:hover': {
+                                                    backgroundColor: '#5c5cf3',
+                                                },
+                                            }}
+                                        >
                                             <ArrowBackIcon sx={{ fontSize: 30, color: 'white' }} />
                                         </Avatar>
                                     </Button>
@@ -161,6 +164,9 @@ export default function ListNanny() {
                                                 height: '60px',
                                                 fontSize: 30,
                                                 backgroundColor: '#b3b300',
+                                                '&:hover': {
+                                                    backgroundColor: '#f0f04f',
+                                                },
                                             }}
                                         >
                                             B.
@@ -173,13 +179,16 @@ export default function ListNanny() {
                                                 width: '60px',
                                                 height: '60px',
                                                 backgroundColor: '#ff3300',
+                                                '&:hover': {
+                                                    backgroundColor: '#eb6a4a',
+                                                },
                                             }}
                                         >
                                             <MessageIcon sx={{ fontSize: 30, color: 'white' }} />
                                         </Avatar>
                                     </Button>
                                     <Button
-                                        disabled={currentPage === Math.ceil(items.length / itemsPerPage)}
+                                        disabled={currentPage === Math.ceil(nannys.length / itemsPerPage)}
                                         onClick={handleNextPage}
                                     >
                                         <Avatar
@@ -188,6 +197,9 @@ export default function ListNanny() {
                                                 width: '60px',
                                                 height: '60px',
                                                 backgroundColor: '#1a1aff',
+                                                '&:hover': {
+                                                    backgroundColor: '#5c5cf3',
+                                                },
                                             }}
                                         >
                                             <ArrowForwardIcon sx={{ fontSize: 30, color: 'white' }} />
