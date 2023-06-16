@@ -53,7 +53,7 @@ export default function ListNanny() {
     };
 
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const visibleItems = items.slice(startIndex, startIndex + itemsPerPage);
+    const visibleItems = nannys.slice(startIndex, startIndex + itemsPerPage);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -89,6 +89,11 @@ export default function ListNanny() {
         return firstName;
     }
 
+    // Conver chữ hoa dầu tiên của chuỗi
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
     function getCity(address) {
         // Tách chuỗi thành mảng các phần tử
         var addressArray = address.split(',');
@@ -98,6 +103,18 @@ export default function ListNanny() {
         var city = addressArray[addressArray.length - 1];
         var result = district.concat(',', city);
         return result;
+    }
+
+    // format ngày sinh
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+
+        const formattedDate = `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
+
+        return formattedDate;
     }
 
     // tính số sao trung bình
@@ -112,6 +129,12 @@ export default function ListNanny() {
         var averageRating = totalStars / totalReviews;
         if (totalReviews === 0) return 0;
         else return averageRating;
+    }
+
+    // format số tiền 100000 => 100,000
+    function formatNumber(number) {
+        const formattedNumber = number.toLocaleString('en-US');
+        return formattedNumber;
     }
 
     if (!nannys) return null;
@@ -173,8 +196,8 @@ export default function ListNanny() {
                                 </Stack>
                             </Grid>
 
-                            {visibleItems.map((item) => (
-                                <Grid item xs={9.6} key={item.id}>
+                            {visibleItems.map((nanny) => (
+                                <Grid item xs={9.6} key={nanny.id}>
                                     <Box
                                         sx={{
                                             ...commonStyles,
@@ -210,7 +233,7 @@ export default function ListNanny() {
                                                 gutterBottom
                                                 fontWeight="bold"
                                             >
-                                                {item.title}
+                                                {nanny.full_name}
                                             </Typography>
                                             <Typography
                                                 variant="h6"
@@ -224,14 +247,14 @@ export default function ListNanny() {
                                                 sx={{ textAlign: 'center', mt: '10px' }}
                                                 gutterBottom
                                             >
-                                                Phone : 0892382948
+                                                Phone : {nanny.phone}
                                             </Typography>
                                             <Typography
                                                 variant="h6"
                                                 sx={{ textAlign: 'center', mt: '10px' }}
                                                 gutterBottom
                                             >
-                                                Female
+                                                {capitalizeFirstLetter(nanny.gender)}
                                             </Typography>
                                             <Typography
                                                 variant="h6"
@@ -242,8 +265,8 @@ export default function ListNanny() {
                                             </Typography>
 
                                             <Rating
-                                                name="size-small"
-                                                defaultValue={2}
+                                                readOnly
+                                                value={calculateAverageRating(nanny.rating)}
                                                 sx={{
                                                     justifyContent: 'flex-end',
                                                     display: 'flex',
@@ -273,7 +296,7 @@ export default function ListNanny() {
                                                         paddingLeft: '10px',
                                                     }}
                                                 >
-                                                    {item.title}
+                                                    {nanny.full_name}
                                                 </Typography>
                                                 <Typography variant="body1" sx={{ textAlign: '' }}>
                                                     Gender :
@@ -287,7 +310,7 @@ export default function ListNanny() {
                                                         paddingLeft: '10px',
                                                     }}
                                                 >
-                                                    Female
+                                                    {capitalizeFirstLetter(nanny.gender)}
                                                 </Typography>
                                                 <Typography variant="body1" sx={{ textAlign: '' }}>
                                                     Birthday :
@@ -301,7 +324,7 @@ export default function ListNanny() {
                                                         paddingLeft: '10px',
                                                     }}
                                                 >
-                                                    23/9/2001
+                                                    {formatDate(nanny.birthday)}
                                                 </Typography>
                                                 <Typography variant="body1" sx={{ textAlign: '' }}>
                                                     Address :
@@ -315,7 +338,7 @@ export default function ListNanny() {
                                                         paddingLeft: '10px',
                                                     }}
                                                 >
-                                                    Bách Khoa, Hai Bà Trưng, Hà Nội
+                                                    {getCity(nanny.address)}
                                                 </Typography>
                                                 <Typography variant="body1" sx={{ textAlign: '' }}>
                                                     Experinence :
@@ -330,7 +353,7 @@ export default function ListNanny() {
                                                     }}
                                                     gutterBottom
                                                 >
-                                                    Cooking : 3 Years of experience
+                                                    Cooking : {nanny.cook_exp}
                                                 </Typography>
                                                 <Typography
                                                     variant="h6"
@@ -341,7 +364,7 @@ export default function ListNanny() {
                                                         paddingLeft: '10px',
                                                     }}
                                                 >
-                                                    Child Care : 3 Years of experience
+                                                    Child Care : {nanny.care_exp}
                                                 </Typography>
                                                 <Typography variant="body1" sx={{ textAlign: '' }}>
                                                     Language :
@@ -369,13 +392,13 @@ export default function ListNanny() {
                                                         paddingLeft: '10px',
                                                     }}
                                                 >
-                                                    500,000 VND /Day
+                                                    {formatNumber(nanny.salary)}VND /Day
                                                 </Typography>
                                                 <Typography variant="body1" sx={{ textAlign: '' }}>
                                                     Rating :
                                                     <Rating
-                                                        name="size-small"
-                                                        defaultValue={2}
+                                                        readOnly
+                                                        value={calculateAverageRating(nanny.rating)}
                                                         sx={{
                                                             justifyContent: 'flex-start',
                                                             display: 'flex',
