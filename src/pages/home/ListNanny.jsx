@@ -32,6 +32,7 @@ import GTranslateIcon from '@mui/icons-material/GTranslate';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
 import { Link } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -75,6 +76,7 @@ export default function ListNanny() {
     const [experience, setExperience] = React.useState('');
     const [salary, setSalary] = React.useState('');
     const [reload, setReload] = React.useState(0);
+    const [progress, setProgress] = React.useState(50);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -534,8 +536,43 @@ export default function ListNanny() {
                                                 <AddLocationIcon fontSize="small" />
                                                 {getCity(nanny.address)}
                                             </Typography>
-                                            <Typography color={'#000000'} fontWeight="bold">
-                                                {formatNumber(nanny.salary)} VND/day
+                                            <Typography
+                                                display="flex"
+                                                justifyContent="space-between"
+                                                alignItems="center"
+                                            >
+                                                <Typography color={'#000000'} fontWeight="bold">
+                                                    {formatNumber(nanny.salary)} VND/day
+                                                </Typography>
+
+                                                <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                                                    <CircularProgress
+                                                        variant="determinate"
+                                                        value={progress}
+                                                        color="success"
+                                                    />
+                                                    <Box
+                                                        sx={{
+                                                            top: 0,
+                                                            left: 0,
+                                                            bottom: 0,
+                                                            right: 0,
+                                                            position: 'absolute',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                        }}
+                                                    >
+                                                        <Typography
+                                                            variant="caption"
+                                                            component="div"
+                                                            color="black"
+                                                            fontWeight="bold"
+                                                        >
+                                                            {`${Math.round(progress)}%`}
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
                                             </Typography>
                                         </CardContent>
                                     </Card>
