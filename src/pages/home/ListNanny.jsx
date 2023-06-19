@@ -3,7 +3,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -29,6 +28,10 @@ import axios from 'axios';
 
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import GTranslateIcon from '@mui/icons-material/GTranslate';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
+import { Link } from '@mui/material';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -158,6 +161,27 @@ export default function ListNanny() {
         if (totalReviews === 0) return 0;
         else return averageRating;
     }
+
+    // format số tiền 100000 => 100,000
+    function formatNumber(number) {
+        const formattedNumber = number.toLocaleString('en-US');
+        return formattedNumber;
+    }
+
+    //pagination
+    // const data = Array.from({ length: 100 }, (_, index) => `Item ${index + 1}`);
+
+    const ItemsPerPage = 8;
+
+    const [currentPage, setCurrentPage] = React.useState(1);
+
+    const handlePageChange = (event, page) => {
+        setCurrentPage(page);
+    };
+
+    const startIndex = (currentPage - 1) * ItemsPerPage;
+    const endIndex = startIndex + ItemsPerPage;
+    const currentItems = nannys.slice(startIndex, endIndex);
 
     if (!nannys) return null;
     return (
@@ -416,8 +440,13 @@ export default function ListNanny() {
             <main>
                 <Container sx={{ py: 8 }} maxWidth="lg">
                     <Box display={'flex'} height={'64px'} justifyContent={'space-between'}>
-                        <Typography variant="h4" sx={{ paddingTop: 1 }} color={'#1d9a1d'}>
-                            List Nanny
+                        <Typography
+                            variant="h4"
+                            sx={{ paddingTop: 1, marginTop: '5px' }}
+                            color={'#137913'}
+                            fontWeight="bold"
+                        >
+                            The list of Staff
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                             <IconButton
@@ -438,70 +467,89 @@ export default function ListNanny() {
                     <Grid
                         container
                         spacing={8}
-                        bgcolor={'#f2f2f2'}
                         paddingRight={10}
                         paddingBottom={3}
                         borderRadius={5}
+                        border="1px solid #1d9a1d"
                     >
-                        {
-                            // nannys &&
-                            // nannys.splice(0, 8)
-                            nannys.splice(0, 8).map((nanny) => (
-                                <Grid item key={nanny.id} xs={12} sm={6} md={3}>
+                        {currentItems.map((nanny) => (
+                            <Grid item key={nanny.id} xs={12} sm={6} md={3}>
+                                <Link href="detail" underline="none">
                                     <Card
                                         sx={{
                                             height: '100%',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             cursor: 'pointer',
+                                            border: '1px solid #1d9a1d',
+                                            borderRadius: '10px',
                                         }}
                                     >
-                                        <CardMedia
-                                            component="div"
-                                            sx={{
-                                                // 16:9
-                                                pt: '56.25%',
-                                            }}
-                                            image="https://source.unsplash.com/random?wallpapers"
-                                        />
+                                        <Box>
+                                            <CardMedia
+                                                component="div"
+                                                sx={{
+                                                    pt: '56.25%',
+                                                    overflow: 'hidden',
+                                                    border: '1px solid #1d9a1d',
+                                                    borderRadius: '10px',
+                                                    margin: '10px',
+                                                }}
+                                                image="https://source.unsplash.com/random?wallpapers"
+                                            />
+                                        </Box>
                                         <CardContent sx={{ flexGrow: 1, textAlign: 'left' }} color="#063706">
                                             <Typography
-                                                gutterBottom
                                                 variant="h5"
                                                 component="h2"
-                                                sx={{ display: 'flex' }}
-                                                color={'#10a710'}
+                                                sx={{ display: 'flex', justifyContent: 'space-between' }}
+                                                color={'#137913'}
                                             >
-                                                <Typography>
+                                                <Typography fontWeight="bold">
                                                     {getFirstName(nanny.full_name)},{getAge(nanny.birthday)}
                                                 </Typography>
 
-                                                <Typography sx={{ ml: '50px', display: 'flex' }}>
+                                                <Typography sx={{ display: 'flex' }} fontWeight="bold">
                                                     <Typography>{calculateAverageRating(nanny.rating)}</Typography>
                                                     <GradeIcon />
                                                 </Typography>
                                             </Typography>
-                                            <Typography color={'#10a710'}>Morderate</Typography>
+                                            <Typography color={'#10a710'} display="flex" justifyContent="space-between">
+                                                <Typography color={'#10a710'}>
+                                                    <AutoGraphIcon />
+                                                    {nanny.care_exp}
+                                                </Typography>
+                                                <Typography color={'#10a710'}>
+                                                    <TakeoutDiningIcon />
+                                                    {nanny.cook_exp}
+                                                </Typography>
+                                            </Typography>
+
+                                            <Typography color={'#10a710'}>
+                                                <GTranslateIcon />
+                                                English , Japanese
+                                            </Typography>
+
                                             <Typography color={'#10a710'} sx={{ fontSize: '14px' }}>
                                                 <AddLocationIcon fontSize="small" />
                                                 {getCity(nanny.address)}
                                             </Typography>
-                                            <Typography color={'#000000'}>{nanny.salary} VND/30mins</Typography>
+                                            <Typography color={'#000000'} fontWeight="bold">
+                                                {formatNumber(nanny.salary)} VND/day
+                                            </Typography>
                                         </CardContent>
-                                        <CardActions>
-                                            <Button href="/detail" size="small">
-                                                <Typography color={'#10a710'}>View</Typography>
-                                            </Button>
-                                            {/* <Button size="small">Edit</Button> */}
-                                        </CardActions>
                                     </Card>
-                                </Grid>
-                            ))
-                        }
+                                </Link>
+                            </Grid>
+                        ))}
                     </Grid>
 
                     <Stack spacing={2} gutterBottom sx={{ mt: 3, alignItems: 'center' }}>
-                        <Pagination count={10} color="primary" />
+                        <Pagination
+                            count={Math.ceil(nannys.length / ItemsPerPage)}
+                            page={currentPage}
+                            onChange={handlePageChange}
+                        />
                     </Stack>
                 </Container>
             </main>
