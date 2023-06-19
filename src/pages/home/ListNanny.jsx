@@ -71,6 +71,7 @@ export default function ListNanny() {
     const [rating, setRating] = React.useState('');
     const [experience, setExperience] = React.useState('');
     const [salary, setSalary] = React.useState('');
+    const [reload, setReload] = React.useState(0);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -81,7 +82,7 @@ export default function ListNanny() {
             setNannys(reponseJSON);
         };
         fetchData();
-    }, []);
+    }, [reload]);
 
     // Tính tuổi
     function getAge(dateString) {
@@ -96,6 +97,7 @@ export default function ListNanny() {
     }
 
     const handleFilter = () => {
+        let demo
         const formData = {
             rating: rating,
             userLanguage: language,
@@ -103,6 +105,11 @@ export default function ListNanny() {
             // careExp: `${experience} years`,
             salary: salary
         }
+
+        // if(!rating)
+        //     _omit.()
+
+        // if(!userLanguage)
         console.log(formData)
         setFilter(false);
         postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
@@ -280,7 +287,8 @@ export default function ListNanny() {
                     <Typography>
                         <Slider
                             aria-label="Always visible"
-                            defaultValue={salary}
+                            defaultValue={100000}
+                            value={salary}
                             getAriaValueText={valuetext}
                             step={10000}
                             marks={marks}
@@ -306,6 +314,7 @@ export default function ListNanny() {
                                 setLanguage('');
                                 setExperience('');
                                 setSalary('');
+                                setReload(reload + 1)
                             }}
                             variant="contained"
                             sx={{
