@@ -3,7 +3,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,7 +16,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GradeIcon from '@mui/icons-material/Grade';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import IconButton from '@mui/material/IconButton';
-import Checkbox from '@mui/material/Checkbox';
 import Slider from '@mui/material/Slider';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -28,10 +26,16 @@ import FormLabel from '@mui/material/FormLabel';
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 import axios from 'axios';
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import GTranslateIcon from '@mui/icons-material/GTranslate';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
+import { Link } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
-
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const marks = [
     {
@@ -72,6 +76,7 @@ export default function ListNanny() {
     const [experience, setExperience] = React.useState('');
     const [salary, setSalary] = React.useState('');
     const [reload, setReload] = React.useState(0);
+    const [progress, setProgress] = React.useState(50);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -97,25 +102,30 @@ export default function ListNanny() {
     }
 
     const handleFilter = () => {
-        let demo
-        const formData = {
+        let formData = {
             rating: rating,
             userLanguage: language,
             // cookExp: `${experience} years`,
             // careExp: `${experience} years`,
-            salary: salary
+            salary: salary,
+        };
+
+        if (!rating) {
+            delete formData.rating;
+        }
+        if (!language) {
+            delete formData.userLanguage;
+        }
+        if (!salary) {
+            delete formData.salary;
         }
 
-        // if(!rating)
-        //     _omit.()
-
-        // if(!userLanguage)
-        console.log(formData)
         setFilter(false);
-        postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
-            .then((data) => setNannys(data))
-            .catch((error) => console.error(error));
-        console.log(language, rating, experience, salary)
+        if (rating || language || salary)
+            postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
+                .then((data) => setNannys(data))
+                .catch((error) => console.error(error));
+        console.log(language, rating, experience, salary);
     };
 
     //lấy tên từ họ tên
@@ -154,6 +164,27 @@ export default function ListNanny() {
         else return averageRating;
     }
 
+    // format số tiền 100000 => 100,000
+    function formatNumber(number) {
+        const formattedNumber = number.toLocaleString('en-US');
+        return formattedNumber;
+    }
+
+    //pagination
+    // const data = Array.from({ length: 100 }, (_, index) => `Item ${index + 1}`);
+
+    const ItemsPerPage = 8;
+
+    const [currentPage, setCurrentPage] = React.useState(1);
+
+    const handlePageChange = (event, page) => {
+        setCurrentPage(page);
+    };
+
+    const startIndex = (currentPage - 1) * ItemsPerPage;
+    const endIndex = startIndex + ItemsPerPage;
+    const currentItems = nannys.slice(startIndex, endIndex);
+
     if (!nannys) return null;
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -177,113 +208,187 @@ export default function ListNanny() {
                     <Typography component="h3" sx={{ fontSize: '20px' }}>
                         Filter
                     </Typography>
-                    {/* <Typography>
-                        <Typography gutterBottom>
-                            <Typography component="h4">Language</Typography>
-                            <Typography component="div">
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Japanese
-                            </Typography>
-                            <Typography>
-                                <Checkbox
-                                    checked={false}
-                                    onChange={(e) => {
-                                        console.log(e.target.value);
-                                    }}
-                                    {...label}
-                                    sx={{ height: '14px', width: '14px' }}
-                                    value={'English'}
-                                />{' '}
-                                English
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Korea
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Chinese
-                            </Typography>
-                        </Typography>
-                        <Typography gutterBottom>
-                            <Typography component="h4">Rating</Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> 5*
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> 4*
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> 3*
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> 2*
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> 1*
-                            </Typography>
-                        </Typography>
-                        <Typography gutterBottom>
-                            <Typography component="h4">Experience</Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Newbie
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Morderate
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Year of experience
-                            </Typography>
-                        </Typography>
-                        <Typography gutterBottom>
-                            <Typography component="h4">Address</Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Đống Đa
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Hai Bà Trưng
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Cầu Giấy
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Tây Hồ
-                            </Typography>
-                            <Typography>
-                                <Checkbox {...label} sx={{ height: '14px', width: '14px' }} /> Thanh Xuân
-                            </Typography>
-                        </Typography>
-                    </Typography> */}
-                    
+
                     <FormControl>
                         <FormLabel id="demo-radio-buttons-group-label">Language</FormLabel>
-                        <RadioGroup value={language} onChange={(e) => {setLanguage(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
-                            <FormControlLabel value="Japanese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Japanese" />
-                            <FormControlLabel value="English" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="English" />
-                            <FormControlLabel value="Vietnamese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Vietnamese" />
-                            {/* <FormControlLabel value="Chinese" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Chinese" /> */}
+                        <RadioGroup
+                            onChange={(e) => {
+                                setLanguage(e.target.value);
+                            }}
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                            value={language}
+                        >
+                            <FormControlLabel
+                                value="Japanese"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Japanese"
+                            />
+                            <FormControlLabel
+                                value="English"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="English"
+                            />
+                            <FormControlLabel
+                                value="Vienamese"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Vienamese"
+                            />
                         </RadioGroup>
                         <FormLabel id="demo-radio-buttons-group-label">Rating</FormLabel>
-                        <RadioGroup value={rating} onChange={(e) => {setRating(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
-                            <FormControlLabel value="5" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="5*" />
-                            <FormControlLabel value="4" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="4*" />
-                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="3*" />
-                            <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="2*" />
-                            <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="1*" />
+                        <RadioGroup
+                            onChange={(e) => {
+                                setRating(e.target.value);
+                            }}
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                            value={rating}
+                        >
+                            <FormControlLabel
+                                value="5"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="5*"
+                            />
+                            <FormControlLabel
+                                value="4"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="4*"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="3*"
+                            />
+                            <FormControlLabel
+                                value="2"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="2*"
+                            />
+                            <FormControlLabel
+                                value="1"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="1*"
+                            />
                         </RadioGroup>
                         <FormLabel id="demo-radio-buttons-group-label">Experience</FormLabel>
-                        <RadioGroup value={experience} onChange={(e) => {setExperience(e.target.value)}} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
-                            <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Newbie" />
-                            <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Morderate" />
-                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Year of experience" />
+                        <RadioGroup
+                            onChange={(e) => {
+                                setExperience(e.target.value);
+                            }}
+                            value={experience}
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel
+                                value="1"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Newbie"
+                            />
+                            <FormControlLabel
+                                value="2"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Morderate"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Year of experience"
+                            />
                         </RadioGroup>
                         <FormLabel id="demo-radio-buttons-group-label">Adress</FormLabel>
                         <RadioGroup aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
-                            <FormControlLabel value="1" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Đống Đa" />
-                            <FormControlLabel value="2" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Hai Bà Trưng" />
-                            <FormControlLabel value="3" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Cầu giấy" />
-                            <FormControlLabel value="4" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Tây Hồ" />
-                            <FormControlLabel value="5" control={<Radio sx={{width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px'}}/>} label="Thanh Xuân" />
+                            <FormControlLabel
+                                value="1"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Đống Đa"
+                            />
+                            <FormControlLabel
+                                value="2"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Hai Bà Trưng"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Cầu giấy"
+                            />
+                            <FormControlLabel
+                                value="4"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Tây Hồ"
+                            />
+                            <FormControlLabel
+                                value="5"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Thanh Xuân"
+                            />
                         </RadioGroup>
                     </FormControl>
-                    
+
                     <Typography>
                         <Slider
                             aria-label="Always visible"
@@ -296,7 +401,9 @@ export default function ListNanny() {
                             min={100000}
                             max={2500000}
                             sx={{ width: '80%', marginLeft: '30px' }}
-                            onChange={(e) => {setSalary(e.target.value)}}
+                            onChange={(e) => {
+                                setSalary(e.target.value);
+                            }}
                         />
                     </Typography>
                     <Typography>
@@ -314,7 +421,7 @@ export default function ListNanny() {
                                 setLanguage('');
                                 setExperience('');
                                 setSalary('');
-                                setReload(reload + 1)
+                                setReload(reload + 1);
                             }}
                             variant="contained"
                             sx={{
@@ -335,8 +442,13 @@ export default function ListNanny() {
             <main>
                 <Container sx={{ py: 8 }} maxWidth="lg">
                     <Box display={'flex'} height={'64px'} justifyContent={'space-between'}>
-                        <Typography variant="h4" sx={{ paddingTop: 1 }} color={'#1d9a1d'}>
-                            List Nanny
+                        <Typography
+                            variant="h4"
+                            sx={{ paddingTop: 1, marginTop: '5px' }}
+                            color={'#137913'}
+                            fontWeight="bold"
+                        >
+                            The list of Staff
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                             <IconButton
@@ -345,11 +457,11 @@ export default function ListNanny() {
                                     setFilter(true);
                                 }}
                             >
-                                {
-                                    !filter ? 
+                                {!filter ? (
                                     <FilterAltIcon sx={{ width: '48px', height: '48px', color: '#1d9a1d' }} />
-                                    : ''
-                                }
+                                ) : (
+                                    ''
+                                )}
                             </IconButton>
                         </Box>
                     </Box>
@@ -357,66 +469,125 @@ export default function ListNanny() {
                     <Grid
                         container
                         spacing={8}
-                        bgcolor={'#f2f2f2'}
                         paddingRight={10}
                         paddingBottom={3}
                         borderRadius={5}
+                        border="1px solid #1d9a1d"
                     >
-                        {
-                        // nannys &&
-                            // nannys.splice(0, 8)
-                            nannys.map((nanny) => (
-                                <Grid item key={nanny.id} xs={12} sm={6} md={3}>
+                        {currentItems.map((nanny) => (
+                            <Grid item key={nanny.id} xs={12} sm={6} md={3}>
+                                <Link href="detail" underline="none">
                                     <Card
                                         sx={{
                                             height: '100%',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             cursor: 'pointer',
+                                            border: '1px solid #1d9a1d',
+                                            borderRadius: '10px',
                                         }}
                                     >
-                                        <CardMedia
-                                            component="div"
-                                            sx={{
-                                                // 16:9
-                                                pt: '56.25%',
-                                            }}
-                                            image="https://source.unsplash.com/random?wallpapers"
-                                        />
+                                        <Box>
+                                            <CardMedia
+                                                component="div"
+                                                sx={{
+                                                    pt: '56.25%',
+                                                    overflow: 'hidden',
+                                                    border: '1px solid #1d9a1d',
+                                                    borderRadius: '10px',
+                                                    margin: '10px',
+                                                }}
+                                                image="https://source.unsplash.com/random?wallpapers"
+                                            />
+                                        </Box>
                                         <CardContent sx={{ flexGrow: 1, textAlign: 'left' }} color="#063706">
                                             <Typography
-                                                gutterBottom
                                                 variant="h5"
                                                 component="h2"
-                                                sx={{ display: 'flex' }}
-                                                color={'#10a710'}
+                                                sx={{ display: 'flex', justifyContent: 'space-between' }}
+                                                color={'#137913'}
                                             >
-                                                <Typography>
+                                                <Typography fontWeight="bold">
                                                     {getFirstName(nanny.full_name)},{getAge(nanny.birthday)}
                                                 </Typography>
 
-                                                <Typography sx={{ ml: '50px', display: 'flex' }}>
+                                                <Typography sx={{ display: 'flex' }} fontWeight="bold">
                                                     <Typography>{calculateAverageRating(nanny.rating)}</Typography>
                                                     <GradeIcon />
                                                 </Typography>
                                             </Typography>
-                                            <Typography color={'#10a710'}>Morderate</Typography>
+                                            <Typography color={'#10a710'} display="flex" justifyContent="space-between">
+                                                <Typography color={'#10a710'}>
+                                                    <AutoGraphIcon />
+                                                    {nanny.care_exp}
+                                                </Typography>
+                                                <Typography color={'#10a710'}>
+                                                    <TakeoutDiningIcon />
+                                                    {nanny.cook_exp}
+                                                </Typography>
+                                            </Typography>
+
+                                            <Typography color={'#10a710'}>
+                                                <GTranslateIcon />
+                                                English , Japanese
+                                            </Typography>
+
                                             <Typography color={'#10a710'} sx={{ fontSize: '14px' }}>
                                                 <AddLocationIcon fontSize="small" />
                                                 {getCity(nanny.address)}
                                             </Typography>
-                                            <Typography color={'#000000'}>{nanny.salary} VND/30mins</Typography>
+                                            <Typography
+                                                display="flex"
+                                                justifyContent="space-between"
+                                                alignItems="center"
+                                            >
+                                                <Typography color={'#000000'} fontWeight="bold">
+                                                    {formatNumber(nanny.salary)} VND/day
+                                                </Typography>
+
+                                                <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                                                    <CircularProgress
+                                                        variant="determinate"
+                                                        value={progress}
+                                                        color="success"
+                                                    />
+                                                    <Box
+                                                        sx={{
+                                                            top: 0,
+                                                            left: 0,
+                                                            bottom: 0,
+                                                            right: 0,
+                                                            position: 'absolute',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                        }}
+                                                    >
+                                                        <Typography
+                                                            variant="caption"
+                                                            component="div"
+                                                            color="black"
+                                                            fontWeight="bold"
+                                                        >
+                                                            {`${Math.round(progress)}%`}
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+                                            </Typography>
                                         </CardContent>
-                                        <CardActions>
-                                            <Button href="/detail" size="small">
-                                                <Typography color={'#10a710'}>View</Typography>
-                                            </Button>
-                                            {/* <Button size="small">Edit</Button> */}
-                                        </CardActions>
                                     </Card>
-                                </Grid>
-                            ))}
+                                </Link>
+                            </Grid>
+                        ))}
                     </Grid>
+
+                    <Stack spacing={2} gutterBottom sx={{ mt: 3, alignItems: 'center' }}>
+                        <Pagination
+                            count={Math.ceil(nannys.length / ItemsPerPage)}
+                            page={currentPage}
+                            onChange={handlePageChange}
+                        />
+                    </Stack>
                 </Container>
             </main>
         </ThemeProvider>
