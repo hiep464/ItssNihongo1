@@ -1,53 +1,77 @@
 import * as React from 'react';
+
+import Button from '@mui/material/Button';
+
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Rating from '@mui/material/Rating';
-import Avatar from '@mui/material/Avatar';
-import { deepOrange, deepPurple } from '@mui/material/colors';
-import Stack from '@mui/material/Stack';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import MessageIcon from '@mui/icons-material/Message';
-import Link from '@mui/material/Link';
-import { Button } from '@mui/material';
 
+import Box from '@mui/material/Box';
+
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import GradeIcon from '@mui/icons-material/Grade';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import IconButton from '@mui/material/IconButton';
+import Slider from '@mui/material/Slider';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+
+import AddLocationIcon from '@mui/icons-material/AddLocation';
+import axios from 'axios';
+
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
+// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
-const commonStyles = {
-    bgcolor: 'background.paper',
-    m: 1,
-    borderColor: 'text.primary',
-    width: '800px',
-    height: '600px',
-};
-const commonStyle = {
-    bgcolor: 'background.paper',
-    m: 1.5,
-    borderColor: 'text.primary',
-    width: '380px',
-    height: '570px',
-};
+
+const marks = [
+    {
+        value: 100000,
+        label: '100,000',
+    },
+    {
+        value: 1000000,
+        label: '1,000,000',
+    },
+    {
+        value: 2500000,
+        label: '2,500,000',
+    },
+];
+
+function valuetext(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function postData(url, data) {
+    return axios
+        .post(url, data)
+        .then((response) => {
+            console.log(response);
+            return response.data;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
 
 export default function ListNanny() {
+    const [filter, setFilter] = React.useState(false);
     const [nannys, setNannys] = React.useState([]);
-
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const itemsPerPage = 1;
-
-    const handleNextPage = () => {
-        const totalPages = Math.ceil(nannys.length / itemsPerPage);
-        console.log(totalPages);
-        setCurrentPage((prevPage) => (prevPage === totalPages ? prevPage : prevPage + 1));
-    };
-
-    const handlePrevPage = () => {
-        setCurrentPage((prevPage) => (prevPage === 1 ? prevPage : prevPage - 1));
-    };
-
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const visibleItems = nannys.slice(startIndex, startIndex + itemsPerPage);
+    const [language, setLanguage] = React.useState('');
+    const [rating, setRating] = React.useState('');
+    const [experience, setExperience] = React.useState('');
+    const [salary, setSalary] = React.useState('');
+    const [reload, setReload] = React.useState(0);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -58,7 +82,7 @@ export default function ListNanny() {
             setNannys(reponseJSON);
         };
         fetchData();
-    }, []);
+    }, [reload]);
 
     // Tính tuổi
     function getAge(dateString) {
@@ -72,6 +96,33 @@ export default function ListNanny() {
         return age;
     }
 
+    const handleFilter = () => {
+        let formData = {
+            rating: rating,
+            userLanguage: language,
+            // cookExp: `${experience} years`,
+            // careExp: `${experience} years`,
+            salary: salary,
+        };
+
+        if (!rating) {
+            delete formData.rating;
+        }
+        if (!language) {
+            delete formData.userLanguage;
+        }
+        if (!salary) {
+            delete formData.salary;
+        }
+
+        setFilter(false);
+        if (rating || language || salary)
+            postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
+                .then((data) => setNannys(data))
+                .catch((error) => console.error(error));
+        console.log(language, rating, experience, salary);
+    };
+
     //lấy tên từ họ tên
     function getFirstName(fullName) {
         // Tách chuỗi thành mảng các từ
@@ -83,11 +134,6 @@ export default function ListNanny() {
         return firstName;
     }
 
-    // Conver chữ hoa dầu tiên của chuỗi
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-
     function getCity(address) {
         // Tách chuỗi thành mảng các phần tử
         var addressArray = address.split(',');
@@ -97,18 +143,6 @@ export default function ListNanny() {
         var city = addressArray[addressArray.length - 1];
         var result = district.concat(',', city);
         return result;
-    }
-
-    // format ngày sinh
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-
-        const formattedDate = `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
-
-        return formattedDate;
     }
 
     // tính số sao trung bình
@@ -125,322 +159,352 @@ export default function ListNanny() {
         else return averageRating;
     }
 
-    // format số tiền 100000 => 100,000
-    function formatNumber(number) {
-        const formattedNumber = number.toLocaleString('en-US');
-        return formattedNumber;
-    }
-
     if (!nannys) return null;
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2} sx={{ p: 4 }}>
-                    {/* Details nanny  */}
-                    <Grid item xs={7.5}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={2.4}>
-                                <Stack direction="column" spacing={2} sx={{ marginLeft: '120px', marginTop: '180px' }}>
-                                    <Button disabled={currentPage === 1} onClick={handlePrevPage}>
-                                        <Avatar
-                                            sx={{
-                                                width: '60px',
-                                                height: '60px',
-                                                backgroundColor: '#1a1aff',
-                                                '&:hover': {
-                                                    backgroundColor: '#5c5cf3',
-                                                },
-                                            }}
-                                        >
-                                            <ArrowBackIcon sx={{ fontSize: 30, color: 'white' }} />
-                                        </Avatar>
-                                    </Button>
-                                    <Button underline="none" sx={{ color: 'white' }}>
-                                        <Avatar
-                                            sx={{
-                                                bgcolor: deepOrange[500],
-                                                fontWeight: 'bold',
-                                                width: '60px',
-                                                height: '60px',
-                                                fontSize: 30,
-                                                backgroundColor: '#b3b300',
-                                                '&:hover': {
-                                                    backgroundColor: '#f0f04f',
-                                                },
-                                            }}
-                                        >
-                                            B.
-                                        </Avatar>
-                                    </Button>
-                                    <Button>
-                                        <Avatar
-                                            sx={{
-                                                bgcolor: deepOrange[500],
-                                                width: '60px',
-                                                height: '60px',
-                                                backgroundColor: '#cd3813',
-                                                '&:hover': {
-                                                    backgroundColor: '#eb6a4a',
-                                                },
-                                            }}
-                                        >
-                                            <MessageIcon sx={{ fontSize: 30, color: 'white' }} />
-                                        </Avatar>
-                                    </Button>
-                                    <Button
-                                        disabled={currentPage === Math.ceil(nannys.length / itemsPerPage)}
-                                        onClick={handleNextPage}
-                                    >
-                                        <Avatar
-                                            sx={{
-                                                bgcolor: deepPurple[500],
-                                                width: '60px',
-                                                height: '60px',
-                                                backgroundColor: '#1a1aff',
-                                                '&:hover': {
-                                                    backgroundColor: '#5c5cf3',
-                                                },
-                                            }}
-                                        >
-                                            <ArrowForwardIcon sx={{ fontSize: 30, color: 'white' }} />
-                                        </Avatar>
-                                    </Button>
-                                </Stack>
-                            </Grid>
+            {filter ? (
+                <Typography
+                    component="div"
+                    sx={{
+                        position: 'fixed',
+                        top: '64px',
+                        right: '0',
+                        bottom: '0',
+                        width: '21vw',
+                        backgroundColor: 'rgba(41, 137, 66, 0.7)',
+                        height: 'calc(100vh - 46px)',
+                        zIndex: '1000',
+                        color: 'white',
+                        padding: 1,
+                    }}
+                >
+                    <Typography component="h3" sx={{ fontSize: '20px' }}>
+                        Filter
+                    </Typography>
 
-                            {visibleItems.map((nanny) => (
-                                <Grid item xs={9.6} key={nanny.id}>
-                                    <Box
-                                        sx={{
-                                            ...commonStyles,
-                                            border: 1,
-                                            borderRadius: '10px',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            margin: 'auto',
-                                        }}
-                                    >
-                                        <Box sx={{ ...commonStyle, border: 1 }}>
-                                            <Typography
-                                                variant="h5"
-                                                sx={{ textAlign: 'center', margin: '15px' }}
-                                                gutterBottom
-                                                fontWeight="bold"
-                                            >
-                                                BABY BUDDIES
-                                            </Typography>
-                                            <Avatar
-                                                sx={{
-                                                    bgcolor: deepOrange[700],
-                                                    width: '250px',
-                                                    height: '250px',
-                                                    margin: 'auto',
-                                                }}
-                                                alt="Remy Sharp"
-                                                src="data:image/jpeg;base64,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"
-                                            />
-                                            <Typography
-                                                variant="h5"
-                                                sx={{ textAlign: 'center', mt: '10px' }}
-                                                gutterBottom
-                                                fontWeight="bold"
-                                            >
-                                                {nanny.full_name}
-                                            </Typography>
-                                            <Typography
-                                                variant="h6"
-                                                sx={{ textAlign: 'center', mt: '10px' }}
-                                                gutterBottom
-                                            >
-                                                Child Care Staff
-                                            </Typography>
-                                            <Typography
-                                                variant="h6"
-                                                sx={{ textAlign: 'center', mt: '10px' }}
-                                                gutterBottom
-                                            >
-                                                Phone : {nanny.phone}
-                                            </Typography>
-                                            <Typography
-                                                variant="h6"
-                                                sx={{ textAlign: 'center', mt: '10px' }}
-                                                gutterBottom
-                                            >
-                                                {capitalizeFirstLetter(nanny.gender)}
-                                            </Typography>
-                                            <Typography
-                                                variant="h6"
-                                                sx={{ textAlign: 'center', mt: '10px' }}
-                                                gutterBottom
-                                            >
-                                                English , Japanese
-                                            </Typography>
+                    <FormControl>
+                        <FormLabel id="demo-radio-buttons-group-label">Language</FormLabel>
+                        <RadioGroup
+                            onChange={(e) => {
+                                setLanguage(e.target.value);
+                            }}
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                            value={language}
+                        >
+                            <FormControlLabel
+                                value="Japanese"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Japanese"
+                            />
+                            <FormControlLabel
+                                value="English"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="English"
+                            />
+                            <FormControlLabel
+                                value="Vienamese"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Vienamese"
+                            />
+                        </RadioGroup>
+                        <FormLabel id="demo-radio-buttons-group-label">Rating</FormLabel>
+                        <RadioGroup
+                            onChange={(e) => {
+                                setRating(e.target.value);
+                            }}
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                            value={rating}
+                        >
+                            <FormControlLabel
+                                value="5"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="5*"
+                            />
+                            <FormControlLabel
+                                value="4"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="4*"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="3*"
+                            />
+                            <FormControlLabel
+                                value="2"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="2*"
+                            />
+                            <FormControlLabel
+                                value="1"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="1*"
+                            />
+                        </RadioGroup>
+                        <FormLabel id="demo-radio-buttons-group-label">Experience</FormLabel>
+                        <RadioGroup
+                            onChange={(e) => {
+                                setExperience(e.target.value);
+                            }}
+                            value={experience}
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel
+                                value="1"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Newbie"
+                            />
+                            <FormControlLabel
+                                value="2"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Morderate"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Year of experience"
+                            />
+                        </RadioGroup>
+                        <FormLabel id="demo-radio-buttons-group-label">Adress</FormLabel>
+                        <RadioGroup aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
+                            <FormControlLabel
+                                value="1"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Đống Đa"
+                            />
+                            <FormControlLabel
+                                value="2"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Hai Bà Trưng"
+                            />
+                            <FormControlLabel
+                                value="3"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Cầu giấy"
+                            />
+                            <FormControlLabel
+                                value="4"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Tây Hồ"
+                            />
+                            <FormControlLabel
+                                value="5"
+                                control={
+                                    <Radio
+                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
+                                    />
+                                }
+                                label="Thanh Xuân"
+                            />
+                        </RadioGroup>
+                    </FormControl>
 
-                                            <Rating
-                                                readOnly
-                                                value={calculateAverageRating(nanny.rating)}
-                                                sx={{
-                                                    justifyContent: 'flex-end',
-                                                    display: 'flex',
-                                                    marginRight: '15px',
-                                                }}
-                                            />
-                                        </Box>
-                                        <Box sx={{ ...commonStyle, border: 1 }}>
-                                            <Typography
-                                                variant="h5"
-                                                sx={{ textAlign: 'center', margin: '15px' }}
-                                                gutterBottom
-                                                fontWeight="bold"
-                                            >
-                                                BABY BUDDIES
-                                            </Typography>
-                                            <Box sx={{ p: '15px' }}>
-                                                <Typography variant="body1" sx={{ textAlign: '' }}>
-                                                    Name :
-                                                </Typography>
-                                                <Typography
-                                                    variant="h6"
-                                                    sx={{
-                                                        textAlign: '',
-                                                        backgroundColor: '#e0ebeb',
-                                                        borderRadius: '20px',
-                                                        paddingLeft: '10px',
-                                                    }}
-                                                >
-                                                    {nanny.full_name}
-                                                </Typography>
-                                                <Typography variant="body1" sx={{ textAlign: '' }}>
-                                                    Gender :
-                                                </Typography>
-                                                <Typography
-                                                    variant="h6"
-                                                    sx={{
-                                                        textAlign: '',
-                                                        backgroundColor: '#e0ebeb',
-                                                        borderRadius: '20px',
-                                                        paddingLeft: '10px',
-                                                    }}
-                                                >
-                                                    {capitalizeFirstLetter(nanny.gender)}
-                                                </Typography>
-                                                <Typography variant="body1" sx={{ textAlign: '' }}>
-                                                    Birthday :
-                                                </Typography>
-                                                <Typography
-                                                    variant="h6"
-                                                    sx={{
-                                                        textAlign: '',
-                                                        backgroundColor: '#e0ebeb',
-                                                        borderRadius: '20px',
-                                                        paddingLeft: '10px',
-                                                    }}
-                                                >
-                                                    {formatDate(nanny.birthday)}
-                                                </Typography>
-                                                <Typography variant="body1" sx={{ textAlign: '' }}>
-                                                    Address :
-                                                </Typography>
-                                                <Typography
-                                                    variant="h6"
-                                                    sx={{
-                                                        textAlign: '',
-                                                        backgroundColor: '#e0ebeb',
-                                                        borderRadius: '20px',
-                                                        paddingLeft: '10px',
-                                                    }}
-                                                >
-                                                    {getCity(nanny.address)}
-                                                </Typography>
-                                                <Typography variant="body1" sx={{ textAlign: '' }}>
-                                                    Experinence :
-                                                </Typography>
-                                                <Typography
-                                                    variant="h6"
-                                                    sx={{
-                                                        textAlign: '',
-                                                        backgroundColor: '#e0ebeb',
-                                                        borderRadius: '20px',
-                                                        paddingLeft: '10px',
-                                                    }}
-                                                    gutterBottom
-                                                >
-                                                    Cooking : {nanny.cook_exp}
-                                                </Typography>
-                                                <Typography
-                                                    variant="h6"
-                                                    sx={{
-                                                        textAlign: '',
-                                                        backgroundColor: '#e0ebeb',
-                                                        borderRadius: '20px',
-                                                        paddingLeft: '10px',
-                                                    }}
-                                                >
-                                                    Child Care : {nanny.care_exp}
-                                                </Typography>
-                                                <Typography variant="body1" sx={{ textAlign: '' }}>
-                                                    Language :
-                                                </Typography>
-                                                <Typography
-                                                    variant="h6"
-                                                    sx={{
-                                                        textAlign: '',
-                                                        backgroundColor: '#e0ebeb',
-                                                        borderRadius: '20px',
-                                                        paddingLeft: '10px',
-                                                    }}
-                                                >
-                                                    English , Japanese
-                                                </Typography>
-                                                <Typography variant="body1" sx={{ textAlign: '' }}>
-                                                    Price :
-                                                </Typography>
-                                                <Typography
-                                                    variant="h6"
-                                                    sx={{
-                                                        textAlign: '',
-                                                        backgroundColor: '#e0ebeb',
-                                                        borderRadius: '20px',
-                                                        paddingLeft: '10px',
-                                                    }}
-                                                >
-                                                    {formatNumber(nanny.salary)}VND /Day
-                                                </Typography>
-                                                <Typography variant="body1" sx={{ textAlign: '' }}>
-                                                    Rating :
-                                                    <Rating
-                                                        readOnly
-                                                        value={calculateAverageRating(nanny.rating)}
-                                                        sx={{
-                                                            justifyContent: 'flex-start',
-                                                            display: 'flex',
-                                                        }}
-                                                    />
-                                                </Typography>
-                                            </Box>
-                                        </Box>
-                                    </Box>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Grid>
-                    {/* filter nanny  */}
-                    <Grid item xs={4.5}>
-                        <Box
-                            sx={{
-                                width: 600,
-                                height: 300,
-                                backgroundColor: 'primary.dark',
-                                '&:hover': {
-                                    backgroundColor: 'primary.main',
-                                    opacity: [0.9, 0.8, 0.7],
-                                },
+                    <Typography>
+                        <Slider
+                            aria-label="Always visible"
+                            defaultValue={100000}
+                            value={salary}
+                            getAriaValueText={valuetext}
+                            step={10000}
+                            marks={marks}
+                            valueLabelDisplay="on"
+                            min={100000}
+                            max={2500000}
+                            sx={{ width: '80%', marginLeft: '30px' }}
+                            onChange={(e) => {
+                                setSalary(e.target.value);
                             }}
                         />
+                    </Typography>
+                    <Typography>
+                        <Button
+                            variant="contained"
+                            sx={{ borderRadius: '20px', padding: '3px 20px', marginLeft: '20px' }}
+                            onClick={handleFilter}
+                        >
+                            Apply
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setFilter(false);
+                                setRating('');
+                                setLanguage('');
+                                setExperience('');
+                                setSalary('');
+                                setReload(reload + 1);
+                            }}
+                            variant="contained"
+                            sx={{
+                                borderRadius: '20px',
+                                padding: '3px 20px',
+                                backgroundColor: '#d1d1d1',
+                                border: 'none',
+                                ml: 10,
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                    </Typography>
+                </Typography>
+            ) : (
+                ''
+            )}
+            <main>
+                <Container sx={{ py: 8 }} maxWidth="lg">
+                    <Box display={'flex'} height={'64px'} justifyContent={'space-between'}>
+                        <Typography variant="h4" sx={{ paddingTop: 1 }} color={'#1d9a1d'}>
+                            List Nanny
+                        </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                            <IconButton
+                                sx={{ marginRight: 8 }}
+                                onClick={(e) => {
+                                    setFilter(true);
+                                }}
+                            >
+                                {!filter ? (
+                                    <FilterAltIcon sx={{ width: '48px', height: '48px', color: '#1d9a1d' }} />
+                                ) : (
+                                    ''
+                                )}
+                            </IconButton>
+                        </Box>
+                    </Box>
+                    {/* End hero unit */}
+                    <Grid
+                        container
+                        spacing={8}
+                        bgcolor={'#f2f2f2'}
+                        paddingRight={10}
+                        paddingBottom={3}
+                        borderRadius={5}
+                    >
+                        {
+                            // nannys &&
+                            // nannys.splice(0, 8)
+                            nannys.splice(0, 8).map((nanny) => (
+                                <Grid item key={nanny.id} xs={12} sm={6} md={3}>
+                                    <Card
+                                        sx={{
+                                            height: '100%',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        <CardMedia
+                                            component="div"
+                                            sx={{
+                                                // 16:9
+                                                pt: '56.25%',
+                                            }}
+                                            image="https://source.unsplash.com/random?wallpapers"
+                                        />
+                                        <CardContent sx={{ flexGrow: 1, textAlign: 'left' }} color="#063706">
+                                            <Typography
+                                                gutterBottom
+                                                variant="h5"
+                                                component="h2"
+                                                sx={{ display: 'flex' }}
+                                                color={'#10a710'}
+                                            >
+                                                <Typography>
+                                                    {getFirstName(nanny.full_name)},{getAge(nanny.birthday)}
+                                                </Typography>
+
+                                                <Typography sx={{ ml: '50px', display: 'flex' }}>
+                                                    <Typography>{calculateAverageRating(nanny.rating)}</Typography>
+                                                    <GradeIcon />
+                                                </Typography>
+                                            </Typography>
+                                            <Typography color={'#10a710'}>Morderate</Typography>
+                                            <Typography color={'#10a710'} sx={{ fontSize: '14px' }}>
+                                                <AddLocationIcon fontSize="small" />
+                                                {getCity(nanny.address)}
+                                            </Typography>
+                                            <Typography color={'#000000'}>{nanny.salary} VND/30mins</Typography>
+                                        </CardContent>
+                                        <CardActions>
+                                            <Button href="/detail" size="small">
+                                                <Typography color={'#10a710'}>View</Typography>
+                                            </Button>
+                                            {/* <Button size="small">Edit</Button> */}
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            ))
+                        }
                     </Grid>
-                </Grid>
-            </Box>
+
+                    <Stack spacing={2} gutterBottom sx={{ mt: 3, alignItems: 'center' }}>
+                        <Pagination count={10} color="primary" />
+                    </Stack>
+                </Container>
+            </main>
         </ThemeProvider>
     );
 }
