@@ -16,12 +16,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GradeIcon from '@mui/icons-material/Grade';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import IconButton from '@mui/material/IconButton';
-import Slider from '@mui/material/Slider';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 import axios from 'axios';
@@ -33,7 +27,9 @@ import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
 import { Link } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import TranslateIcon from '@mui/icons-material/Translate';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
@@ -67,6 +63,38 @@ function postData(url, data) {
             console.error(error);
         });
 }
+
+const languages = [
+    { name: 'Korean', active: false },
+    { name: 'English', active: true },
+    { name: 'Japanese', active: true },
+    { name: 'Chinese', active: false },
+    { name: 'French', active: false },
+    { name: 'Spanish', active: false },
+];
+const cooking = [
+    { name: '1 years', active: false },
+    { name: '2 years', active: false },
+    { name: '3 years', active: true },
+    { name: '4 years', active: false },
+    { name: '5 years', active: false },
+    { name: '> 5 years', active: false },
+];
+const childCare = [
+    { name: '1 years', active: false },
+    { name: '2 years', active: false },
+    { name: '3 years', active: true },
+    { name: '4 years', active: false },
+    { name: '5 years', active: false },
+    { name: '> 5 years', active: false },
+];
+const price = [
+    { name: 100000, active: false },
+    { name: 200000, active: false },
+    { name: 300000, active: false },
+    { name: 400000, active: false },
+    { name: 500000, active: true },
+];
 
 export default function ListNanny() {
     const [filter, setFilter] = React.useState(false);
@@ -197,244 +225,213 @@ export default function ListNanny() {
                         top: '64px',
                         right: '0',
                         bottom: '0',
-                        width: '21vw',
+                        width: '50vw',
                         backgroundColor: 'rgba(41, 137, 66, 0.7)',
                         height: 'calc(100vh - 46px)',
                         zIndex: '1000',
-                        color: 'white',
+                        backgroundColor: 'white',
                         padding: 1,
                     }}
                 >
-                    <Typography component="h3" sx={{ fontSize: '20px' }}>
-                        Filter
-                    </Typography>
-
-                    <FormControl>
-                        <FormLabel id="demo-radio-buttons-group-label">Language</FormLabel>
-                        <RadioGroup
-                            onChange={(e) => {
-                                setLanguage(e.target.value);
-                            }}
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            name="radio-buttons-group"
-                            value={language}
-                        >
-                            <FormControlLabel
-                                value="Japanese"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="Japanese"
-                            />
-                            <FormControlLabel
-                                value="English"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="English"
-                            />
-                            <FormControlLabel
-                                value="Vienamese"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="Vienamese"
-                            />
-                        </RadioGroup>
-                        <FormLabel id="demo-radio-buttons-group-label">Rating</FormLabel>
-                        <RadioGroup
-                            onChange={(e) => {
-                                setRating(e.target.value);
-                            }}
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            name="radio-buttons-group"
-                            value={rating}
-                        >
-                            <FormControlLabel
-                                value="5"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="5*"
-                            />
-                            <FormControlLabel
-                                value="4"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="4*"
-                            />
-                            <FormControlLabel
-                                value="3"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="3*"
-                            />
-                            <FormControlLabel
-                                value="2"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="2*"
-                            />
-                            <FormControlLabel
-                                value="1"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="1*"
-                            />
-                        </RadioGroup>
-                        <FormLabel id="demo-radio-buttons-group-label">Experience</FormLabel>
-                        <RadioGroup
-                            onChange={(e) => {
-                                setExperience(e.target.value);
-                            }}
-                            value={experience}
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            name="radio-buttons-group"
-                        >
-                            <FormControlLabel
-                                value="1"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="Newbie"
-                            />
-                            <FormControlLabel
-                                value="2"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="Morderate"
-                            />
-                            <FormControlLabel
-                                value="3"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="Year of experience"
-                            />
-                        </RadioGroup>
-                        <FormLabel id="demo-radio-buttons-group-label">Adress</FormLabel>
-                        <RadioGroup aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
-                            <FormControlLabel
-                                value="1"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="Đống Đa"
-                            />
-                            <FormControlLabel
-                                value="2"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="Hai Bà Trưng"
-                            />
-                            <FormControlLabel
-                                value="3"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="Cầu giấy"
-                            />
-                            <FormControlLabel
-                                value="4"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="Tây Hồ"
-                            />
-                            <FormControlLabel
-                                value="5"
-                                control={
-                                    <Radio
-                                        sx={{ width: '10px', height: '10px', marginLeft: '10px', marginRight: '4px' }}
-                                    />
-                                }
-                                label="Thanh Xuân"
-                            />
-                        </RadioGroup>
-                    </FormControl>
-
-                    <Typography>
-                        <Slider
-                            aria-label="Always visible"
-                            defaultValue={100000}
-                            value={salary}
-                            getAriaValueText={valuetext}
-                            step={10000}
-                            marks={marks}
-                            valueLabelDisplay="on"
-                            min={100000}
-                            max={2500000}
-                            sx={{ width: '80%', marginLeft: '30px' }}
-                            onChange={(e) => {
-                                setSalary(e.target.value);
-                            }}
-                        />
-                    </Typography>
-                    <Typography>
-                        <Button
-                            variant="contained"
-                            sx={{ borderRadius: '20px', padding: '3px 20px', marginLeft: '20px' }}
-                            onClick={handleFilter}
-                        >
-                            Apply
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                setFilter(false);
-                                setRating('');
-                                setLanguage('');
-                                setExperience('');
-                                setSalary('');
-                                setReload(reload + 1);
-                            }}
-                            variant="contained"
+                    <Box borderRadius={'8px'} border={'1px solid #a4a4a4'} paddingBottom={'40px'}>
+                        <Typography
+                            component="h3"
                             sx={{
-                                borderRadius: '20px',
-                                padding: '3px 20px',
-                                backgroundColor: '#d1d1d1',
-                                border: 'none',
-                                ml: 10,
+                                fontSize: '20px',
+                                color: 'black',
+                                fontWeight: '600',
+                                marginLeft: '14px',
+                                marginTop: '14px',
                             }}
                         >
-                            Cancel
-                        </Button>
-                    </Typography>
+                            Interests
+                        </Typography>
+
+                        <Typography component="div">
+                            <Button
+                                size="small"
+                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: 'black', marginLeft: '14px' }}
+                                startIcon={<TranslateIcon sx={{ color: '#a744be' }} />}
+                            >
+                                Language
+                            </Button>
+                            <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
+                                {languages.map((item, key) => {
+                                    return (
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            key={key}
+                                            sx={{
+                                                borderRadius: '16px',
+                                                color: 'black',
+                                                width: '22%',
+                                                margin: '6px 10px',
+                                                textTransform: 'none',
+                                                borderColor: item?.active ? 'black' : '#abaeb1',
+                                            }}
+                                            startIcon={
+                                                <CheckCircleRoundedIcon
+                                                    sx={{
+                                                        color: 'primary.main',
+                                                        display: item?.active ? 'flex' : 'none',
+                                                    }}
+                                                />
+                                            }
+                                        >
+                                            {item?.name}
+                                        </Button>
+                                    );
+                                })}
+                            </Box>
+                        </Typography>
+
+                        <Typography component="div">
+                            <Button
+                                size="small"
+                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: '#ff6624', marginLeft: '14px' }}
+                                startIcon={<OutdoorGrillIcon sx={{ color: '#ff6624' }} />}
+                            >
+                                Cooking
+                            </Button>
+                            <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
+                                {cooking.map((item, key) => {
+                                    return (
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            key={key}
+                                            sx={{
+                                                borderRadius: '16px',
+                                                color: 'black',
+                                                width: '22%',
+                                                margin: '6px 10px',
+                                                textTransform: 'none',
+                                                borderColor: item?.active ? 'black' : '#abaeb1',
+                                            }}
+                                            startIcon={
+                                                <CheckCircleRoundedIcon
+                                                    sx={{
+                                                        color: 'primary.main',
+                                                        display: item?.active ? 'flex' : 'none',
+                                                    }}
+                                                />
+                                            }
+                                        >
+                                            {item?.name}
+                                        </Button>
+                                    );
+                                })}
+                            </Box>
+                        </Typography>
+
+                        <Typography component="div">
+                            <Button
+                                size="small"
+                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: 'primary.main', marginLeft: '14px' }}
+                                startIcon={<OutdoorGrillIcon sx={{ color: 'primary.main' }} />}
+                            >
+                                Child Care
+                            </Button>
+                            <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
+                                {childCare.map((item, key) => {
+                                    return (
+                                        <Button
+                                            variant="outlined"
+                                            key={key}
+                                            size="small"
+                                            sx={{
+                                                borderRadius: '16px',
+                                                color: 'black',
+                                                width: '22%',
+                                                margin: '6px 10px',
+                                                textTransform: 'none',
+                                                borderColor: item?.active ? 'black' : '#abaeb1',
+                                            }}
+                                            startIcon={
+                                                <CheckCircleRoundedIcon
+                                                    sx={{
+                                                        color: 'primary.main',
+                                                        display: item?.active ? 'flex' : 'none',
+                                                    }}
+                                                />
+                                            }
+                                        >
+                                            {item?.name}
+                                        </Button>
+                                    );
+                                })}
+                            </Box>
+                        </Typography>
+
+                        <Typography component="div">
+                            <Button
+                                size='small'
+                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: '#b70f0a', marginLeft: '14px' }}
+                                startIcon={<OutdoorGrillIcon sx={{ color: '#b70f0a' }} />}
+                            >
+                                Price
+                            </Button>
+                            <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
+                                {price.map((item, key) => {
+                                    return (
+                                        <Button
+                                            variant="outlined"
+                                            key={key}
+                                            size="small"
+                                            sx={{
+                                                borderRadius: '16px',
+                                                color: 'black',
+                                                width: '22%',
+                                                margin: '6px 10px',
+                                                borderColor: item?.active ? 'black' : '#abaeb1',
+                                            }}
+                                            startIcon={
+                                                <CheckCircleRoundedIcon
+                                                    sx={{
+                                                        color: 'primary.main',
+                                                        display: item?.active ? 'flex' : 'none',
+                                                    }}
+                                                />
+                                            }
+                                        >
+                                            {item?.name}
+                                        </Button>
+                                    );
+                                })}
+                            </Box>
+                        </Typography>
+
+                        <Typography component="div" sx={{ float: 'right', marginRight: '14px' }}>
+                            <Button
+                                variant="contained"
+                                sx={{ borderRadius: '20px', padding: '3px 20px', marginLeft: '20px' }}
+                                onClick={handleFilter}
+                            >
+                                Submit
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setFilter(false);
+                                    setRating('');
+                                    setLanguage('');
+                                    setExperience('');
+                                    setSalary('');
+                                    setReload(reload + 1);
+                                }}
+                                variant="contained"
+                                sx={{
+                                    borderRadius: '20px',
+                                    padding: '3px 20px',
+                                    backgroundColor: '#929292',
+                                    border: 'none',
+                                    ml: 4,
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                        </Typography>
+                    </Box>
                 </Typography>
             ) : (
                 ''
