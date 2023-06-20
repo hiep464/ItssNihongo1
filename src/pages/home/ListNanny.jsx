@@ -250,7 +250,12 @@ export default function ListNanny() {
                         <Typography component="div">
                             <Button
                                 size="small"
-                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: 'black', marginLeft: '14px' }}
+                                sx={{
+                                    borderRadius: '16px',
+                                    backgroundColor: '#ebebeb',
+                                    color: 'black',
+                                    marginLeft: '14px',
+                                }}
                                 startIcon={<TranslateIcon sx={{ color: '#a744be' }} />}
                             >
                                 Language
@@ -289,7 +294,12 @@ export default function ListNanny() {
                         <Typography component="div">
                             <Button
                                 size="small"
-                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: '#ff6624', marginLeft: '14px' }}
+                                sx={{
+                                    borderRadius: '16px',
+                                    backgroundColor: '#ebebeb',
+                                    color: '#ff6624',
+                                    marginLeft: '14px',
+                                }}
                                 startIcon={<OutdoorGrillIcon sx={{ color: '#ff6624' }} />}
                             >
                                 Cooking
@@ -328,7 +338,12 @@ export default function ListNanny() {
                         <Typography component="div">
                             <Button
                                 size="small"
-                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: 'primary.main', marginLeft: '14px' }}
+                                sx={{
+                                    borderRadius: '16px',
+                                    backgroundColor: '#ebebeb',
+                                    color: 'primary.main',
+                                    marginLeft: '14px',
+                                }}
                                 startIcon={<OutdoorGrillIcon sx={{ color: 'primary.main' }} />}
                             >
                                 Child Care
@@ -366,8 +381,13 @@ export default function ListNanny() {
 
                         <Typography component="div">
                             <Button
-                                size='small'
-                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: '#b70f0a', marginLeft: '14px' }}
+                                size="small"
+                                sx={{
+                                    borderRadius: '16px',
+                                    backgroundColor: '#ebebeb',
+                                    color: '#b70f0a',
+                                    marginLeft: '14px',
+                                }}
                                 startIcon={<OutdoorGrillIcon sx={{ color: '#b70f0a' }} />}
                             >
                                 Price
@@ -546,7 +566,8 @@ export default function ListNanny() {
                                                     <CircularProgress
                                                         variant="determinate"
                                                         value={progress}
-                                                        color="success"
+                                                        // color="success"
+                                                        sx={{ color: 'red' }}
                                                     />
                                                     <Box
                                                         sx={{
@@ -578,7 +599,7 @@ export default function ListNanny() {
                         ))}
                     </Grid>
 
-                    <Stack spacing={2} gutterBottom sx={{ mt: 3, alignItems: 'center' }}>
+                    <Stack spacing={2} sx={{ mt: 3, alignItems: 'center' }}>
                         <Pagination
                             count={Math.ceil(nannys.length / ItemsPerPage)}
                             page={currentPage}
