@@ -34,15 +34,15 @@ const Search = styled('div')(({ theme }) => ({
     },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
+// const SearchIconWrapper = styled('div')(({ theme }) => ({
+//     padding: theme.spacing(0, 2),
+//     height: '100%',
+//     position: 'absolute',
+//     pointerEvents: 'none',
+//     display: 'flex',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+// }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
@@ -168,21 +168,21 @@ export default function HeadederMain() {
         <Box sx={{ flexGrow: 1 }} position="static">
             <MyAppBar position="static">
                 <Toolbar>
-                    <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
+                    {/* <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
                         <MenuIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
                         <Button href="/home">
                             <HomeRoundedIcon sx={{ color: '#1d9a1d' }} fontSize="large" />
                         </Button>{' '}
                         BABY BUDDIES
                     </Typography>
-                    <Search>
+                    {/* <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-                    </Search>
+                    </Search> */}
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
