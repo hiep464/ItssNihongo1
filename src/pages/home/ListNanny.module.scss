@@ -1,0 +1,131 @@
+.leftBox {
+    flex: 1;
+}
+
+.rightBox {
+    flex: 1;
+}
+
+.container1 {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    border: 1px solid #1d9a1d;
+    border-radius: 10px;
+    margin: 44px 88px;
+    position: relative;
+}
+
+.container2 {
+    flex-direction: row;
+    overflow: hidden;
+    border: 1px solid #1d9a1d;
+    border-radius: 10px;
+    margin: 44px 88px 0px 88px;
+    position: relative;
+    background-color: #94c594;
+    min-height: 30px;
+    min-height: 124px;
+}
+
+.container3 {
+    display: flex;
+    overflow: hidden;
+    border: 1px solid #1d9a1d;
+    border-radius: 10px;
+    margin: 4px 88px 44px 88px;
+    position: relative;
+}
+
+.inputField {
+    width: 80%;
+    border-radius: 5px;
+    background-color: lightgray;
+    margin-left: 12px;
+    border: none;
+    height: 30px;
+    display: block;
+}
+.labelName {
+    display: block;
+    margin-left: 12px;
+    color: #1d9a1d;
+    font-size: 24px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.font24 {
+    font-size: 24px;
+}
+
+.staffPrice {
+    font-size: 26px;
+    color: #1d9a1d;
+    font-weight: 900;
+    text-align: center;
+    display: block;
+    width: 80%;
+}
+.staffImg {
+    margin-top: 36px;
+    width: 600px;
+    height: 500px;
+    border-radius: 10px;
+}
+
+.imgDiv {
+    width: 100%;
+}
+
+.starList {
+    text-align: center;
+}
+
+.greenStar {
+    color: green;
+    font-size: 60px;
+    padding: 0px 20px;
+    display: inline-block;
+    text-align: center;
+}
+
+.BookingBtn {
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 4px 60px;
+    background-color: green;
+    border: none;
+    margin-left: 20px;
+}
+
+.BookOrReport {
+    margin-top: 8px;
+}
+
+.ReportBtn {
+    margin-left: 198px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 4px 60px;
+    background-color: rgb(239, 65, 94);
+    border: none;
+}
+
+.commentText {
+    color: green;
+    font-weight: bold;
+    padding-left: 48px;
+}
+
+.prevComment {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    border-bottom: solid 1px green;
+    width: 100%;
+}
