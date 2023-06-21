@@ -64,7 +64,7 @@ const postData = async (url, data) => {
         .catch((error) => {
             console.error(error);
         });
-}
+};
 
 const language = [
     { name: 'Vietnamese', value: 'Vietnamese', active: false },
@@ -108,7 +108,7 @@ export default function ListNanny() {
     const [childCares, setChildCares] = React.useState(childCare);
     const [prices, setPrices] = React.useState(price);
     const [reload, setReload] = React.useState(0);
-    const [progress, setProgress] = React.useState(50);
+    const [progress, setProgress] = React.useState(10);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -145,11 +145,11 @@ export default function ListNanny() {
             careExp: childCareF.length === 1 ? childCareF[0] : childCareF,
             salary: priceF.length === 1 ? priceF[0] : priceF,
         };
-        console.log(formData)
+        console.log(formData);
         if (languageF.length === 0) {
             delete formData.userLanguage;
         }
-        
+
         if (cookingF.length === 0) {
             delete formData.cookExp;
         }
@@ -228,7 +228,7 @@ export default function ListNanny() {
     const endIndex = startIndex + ItemsPerPage;
     const currentItems = nannys.slice(startIndex, endIndex);
 
-    if (!nannys) return null;
+    // if (!nannys) return null;
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
@@ -541,119 +541,135 @@ export default function ListNanny() {
                         borderRadius={5}
                         border="1px solid #1d9a1d"
                     >
-                        {currentItems.map((nanny) => (
-                            <Grid item key={nanny.id} xs={12} sm={6} md={3}>
-                                <Link href={`/details/${nanny.id}`} underline="none">
-                                    <Card
-                                        sx={{
-                                            height: '100%',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            cursor: 'pointer',
-                                            border: '1px solid #1d9a1d',
-                                            borderRadius: '10px',
-                                            backgroundColor: '#F8F8F8',
-                                        }}
-                                    >
-                                        <Box>
-                                            <CardMedia
-                                                component="div"
-                                                sx={{
-                                                    pt: '56.25%',
-                                                    overflow: 'hidden',
-                                                    border: '1px solid #1d9a1d',
-                                                    borderRadius: '10px',
-                                                    margin: '10px',
-                                                }}
-                                                image="https://source.unsplash.com/random?wallpapers"
-                                            />
-                                        </Box>
-                                        <CardContent sx={{ flexGrow: 1, textAlign: 'left' }} color="#063706">
-                                            <Typography
-                                                variant="h5"
-                                                component="h2"
-                                                sx={{ display: 'flex', justifyContent: 'space-between' }}
-                                                color={'#137913'}
-                                            >
-                                                <Typography fontWeight="bold" sx={{ fontSize: '20px' }}>
-                                                    {getFirstName(nanny.full_name)},{getAge(nanny.birthday)}
-                                                </Typography>
-
-                                                <Typography sx={{ display: 'flex' }} fontWeight="bold">
-                                                    <Typography fontWeight="bold" sx={{ fontSize: '18px' }}>
-                                                        {calculateAverageRating(nanny.rating)}
+                        {currentItems &&
+                            currentItems.map((nanny) => (
+                                <Grid item key={nanny.id} xs={12} sm={6} md={3}>
+                                    <Link href={`/details/${nanny.id}`} underline="none">
+                                        <Card
+                                            sx={{
+                                                height: '100%',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                cursor: 'pointer',
+                                                border: '1px solid #1d9a1d',
+                                                borderRadius: '10px',
+                                                backgroundColor: '#F8F8F8',
+                                            }}
+                                        >
+                                            <Box>
+                                                <CardMedia
+                                                    component="div"
+                                                    sx={{
+                                                        pt: '56.25%',
+                                                        overflow: 'hidden',
+                                                        border: '1px solid #1d9a1d',
+                                                        borderRadius: '10px',
+                                                        margin: '10px',
+                                                    }}
+                                                    image="https://source.unsplash.com/random?wallpapers"
+                                                />
+                                            </Box>
+                                            <CardContent sx={{ flexGrow: 1, textAlign: 'left' }} color="#063706">
+                                                <Typography
+                                                    variant="h5"
+                                                    component="h2"
+                                                    sx={{ display: 'flex', justifyContent: 'space-between' }}
+                                                    color={'#137913'}
+                                                >
+                                                    <Typography fontWeight="bold" sx={{ fontSize: '20px' }}>
+                                                        {getFirstName(nanny.full_name)},{getAge(nanny.birthday)}
                                                     </Typography>
-                                                    <GradeIcon />
-                                                </Typography>
-                                            </Typography>
-                                            <Typography color={'#10a710'} display="flex" justifyContent="space-between">
-                                                <Typography color={'#10a710'}>
-                                                    <AutoGraphIcon />
-                                                    {nanny.care_exp}
-                                                </Typography>
-                                                <Typography color={'#10a710'}>
-                                                    <TakeoutDiningIcon />
-                                                    {nanny.cook_exp}
-                                                </Typography>
-                                            </Typography>
 
-                                            <Typography color={'#10a710'} display="flex">
-                                                <GTranslateIcon sx={{ fontSize: 20 }} />
-                                                {nanny.user_language.map((language) => (
-                                                    <Typography marginLeft={1} key={language.id}>
-                                                        {language.name}{' '}
-                                                    </Typography>
-                                                ))}
-                                            </Typography>
-
-                                            <Typography color={'#10a710'} sx={{ fontSize: '14px' }}>
-                                                <AddLocationIcon fontSize="small" />
-                                                {getCity(nanny.address)}
-                                            </Typography>
-                                            <Typography
-                                                display="flex"
-                                                justifyContent="space-between"
-                                                alignItems="center"
-                                            >
-                                                <Typography color={'#000000'} fontWeight="bold">
-                                                    {formatNumber(nanny.salary)} VND/day
-                                                </Typography>
-
-                                                <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                                                    <CircularProgress
-                                                        variant="determinate"
-                                                        value={progress}
-                                                        // color="success"
-                                                        sx={{ color: 'red' }}
-                                                    />
-                                                    <Box
-                                                        sx={{
-                                                            top: 0,
-                                                            left: 0,
-                                                            bottom: 0,
-                                                            right: 0,
-                                                            position: 'absolute',
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'center',
-                                                        }}
-                                                    >
-                                                        <Typography
-                                                            variant="caption"
-                                                            component="div"
-                                                            color="black"
-                                                            fontWeight="bold"
-                                                        >
-                                                            {`${Math.round(progress)}%`}
+                                                    <Typography sx={{ display: 'flex' }} fontWeight="bold">
+                                                        <Typography fontWeight="bold" sx={{ fontSize: '18px' }}>
+                                                            {calculateAverageRating(nanny.rating)}
                                                         </Typography>
+                                                        <GradeIcon />
+                                                    </Typography>
+                                                </Typography>
+                                                <Typography
+                                                    color={'#10a710'}
+                                                    display="flex"
+                                                    justifyContent="space-between"
+                                                >
+                                                    <Typography color={'#10a710'}>
+                                                        <AutoGraphIcon />
+                                                        {nanny.care_exp}
+                                                    </Typography>
+                                                    <Typography color={'#10a710'}>
+                                                        <TakeoutDiningIcon />
+                                                        {nanny.cook_exp}
+                                                    </Typography>
+                                                </Typography>
+
+                                                <Typography color={'#10a710'} display="flex">
+                                                    <GTranslateIcon sx={{ fontSize: 20 }} />
+                                                    {nanny.user_language &&
+                                                        nanny.user_language.map((language) => (
+                                                            <Typography marginLeft={1} key={language.id}>
+                                                                {language.name}{' '}
+                                                            </Typography>
+                                                        ))}
+                                                </Typography>
+
+                                                <Typography color={'#10a710'} sx={{ fontSize: '14px' }}>
+                                                    <AddLocationIcon fontSize="small" />
+                                                    {getCity(nanny.address)}
+                                                </Typography>
+                                                <Typography
+                                                    display="flex"
+                                                    justifyContent="space-between"
+                                                    alignItems="center"
+                                                >
+                                                    <Typography color={'#000000'} fontWeight="bold">
+                                                        {formatNumber(nanny.salary)} VND/day
+                                                    </Typography>
+
+                                                    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                                                        <CircularProgress
+                                                            variant="determinate"
+                                                            // value={20}
+                                                            value={
+                                                                isNaN(parseFloat(nanny.matching_score))
+                                                                    ? 100
+                                                                    : parseFloat(nanny.matching_score)
+                                                            }
+                                                            sx={{ color: 'red' }}
+                                                        />
+                                                        <Box
+                                                            sx={{
+                                                                top: 0,
+                                                                left: 0,
+                                                                bottom: 0,
+                                                                right: 0,
+                                                                position: 'absolute',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                            }}
+                                                        >
+                                                            <Typography
+                                                                variant="caption"
+                                                                component="div"
+                                                                color="black"
+                                                                fontWeight="bold"
+                                                            >
+                                                                {`${Math.round(
+                                                                    parseFloat(
+                                                                        isNaN(parseFloat(nanny.matching_score))
+                                                                            ? 100
+                                                                            : parseFloat(nanny.matching_score),
+                                                                    ),
+                                                                )}%`}
+                                                            </Typography>
+                                                        </Box>
                                                     </Box>
-                                                </Box>
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Link>
-                            </Grid>
-                        ))}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+                                </Grid>
+                            ))}
                     </Grid>
 
                     <Stack spacing={2} sx={{ mt: 3, alignItems: 'center' }}>
