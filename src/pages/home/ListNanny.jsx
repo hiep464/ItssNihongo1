@@ -30,6 +30,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import TranslateIcon from '@mui/icons-material/Translate';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
+import ChildFriendlyIcon from '@mui/icons-material/ChildFriendly';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
@@ -52,7 +54,7 @@ function valuetext(value) {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-function postData(url, data) {
+const postData = async (url, data) => {
     return axios
         .post(url, data)
         .then((response) => {
@@ -64,45 +66,47 @@ function postData(url, data) {
         });
 }
 
-const languages = [
-    { name: 'Korean', active: false },
-    { name: 'English', active: true },
-    { name: 'Japanese', active: true },
-    { name: 'Chinese', active: false },
-    { name: 'French', active: false },
-    { name: 'Spanish', active: false },
+const language = [
+    { name: 'Vietnamese', value: 'Vietnamese', active: false },
+    { name: 'English', value: 'English', active: false },
+    { name: 'Japanese', value: 'Japanese', active: false },
+    { name: 'French', value: 'French', active: false },
+    { name: 'Spanish', value: 'Spanish', active: false },
+    { name: 'Chinese', value: 'Chinese', active: false },
 ];
 const cooking = [
-    { name: '1 years', active: false },
-    { name: '2 years', active: false },
-    { name: '3 years', active: true },
-    { name: '4 years', active: false },
-    { name: '5 years', active: false },
-    { name: '> 5 years', active: false },
+    { name: 'Not required', value: 'Non', active: false },
+    { name: '1 years', value: '1 years', active: false },
+    { name: '2 years', value: '2 years', active: false },
+    { name: '3 years', value: '3 years', active: false },
+    { name: '> 3 years', value: '> 3 years', active: false },
 ];
 const childCare = [
-    { name: '1 years', active: false },
-    { name: '2 years', active: false },
-    { name: '3 years', active: true },
-    { name: '4 years', active: false },
-    { name: '5 years', active: false },
-    { name: '> 5 years', active: false },
+    { name: 'Not required', value: 'Non', active: false },
+    { name: '1 years', value: '1 years', active: false },
+    { name: '2 years', value: '2 years', active: false },
+    { name: '3 years', value: '3 years', active: false },
+    { name: '> 3 years', value: '> 3 years', active: false },
 ];
 const price = [
-    { name: 100000, active: false },
-    { name: 200000, active: false },
-    { name: 300000, active: false },
-    { name: 400000, active: false },
-    { name: 500000, active: true },
+    { name: 200000, value: 200000, active: false },
+    { name: 300000, value: 300000, active: false },
+    { name: 500000, value: 500000, active: false },
+    { name: 700000, value: 700000, active: false },
+    { name: 900000, value: 900000, active: false },
 ];
+
+const getActiveNames = (array) => {
+    return array.filter((item) => item.active === true).map((item) => item.value);
+};
 
 export default function ListNanny() {
     const [filter, setFilter] = React.useState(false);
     const [nannys, setNannys] = React.useState([]);
-    const [language, setLanguage] = React.useState('');
-    const [rating, setRating] = React.useState('');
-    const [experience, setExperience] = React.useState('');
-    const [salary, setSalary] = React.useState('');
+    const [languages, setLanguages] = React.useState(language);
+    const [cookings, setCookings] = React.useState(cooking);
+    const [childCares, setChildCares] = React.useState(childCare);
+    const [prices, setPrices] = React.useState(price);
     const [reload, setReload] = React.useState(0);
     const [progress, setProgress] = React.useState(50);
 
@@ -130,30 +134,41 @@ export default function ListNanny() {
     }
 
     const handleFilter = () => {
+        const languageF = getActiveNames(languages);
+        const cookingF = getActiveNames(cookings);
+        const childCareF = getActiveNames(childCares);
+        const priceF = getActiveNames(prices);
         let formData = {
-            rating: rating,
-            userLanguage: language,
-            // cookExp: `${experience} years`,
-            // careExp: `${experience} years`,
-            salary: salary,
+            // rating: rating,
+            userLanguage: languageF.length === 1 ? languageF[0] : languageF,
+            cookExp: cookingF.length === 1 ? cookingF[0] : cookingF,
+            careExp: childCareF.length === 1 ? childCareF[0] : childCareF,
+            salary: priceF.length === 1 ? priceF[0] : priceF,
         };
-
-        if (!rating) {
-            delete formData.rating;
-        }
-        if (!language) {
+        console.log(formData)
+        if (languageF.length === 0) {
             delete formData.userLanguage;
         }
-        if (!salary) {
+        
+        if (cookingF.length === 0) {
+            delete formData.cookExp;
+        }
+
+        if (childCareF.length === 0) {
+            delete formData.careExp;
+        }
+
+        if (priceF.length === 0) {
             delete formData.salary;
         }
 
-        setFilter(false);
-        if (rating || language || salary)
-            postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
-                .then((data) => setNannys(data))
-                .catch((error) => console.error(error));
-        console.log(language, rating, experience, salary);
+        postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
+            .then((data) => {
+                setFilter(false);
+                setNannys(data);
+            })
+            .catch((error) => console.error(error));
+        // console.log(language, rating, experience, salary);
     };
 
     //lấy tên từ họ tên
@@ -225,7 +240,7 @@ export default function ListNanny() {
                         top: '64px',
                         right: '0',
                         bottom: '0',
-                        width: '50vw',
+                        width: '36vw',
                         backgroundColor: 'rgba(41, 137, 66, 0.7)',
                         height: 'calc(100vh - 46px)',
                         zIndex: '1000',
@@ -240,22 +255,29 @@ export default function ListNanny() {
                                 fontSize: '20px',
                                 color: 'black',
                                 fontWeight: '600',
-                                marginLeft: '14px',
+                                marginLeft: '24px',
                                 marginTop: '14px',
+                                marginBottom: '6px',
                             }}
                         >
                             Interests
                         </Typography>
 
-                        <Typography component="div">
+                        <Typography component="div" sx={{ marginLeft: '10px' }}>
                             <Button
                                 size="small"
-                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: 'black', marginLeft: '14px' }}
+                                sx={{
+                                    width: '136px',
+                                    borderRadius: '16px',
+                                    backgroundColor: '#ebebeb',
+                                    color: 'black',
+                                    marginLeft: '14px',
+                                }}
                                 startIcon={<TranslateIcon sx={{ color: '#a744be' }} />}
                             >
                                 Language
                             </Button>
-                            <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
+                            <Box display={'flex'} width={'100%'} flexWrap={'wrap'}>
                                 {languages.map((item, key) => {
                                     return (
                                         <Button
@@ -265,7 +287,7 @@ export default function ListNanny() {
                                             sx={{
                                                 borderRadius: '16px',
                                                 color: 'black',
-                                                width: '22%',
+                                                width: '29%',
                                                 margin: '6px 10px',
                                                 textTransform: 'none',
                                                 borderColor: item?.active ? 'black' : '#abaeb1',
@@ -278,6 +300,13 @@ export default function ListNanny() {
                                                     }}
                                                 />
                                             }
+                                            onClick={() => {
+                                                setLanguages((prevItems) =>
+                                                    prevItems.map((item, index) =>
+                                                        index === key ? { ...item, active: !item.active } : item,
+                                                    ),
+                                                );
+                                            }}
                                         >
                                             {item?.name}
                                         </Button>
@@ -289,13 +318,19 @@ export default function ListNanny() {
                         <Typography component="div">
                             <Button
                                 size="small"
-                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: '#ff6624', marginLeft: '14px' }}
+                                sx={{
+                                    width: '136px',
+                                    borderRadius: '16px',
+                                    backgroundColor: '#ebebeb',
+                                    color: '#ff6624',
+                                    marginLeft: '14px',
+                                }}
                                 startIcon={<OutdoorGrillIcon sx={{ color: '#ff6624' }} />}
                             >
                                 Cooking
                             </Button>
                             <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
-                                {cooking.map((item, key) => {
+                                {cookings.map((item, key) => {
                                     return (
                                         <Button
                                             variant="outlined"
@@ -304,7 +339,7 @@ export default function ListNanny() {
                                             sx={{
                                                 borderRadius: '16px',
                                                 color: 'black',
-                                                width: '22%',
+                                                width: '29%',
                                                 margin: '6px 10px',
                                                 textTransform: 'none',
                                                 borderColor: item?.active ? 'black' : '#abaeb1',
@@ -317,6 +352,13 @@ export default function ListNanny() {
                                                     }}
                                                 />
                                             }
+                                            onClick={() => {
+                                                setCookings((prevItems) =>
+                                                    prevItems.map((item, index) =>
+                                                        index === key ? { ...item, active: !item.active } : item,
+                                                    ),
+                                                );
+                                            }}
                                         >
                                             {item?.name}
                                         </Button>
@@ -328,13 +370,19 @@ export default function ListNanny() {
                         <Typography component="div">
                             <Button
                                 size="small"
-                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: 'primary.main', marginLeft: '14px' }}
-                                startIcon={<OutdoorGrillIcon sx={{ color: 'primary.main' }} />}
+                                sx={{
+                                    width: '136px',
+                                    borderRadius: '16px',
+                                    backgroundColor: '#ebebeb',
+                                    color: 'primary.main',
+                                    marginLeft: '14px',
+                                }}
+                                startIcon={<ChildFriendlyIcon sx={{ color: 'primary.main' }} />}
                             >
                                 Child Care
                             </Button>
                             <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
-                                {childCare.map((item, key) => {
+                                {childCares.map((item, key) => {
                                     return (
                                         <Button
                                             variant="outlined"
@@ -343,7 +391,7 @@ export default function ListNanny() {
                                             sx={{
                                                 borderRadius: '16px',
                                                 color: 'black',
-                                                width: '22%',
+                                                width: '29%',
                                                 margin: '6px 10px',
                                                 textTransform: 'none',
                                                 borderColor: item?.active ? 'black' : '#abaeb1',
@@ -356,6 +404,13 @@ export default function ListNanny() {
                                                     }}
                                                 />
                                             }
+                                            onClick={() => {
+                                                setChildCares((prevItems) =>
+                                                    prevItems.map((item, index) =>
+                                                        index === key ? { ...item, active: !item.active } : item,
+                                                    ),
+                                                );
+                                            }}
                                         >
                                             {item?.name}
                                         </Button>
@@ -366,14 +421,20 @@ export default function ListNanny() {
 
                         <Typography component="div">
                             <Button
-                                size='small'
-                                sx={{ borderRadius: '16px', backgroundColor: '#ebebeb', color: '#b70f0a', marginLeft: '14px' }}
-                                startIcon={<OutdoorGrillIcon sx={{ color: '#b70f0a' }} />}
+                                size="small"
+                                sx={{
+                                    width: '136px',
+                                    borderRadius: '16px',
+                                    backgroundColor: '#ebebeb',
+                                    color: '#b70f0a',
+                                    marginLeft: '14px',
+                                }}
+                                startIcon={<AttachMoneyIcon sx={{ color: '#b70f0a' }} />}
                             >
                                 Price
                             </Button>
                             <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
-                                {price.map((item, key) => {
+                                {prices.map((item, key) => {
                                     return (
                                         <Button
                                             variant="outlined"
@@ -382,7 +443,7 @@ export default function ListNanny() {
                                             sx={{
                                                 borderRadius: '16px',
                                                 color: 'black',
-                                                width: '22%',
+                                                width: '29%',
                                                 margin: '6px 10px',
                                                 borderColor: item?.active ? 'black' : '#abaeb1',
                                             }}
@@ -394,6 +455,13 @@ export default function ListNanny() {
                                                     }}
                                                 />
                                             }
+                                            onClick={() => {
+                                                setPrices((prevItems) =>
+                                                    prevItems.map((item, index) =>
+                                                        index === key ? { ...item, active: !item.active } : item,
+                                                    ),
+                                                );
+                                            }}
                                         >
                                             {item?.name}
                                         </Button>
@@ -413,10 +481,10 @@ export default function ListNanny() {
                             <Button
                                 onClick={() => {
                                     setFilter(false);
-                                    setRating('');
-                                    setLanguage('');
-                                    setExperience('');
-                                    setSalary('');
+                                    setCookings(cooking);
+                                    setLanguages(language);
+                                    setChildCares(childCare);
+                                    setPrices(price);
                                     setReload(reload + 1);
                                 }}
                                 variant="contained"
