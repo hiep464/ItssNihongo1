@@ -20,38 +20,57 @@ export default function DetailNanny() {
     const nanny = nannys.find((nanny) => nanny.id === id);
     console.log(nanny);
 
+    function getNannyLanguages(nanny) {
+        if (nanny) {
+            return nanny.user_language.map(function (lang) {
+                return lang.name;
+            });
+        }
+    }
+    var nannyLanguages = getNannyLanguages(nanny);
+    var nannyLanguagesString = nannyLanguages ? nannyLanguages.join(', ') : '';
+
     return (
         <div>
             <div className={styles.container1}>
                 <div className={styles.leftBox}>
                     <label className={styles.labelName}>Name</label>
-                    <span className={styles.inputField}></span>
+                    <span className={styles.inputField}>
+                        <p className={styles.inputFieldText}>{nanny ? nanny.full_name : ''}</p>
+                    </span>
 
                     <label className={styles.labelName}>Gender</label>
                     <ul>
-                        <li className={styles.font24}>Male</li>
+                        <li className={styles.font24}>{nanny ? nanny.gender : ''}</li>
                     </ul>
 
                     <label className={styles.labelName}>Birthday</label>
-                    <span className={styles.inputField}></span>
+                    <span className={styles.inputField}>
+                        <p className={styles.inputFieldText}>{nanny ? nanny.birthday : ''}</p>
+                    </span>
 
                     <label className={styles.labelName}>Address</label>
-                    <span className={styles.inputField}></span>
-
-                    <label className={styles.labelName}>Address</label>
-                    <span className={styles.inputField}></span>
+                    <span className={styles.inputField}>
+                        <p className={styles.inputFieldText}>{nanny ? nanny.address : ''}</p>
+                    </span>
 
                     <label className={styles.labelName}>Experience of Cooking</label>
-                    <span className={styles.inputField}></span>
+                    <span className={styles.inputField}>
+                        <p className={styles.inputFieldText}>{nanny ? nanny.cook_exp : ''} of experience</p>
+                    </span>
 
                     <label className={styles.labelName}>Experience of Child Care</label>
-                    <span className={styles.inputField}></span>
+                    <span className={styles.inputField}>
+                        <p className={styles.inputFieldText}>{nanny ? nanny.care_exp : ''} of experience</p>
+                    </span>
 
                     <label className={styles.labelName}>Languages</label>
-                    <span className={styles.inputField}></span>
+                    <span className={styles.inputField}>
+                        <p className={styles.inputFieldText}>{nanny ? nannyLanguagesString : ''}</p>
+                    </span>
 
                     <label className={styles.labelName}>Price</label>
-                    <span className={styles.staffPrice}>500000</span>
+                    <span className={styles.staffPrice}>{nanny ? nanny.salary : ''} VND/day</span>
                 </div>
 
                 <div className={styles.rightBox}>
@@ -93,11 +112,18 @@ export default function DetailNanny() {
             </div>
             <span className={styles.commentText}>previous comment</span>
             <div className={styles.container3}>
-                <div className={styles.prevComment}>
-                    <span style={{ fontWeight: 'bold', marginLeft: '16px' }}>Thanh 5</span>
-                    <br />
-                    <span style={{ marginLeft: '16px' }}>Trong trẻ rất tốt</span>
-                </div>
+                {nanny.rating.map((item, index) => (
+                    <div key={index} className={styles.prevComment}>
+                        <span style={{ fontWeight: 'bold', marginLeft: '16px' }}>
+                            {item.star}
+                            <span className={styles.greenStar2}>&#9733;</span>
+                        </span>
+                        <br />
+                        <span style={{ marginLeft: '16px', display: 'block', marginBottom: '12px' }}>
+                            {item.review}
+                        </span>
+                    </div>
+                ))}
             </div>
         </div>
     );
