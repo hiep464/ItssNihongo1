@@ -113,7 +113,6 @@ export default function DetailNanny() {
             <span className={styles.commentText}>previous comment</span>
             <div className={styles.container3}>
                 {nanny &&
-                    nanny.rating &&
                     nanny.rating.map((item, index) => (
                         <div key={index} className={styles.prevComment}>
                             <span style={{ fontWeight: 'bold', marginLeft: '16px' }}>
