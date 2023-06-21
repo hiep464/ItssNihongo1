@@ -1,0 +1,166 @@
+.leftBox {
+    flex: 1;
+    padding-left: 40px;
+}
+
+.rightBox {
+    flex: 1;
+}
+
+.container1 {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    border: 1px solid #1d9a1d;
+    border-radius: 20px;
+    margin: 44px 88px;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.container2 {
+    flex-direction: row;
+    overflow: hidden;
+    border: 1px solid #1d9a1d;
+    border-radius: 10px;
+    margin: 44px 88px 0px 88px;
+    position: relative;
+    background-color: #94c594;
+    min-height: 30px;
+    min-height: 124px;
+}
+
+.container3 {
+    display: flex;
+    overflow: hidden;
+    border: 1px solid #1d9a1d;
+    border-radius: 10px;
+    margin: 4px 88px 44px 88px;
+    position: relative;
+}
+
+.inputField {
+    width: 80%;
+    border-radius: 5px;
+    background-color: lightgray;
+    margin-left: 12px;
+    border: none;
+    height: 30px;
+    display: block;
+}
+
+.inputFieldPass {
+    width: 30%;
+    border-radius: 5px;
+    background-color: lightgray;
+    margin-left: 12px;
+    border: none;
+    height: 30px;
+    display: block;
+}
+.labelName {
+    display: block;
+    margin-left: 12px;
+    color: #1d9a1d;
+    font-size: 24px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.font24 {
+    font-size: 24px;
+}
+
+.userImg {
+    margin-top: 36px;
+    width: 600px;
+    height: 500px;
+    border: 1px solid #1d9a1d;
+    border-radius: 10px ;
+}
+
+.imgDiv {
+    width: 100%;
+}
+
+.SaveBtn {
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 4px 60px;
+    background-color: green;
+    border: none;
+    margin-left: 80px;
+}
+
+.SaveBtn:hover {
+    background-color: rgb(135, 196, 120);
+    cursor: pointer;
+}
+
+.SaveOrCancel {
+    margin-top: 8px;
+}
+
+.CancelBtn:hover {
+    background-color: rgb(38, 94, 24);
+    cursor: pointer;
+}
+
+.CancelBtn {
+    margin-left: 140px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 4px 60px;
+    background-color: rgb(135, 196, 120);
+    border: none;
+}
+
+.inputImg {
+    margin: 30px 0px 0px 10px;
+}
+.labelImg {
+    margin-left: 12px;
+    color: #1d9a1d;
+    font-size: 35px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.ulgender {
+    display: flex;
+}
+
+.ulgender li {
+    list-style: none;
+    margin-right: 100px;
+}
+
+.ulgender li a {
+    text-decoration: none;
+    color: #1d9a1d;
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.ultaget {
+    display: flex;
+    justify-content: end;
+}
+
+.ultarget li {
+    list-style: none;
+    margin-right: 100px;
+}
+
+.ultarget li a {
+    text-decoration: none;
+    color: #1d9a1d;
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 10px;
+}
