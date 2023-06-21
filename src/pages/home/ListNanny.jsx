@@ -109,10 +109,10 @@ export default function ListNanny() {
     React.useEffect(() => {
         const fetchData = async () => {
             const reponse = await fetch(
-                'https://babybuddies-be-dev.onrender.com/api/v1/getdata?fbclid=IwAR05wvwdZd0pOTBFqgnfEEBZKZCufSUf1BewzsNIoU05_IOAMByrcWu1FhA',
+                'https://babybuddies-be-dev.onrender.com/api/v1/home?fbclid=IwAR0YWt_3e9gKOT4E6uDFFe5aQl4lZ6GMheji7DLbuXTORu1V2j5x8JUrDQQ',
             );
             const reponseJSON = await reponse.json();
-            setNannys(reponseJSON);
+            setNannys(reponseJSON.result.staffs);
         };
         fetchData();
     }, [reload]);
@@ -457,11 +457,11 @@ export default function ListNanny() {
                 ''
             )}
             <main>
-                <Container sx={{ py: 8 }} maxWidth="lg">
+                <Container sx={{ py: 2 }} maxWidth="lg">
                     <Box display={'flex'} height={'64px'} justifyContent={'space-between'}>
                         <Typography
                             variant="h4"
-                            sx={{ paddingTop: 1, marginTop: '5px' }}
+                            sx={{ paddingTop: 8, marginLeft: 4 }}
                             color={'#137913'}
                             fontWeight="bold"
                         >
@@ -469,7 +469,7 @@ export default function ListNanny() {
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                             <IconButton
-                                sx={{ marginRight: 8 }}
+                                sx={{ marginRight: 8, marginTop: 12 }}
                                 onClick={(e) => {
                                     setFilter(true);
                                 }}
@@ -485,8 +485,10 @@ export default function ListNanny() {
                     {/* End hero unit */}
                     <Grid
                         container
-                        spacing={8}
-                        paddingRight={10}
+                        spacing={2}
+                        paddingTop={6}
+                        paddingRight={6}
+                        paddingLeft={4}
                         paddingBottom={3}
                         borderRadius={5}
                         border="1px solid #1d9a1d"
@@ -544,9 +546,11 @@ export default function ListNanny() {
                                                 </Typography>
                                             </Typography>
 
-                                            <Typography color={'#10a710'}>
+                                            <Typography color={'#10a710'} display="flex" justifyContent="space-between">
                                                 <GTranslateIcon />
-                                                English , Japanese
+                                                {nanny.user_language.map((language) => (
+                                                    <Typography key={language.id}>{language.name} </Typography>
+                                                ))}
                                             </Typography>
 
                                             <Typography color={'#10a710'} sx={{ fontSize: '14px' }}>
