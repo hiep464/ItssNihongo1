@@ -495,7 +495,7 @@ export default function ListNanny() {
                     >
                         {currentItems.map((nanny) => (
                             <Grid item key={nanny.id} xs={12} sm={6} md={3}>
-                                <Link href="detail" underline="none">
+                                <Link href={`/details/${nanny.id}`} underline="none">
                                     <Card
                                         sx={{
                                             height: '100%',
@@ -504,6 +504,7 @@ export default function ListNanny() {
                                             cursor: 'pointer',
                                             border: '1px solid #1d9a1d',
                                             borderRadius: '10px',
+                                            backgroundColor: '#F8F8F8',
                                         }}
                                     >
                                         <Box>
@@ -526,12 +527,14 @@ export default function ListNanny() {
                                                 sx={{ display: 'flex', justifyContent: 'space-between' }}
                                                 color={'#137913'}
                                             >
-                                                <Typography fontWeight="bold">
+                                                <Typography fontWeight="bold" sx={{ fontSize: '20px' }}>
                                                     {getFirstName(nanny.full_name)},{getAge(nanny.birthday)}
                                                 </Typography>
 
                                                 <Typography sx={{ display: 'flex' }} fontWeight="bold">
-                                                    <Typography>{calculateAverageRating(nanny.rating)}</Typography>
+                                                    <Typography fontWeight="bold" sx={{ fontSize: '18px' }}>
+                                                        {calculateAverageRating(nanny.rating)}
+                                                    </Typography>
                                                     <GradeIcon />
                                                 </Typography>
                                             </Typography>
@@ -546,10 +549,12 @@ export default function ListNanny() {
                                                 </Typography>
                                             </Typography>
 
-                                            <Typography color={'#10a710'} display="flex" justifyContent="space-between">
-                                                <GTranslateIcon />
+                                            <Typography color={'#10a710'} display="flex">
+                                                <GTranslateIcon sx={{ fontSize: 20 }} />
                                                 {nanny.user_language.map((language) => (
-                                                    <Typography key={language.id}>{language.name} </Typography>
+                                                    <Typography marginLeft={1} key={language.id}>
+                                                        {language.name}{' '}
+                                                    </Typography>
                                                 ))}
                                             </Typography>
 

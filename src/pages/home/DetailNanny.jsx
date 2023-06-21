@@ -1,7 +1,25 @@
 import React from 'react';
 import styles from './ListNanny.module.scss';
+import { useParams } from 'react-router-dom';
 
 export default function DetailNanny() {
+    const [nannys, setNannys] = React.useState([]);
+    const { id } = useParams();
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            const reponse = await fetch(
+                'https://babybuddies-be-dev.onrender.com/api/v1/home?fbclid=IwAR0YWt_3e9gKOT4E6uDFFe5aQl4lZ6GMheji7DLbuXTORu1V2j5x8JUrDQQ',
+            );
+            const reponseJSON = await reponse.json();
+            setNannys(reponseJSON.result.staffs);
+        };
+        fetchData();
+    }, []);
+
+    const nanny = nannys.find((nanny) => nanny.id === id);
+    console.log(nanny);
+
     return (
         <div>
             <div className={styles.container1}>
