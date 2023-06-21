@@ -112,18 +112,20 @@ export default function DetailNanny() {
             </div>
             <span className={styles.commentText}>previous comment</span>
             <div className={styles.container3}>
-                {nanny.rating.map((item, index) => (
-                    <div key={index} className={styles.prevComment}>
-                        <span style={{ fontWeight: 'bold', marginLeft: '16px' }}>
-                            {item.star}
-                            <span className={styles.greenStar2}>&#9733;</span>
-                        </span>
-                        <br />
-                        <span style={{ marginLeft: '16px', display: 'block', marginBottom: '12px' }}>
-                            {item.review}
-                        </span>
-                    </div>
-                ))}
+                {nanny &&
+                    nanny.rating &&
+                    nanny.rating.map((item, index) => (
+                        <div key={index} className={styles.prevComment}>
+                            <span style={{ fontWeight: 'bold', marginLeft: '16px' }}>
+                                {item.star}
+                                <span className={styles.greenStar2}>&#9733;</span>
+                            </span>
+                            <br />
+                            <span style={{ marginLeft: '16px', display: 'block', marginBottom: '12px' }}>
+                                {item.review}
+                            </span>
+                        </div>
+                    ))}
             </div>
         </div>
     );
