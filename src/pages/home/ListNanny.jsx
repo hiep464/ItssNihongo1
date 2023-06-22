@@ -604,12 +604,17 @@ export default function ListNanny() {
 
                                                 <Typography color={'#10a710'} display="flex">
                                                     <GTranslateIcon sx={{ fontSize: 20 }} />
-                                                    {nanny.user_language &&
+                                                    {nanny.user_language ? (
                                                         nanny.user_language.map((language) => (
                                                             <Typography marginLeft={1} key={language.id}>
                                                                 {language.name}{' '}
                                                             </Typography>
-                                                        ))}
+                                                        ))
+                                                    ) : (
+                                                        <Typography marginLeft={1}>
+                                                            {nanny.user_language_names}
+                                                        </Typography>
+                                                    )}
                                                 </Typography>
 
                                                 <Typography color={'#10a710'} sx={{ fontSize: '14px' }}>
