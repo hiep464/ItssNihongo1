@@ -566,7 +566,7 @@ export default function ListNanny() {
                                                         borderRadius: '10px',
                                                         margin: '10px',
                                                     }}
-                                                    image="https://source.unsplash.com/random?wallpapers"
+                                                    image={nanny.image_link}
                                                 />
                                             </Box>
                                             <CardContent sx={{ flexGrow: 1, textAlign: 'left' }} color="#063706">
@@ -631,7 +631,7 @@ export default function ListNanny() {
                                                             // value={20}
                                                             value={
                                                                 isNaN(parseFloat(nanny.matching_score))
-                                                                    ? 100
+                                                                    ? 0
                                                                     : parseFloat(nanny.matching_score)
                                                             }
                                                             sx={{ color: 'red' }}
@@ -657,7 +657,7 @@ export default function ListNanny() {
                                                                 {`${Math.round(
                                                                     parseFloat(
                                                                         isNaN(parseFloat(nanny.matching_score))
-                                                                            ? 100
+                                                                            ? 0
                                                                             : parseFloat(nanny.matching_score),
                                                                     ),
                                                                 )}%`}
