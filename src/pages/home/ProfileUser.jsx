@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ProfileUser.module.scss';
-import axios from 'axios';
 
 export default function ProfileUser() {
     const [name, setName] = useState('');
@@ -12,9 +11,9 @@ export default function ProfileUser() {
     const [target, setTarget] = useState('');
     const [password, setPassword] = useState('');
 
-    useEffect(() => { //useEffect la 1 ham chay ngay khi component duoc render
+    useEffect(() => {
+        //useEffect la 1 ham chay ngay khi component duoc render
         getUsers();
-        getCheck();
     }, []);
 
     function getUsers() {
@@ -29,25 +28,13 @@ export default function ProfileUser() {
                 setBirthday(resp.result.user_info.birthday);
                 setAddress(resp.result.user_info.address);
                 setPhone(resp.result.user_info.phone);
-                setTarget(resp.result.user_info.target);
+                setTarget(resp.result.user_info.want_to);
                 setPassword(resp.result.password);
             });
         });
     }
     //update user
     function updateUsers() {
-        var checkbox = document.getElementsByName('gender');
-        for (var i = 0; i < checkbox.length; i++) {
-            if (checkbox[i].checked === true) {
-                setGender(checkbox[i].value);
-            }
-        }
-        var checkbox2 = document.getElementsByName('target');
-        for (var i = 0; i < checkbox2.length; i++) {
-            if (checkbox2[i].checked === true) {
-                setTarget(checkbox2[i].value);
-            }
-        }
         fetch('https://babybuddies-be-dev.onrender.com/api/v1/accounts/647b77348af6c322511fed59/update', {
             method: 'POST',
             headers: {
@@ -67,19 +54,10 @@ export default function ProfileUser() {
             }),
         }).then((result) => {
             result.json().then((resp) => {
-                console.log(resp);
+                //console.log(resp);
+                alert('Update successfully');
             });
         });
-    }
-    function getCheck() {
-        var checkbox = document.getElementsByName('gender');
-        console.log(gender);
-
-        for (var i = 0; i < checkbox.length; i++) {
-            if  (gender == "female") {
-                checkbox[i].checked = true;
-            }
-        }
     }
     return (
         <div>
@@ -95,15 +73,33 @@ export default function ProfileUser() {
                     <label className={styles.labelName}>Gender</label>
                     <ul className={styles.ulgender}>
                         <li className={styles.font24}>
-                            <input type="radio" name="gender"  value="male" />
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="male"
+                                checked={gender === 'male'}
+                                onChange={(e) => setGender(e.target.value)}
+                            />
                             <a> Male</a>
                         </li>
                         <li className={styles.font24}>
-                            <input type="radio" name="gender"  value="female" />
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="female"
+                                checked={gender === 'female'}
+                                onChange={(e) => setGender(e.target.value)}
+                            />
                             <a> Female</a>
                         </li>
                         <li className={styles.font24}>
-                            <input type="radio" name="gender"  value="others" />
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="others"
+                                checked={gender === 'others'}
+                                onChange={(e) => setGender(e.target.value)}
+                            />
                             <a> Others</a>
                         </li>
                     </ul>
@@ -114,14 +110,6 @@ export default function ProfileUser() {
                         type="text"
                         value={nationality}
                         onChange={(e) => setNationality(e.target.value)}
-                    />
-
-                    <label className={styles.labelName}>Birthday</label>
-                    <input
-                        className={styles.inputField}
-                        type="date"
-                        value={birthday}
-                        onChange={(e) => setBirthday(e.target.value)}
                     />
 
                     <label className={styles.labelName}>Address</label>
@@ -143,20 +131,34 @@ export default function ProfileUser() {
                     <label className={styles.labelName}>Target</label>
                     <ul className={styles.ultarget}>
                         <li className={styles.font24}>
-                            <input type="radio" name="target" value="Find Child Care Staff"/>
+                            <input
+                                type="radio"
+                                name="target"
+                                value="ChildCare"
+                                checked={target === 'ChildCare'}
+                                onChange={(e) => setTarget(e.target.value)}
+                            />
                             <a> Find Child Care Staff</a>
                         </li>
                         <li className={styles.font24}>
-                            <input type="radio" name="target" value="Find Cooking Staff" />
+                            <input
+                                type="radio"
+                                name="target"
+                                value="Cooking"
+                                checked={target === 'Cooking'}
+                                onChange={(e) => setTarget(e.target.value)}
+                            />
                             <a> Find Cooking Staff</a>
                         </li>
                         <li className={styles.font24}>
-                            <input type="radio" name="target" value="Both"/>
+                            <input
+                                type="radio"
+                                name="target"
+                                value="Cooking and ChildCare"
+                                checked={target === 'Cooking and ChildCare'}
+                                onChange={(e) => setTarget(e.target.value)}
+                            />
                             <a> Both</a>
-                        </li>
-                        <li className={styles.font24}>
-                            <input type="radio" name="target" value="Others"/>
-                            <a> Others</a>
                         </li>
                     </ul>
 
@@ -184,13 +186,16 @@ export default function ProfileUser() {
                             alt=""
                         />
                         <br />
-                        <label className={styles.labelImg}>
-                            <u>Change avata? Import hear</u>
-                        </label>
-                        <input className={styles.inputImg} type="file" />
+
                     </div>
                 </div>
             </div>
         </div>
     );
+    /*
+    <label className={styles.labelImg}>
+        <u>Change avata? Import hear</u>
+    </label>
+    <input className={styles.inputImg} type="file" />
+    */
 }
