@@ -354,10 +354,11 @@ export default function ListNanny() {
                                             }
                                             onClick={() => {
                                                 setCookings((prevItems) =>
-                                                    prevItems.map((item, index) =>
-                                                        index === key ? { ...item, active: !item.active } : item,
-                                                    ),
-                                                );
+                                                    prevItems.map((item, index) => ({
+                                                        ...item,
+                                                        active: index === key ? true : false
+                                                      })
+                                                ));
                                             }}
                                         >
                                             {item?.name}
@@ -406,10 +407,11 @@ export default function ListNanny() {
                                             }
                                             onClick={() => {
                                                 setChildCares((prevItems) =>
-                                                    prevItems.map((item, index) =>
-                                                        index === key ? { ...item, active: !item.active } : item,
-                                                    ),
-                                                );
+                                                    prevItems.map((item, index) => ({
+                                                        ...item,
+                                                        active: index === key ? true : false
+                                                      })
+                                                ));
                                             }}
                                         >
                                             {item?.name}
@@ -457,10 +459,11 @@ export default function ListNanny() {
                                             }
                                             onClick={() => {
                                                 setPrices((prevItems) =>
-                                                    prevItems.map((item, index) =>
-                                                        index === key ? { ...item, active: !item.active } : item,
-                                                    ),
-                                                );
+                                                    prevItems.map((item, index) => ({
+                                                        ...item,
+                                                        active: index === key ? true : false
+                                                      })
+                                                ));
                                             }}
                                         >
                                             {item?.name}
