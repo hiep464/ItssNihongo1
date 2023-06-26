@@ -89,11 +89,11 @@ const childCare = [
     { name: '> 3 years', value: '> 3 years', active: false },
 ];
 const price = [
-    { name: 200000, value: 200000, active: false },
-    { name: 300000, value: 300000, active: false },
-    { name: 500000, value: 500000, active: false },
-    { name: 700000, value: 700000, active: false },
-    { name: 900000, value: 900000, active: false },
+    { name: '200000 VND', value: 200000, active: false },
+    { name: '300000 VND', value: 300000, active: false },
+    { name: '500000 VND', value: 500000, active: false },
+    { name: '700000 VND', value: 700000, active: false },
+    { name: '900000 VND', value: 900000, active: false },
 ];
 
 const getActiveNames = (array) => {
@@ -242,7 +242,7 @@ export default function ListNanny() {
                         bottom: '0',
                         width: '36vw',
                         backgroundColor: 'rgba(41, 137, 66, 0.7)',
-                        height: 'calc(100vh - 46px)',
+                        height: '640px',
                         zIndex: '1000',
                         backgroundColor: 'white',
                         padding: 1,
@@ -356,9 +356,9 @@ export default function ListNanny() {
                                                 setCookings((prevItems) =>
                                                     prevItems.map((item, index) => ({
                                                         ...item,
-                                                        active: index === key ? true : false
-                                                      })
-                                                ));
+                                                        active: index === key ? true : false,
+                                                    })),
+                                                );
                                             }}
                                         >
                                             {item?.name}
@@ -409,9 +409,9 @@ export default function ListNanny() {
                                                 setChildCares((prevItems) =>
                                                     prevItems.map((item, index) => ({
                                                         ...item,
-                                                        active: index === key ? true : false
-                                                      })
-                                                ));
+                                                        active: index === key ? true : false,
+                                                    })),
+                                                );
                                             }}
                                         >
                                             {item?.name}
@@ -461,9 +461,9 @@ export default function ListNanny() {
                                                 setPrices((prevItems) =>
                                                     prevItems.map((item, index) => ({
                                                         ...item,
-                                                        active: index === key ? true : false
-                                                      })
-                                                ));
+                                                        active: index === key ? true : false,
+                                                    })),
+                                                );
                                             }}
                                         >
                                             {item?.name}

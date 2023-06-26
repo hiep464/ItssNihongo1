@@ -5,6 +5,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import { styled, alpha } from '@mui/material/styles';
+import { Box } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import AvatarImg from './img/avatar.png';
 
 const MyAppBar = styled(AppBar)({
     backgroundColor: '#f2f2f2',
@@ -14,19 +17,19 @@ export default function HeaderRegister() {
     return (
         <div>
             <MyAppBar position="static">
-                <Toolbar align="center">
+                <Toolbar align="center" sx={{ justifyContent: 'space-between' }}>
                     <Button href="/">
-                        <HomeRoundedIcon sx={{ color: '#1d9a1d' }} fontSize="large" />
+                        <Avatar alt="Avatar" src="./img/avatar.png" />
                     </Button>
-                    <Typography ml={2} variant="h5" sx={{ flexGrow: 1 }} align="left">
-                        BABY BUDDIES
-                    </Typography>
-                    <Button href="/login" color="inherit">
-                        Login
-                    </Button>
-                    <Button href="/signup" color="inherit">
-                        Signup
-                    </Button>
+
+                    <Box>
+                        <Button href="/login" color="inherit">
+                            Login
+                        </Button>
+                        <Button href="/signup" color="inherit">
+                            Signup
+                        </Button>
+                    </Box>
                 </Toolbar>
             </MyAppBar>
         </div>
