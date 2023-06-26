@@ -23,10 +23,20 @@ export default function HeaderRegister() {
                     </Button>
 
                     <Box>
-                        <Button href="/login" color="inherit">
+                        <Button
+                            href="/login"
+                            variant="contained"
+                            color="success"
+                            sx={{ marginRight: 5, paddingLeft: 5, paddingRight: 5 }}
+                        >
                             Login
                         </Button>
-                        <Button href="/signup" color="inherit">
+                        <Button
+                            href="/signup"
+                            variant="outlined"
+                            color="inherit"
+                            sx={{ paddingLeft: 5, paddingRight: 5 }}
+                        >
                             Signup
                         </Button>
                     </Box>
