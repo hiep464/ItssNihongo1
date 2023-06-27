@@ -206,7 +206,8 @@ export default function ListNanny() {
 
         var averageRating = totalStars / totalReviews;
         if (totalReviews === 0) return 0;
-        else return averageRating;
+        //ép kiểu về số thập phân lấy 1 chữ số thập phân sau dấu phẩy
+        else return parseFloat(averageRating.toFixed(1));
     }
 
     // format số tiền 100000 => 100,000
