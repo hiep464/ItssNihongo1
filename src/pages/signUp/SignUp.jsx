@@ -101,7 +101,7 @@ export default function SignUp() {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2, ':hover': { backgroundColor: '#106510' } }}
+                                sx={{ mt: 3, mb: 2, textTransform: 'none', ':hover': { backgroundColor: '#106510' } }}
                             >
                                 Sign up
                             </MyAppBar>
