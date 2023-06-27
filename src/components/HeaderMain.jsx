@@ -17,6 +17,8 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import Button from '@mui/material/Button';
 
 import AvatarImg from './img/avatar.png';
+import Avt from './img/avt.png';
+
 import Avatar from '@mui/material/Avatar';
 
 const Search = styled('div')(({ theme }) => ({
@@ -96,13 +98,25 @@ export default function HeadederMain() {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>
-                <Button href="/profile">Profile</Button>
+                <Button
+                    href="/profile"
+                    sx={{
+                        textTransform: 'none',
+                        color: '#000000',
+                    }}
+                >
+                    Profile
+                </Button>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-                <Button href="/hired">Hired Nanny</Button>
+                <Button href="/hired" sx={{ textTransform: 'none', color: '#000000' }}>
+                    Hired Nanny
+                </Button>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-                <Button href="/logout">Logout</Button>
+                <Button href="/logout" sx={{ textTransform: 'none', color: '#000000' }}>
+                    Logout
+                </Button>
             </MenuItem>
         </Menu>
     );
@@ -180,7 +194,10 @@ export default function HeadederMain() {
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton> */}
-                        <Typography sx={{ marginTop: 1, fontSize: '20px' }}>Brad Nguyen</Typography>
+                        <Box>
+                            <Typography sx={{ fontSize: '22px' }}>Brad Nguyen</Typography>
+                            <Typography sx={{ fontSize: '14px' }}>brad.nguyen2309</Typography>
+                        </Box>
                         <IconButton
                             size="large"
                             edge="end"
@@ -190,7 +207,8 @@ export default function HeadederMain() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            <AccountCircle />
+                            {/* <AccountCircle /> */}
+                            <Avatar alt="Avt" src={Avt} />
                         </IconButton>
                     </Box>
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

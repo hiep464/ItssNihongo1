@@ -92,11 +92,11 @@ const childCare = [
     { name: '> 3 years', value: '> 3 years', active: false },
 ];
 const price = [
-    { name: '200000 VND', value: 200000, active: false },
-    { name: '300000 VND', value: 300000, active: false },
-    { name: '500000 VND', value: 500000, active: false },
-    { name: '700000 VND', value: 700000, active: false },
-    { name: '900000 VND', value: 900000, active: false },
+    { name: '200,000 VND', value: 200000, active: false },
+    { name: '300,000 VND', value: 300000, active: false },
+    { name: '500,000 VND', value: 500000, active: false },
+    { name: '700,000 VND', value: 700000, active: false },
+    { name: '900,000 VND', value: 900000, active: false },
 ];
 
 const getActiveNames = (array) => {
@@ -478,7 +478,12 @@ export default function ListNanny() {
                         <Typography component="div" sx={{ float: 'right', marginRight: '14px' }}>
                             <Button
                                 variant="contained"
-                                sx={{ borderRadius: '20px', padding: '3px 20px', marginLeft: '20px' }}
+                                sx={{
+                                    borderRadius: '20px',
+                                    padding: '3px 20px',
+                                    marginLeft: '20px',
+                                    textTransform: 'none',
+                                }}
                                 onClick={handleFilter}
                             >
                                 Submit
@@ -499,6 +504,8 @@ export default function ListNanny() {
                                     backgroundColor: '#929292',
                                     border: 'none',
                                     ml: 4,
+                                    textTransform: 'none',
+                                    ':hover': { backgroundColor: 'red' },
                                 }}
                             >
                                 Cancel

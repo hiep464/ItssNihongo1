@@ -7,13 +7,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Button, styled } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import TextareaAutosize from '@mui/base/TextareaAutosize';
 
 const style = {
     position: 'absolute',
     top: '40%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 600,
+    width: 800,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -25,6 +27,8 @@ export default function DetailNanny() {
     const { id } = useParams();
 
     const [open, setOpen] = React.useState(false);
+
+    const [value, setValue] = React.useState(2);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -38,7 +42,6 @@ export default function DetailNanny() {
     }, []);
 
     const nanny = nannys.find((nanny) => nanny.id === id);
-    console.log(nanny);
 
     function getNannyLanguages(nanny) {
         if (nanny) {
@@ -49,7 +52,6 @@ export default function DetailNanny() {
     }
     var nannyLanguages = getNannyLanguages(nanny);
     var nannyLanguagesString = nannyLanguages ? nannyLanguages.join(', ') : '';
-    console.log(nanny);
 
     // format số tiền 100000 => 100,000
     function formatNumber(number) {
@@ -77,9 +79,9 @@ export default function DetailNanny() {
         backgroundColor: '#007320',
         fontSize: '24px',
         margin: 5,
-        width: '261px',
-        height: '48px',
-
+        width: '200px',
+        height: '40px',
+        textTransform: 'none',
         color: '#ffffff',
         '&:hover': {
             backgroundColor: '#339966',
@@ -91,15 +93,79 @@ export default function DetailNanny() {
         backgroundColor: 'red',
         margin: 5,
         fontSize: '24px',
-        width: '261px',
-        height: '48px',
-
+        width: '200px',
+        height: '40px',
+        textTransform: 'none',
         color: '#ffffff',
         '&:hover': {
             backgroundColor: '#e64747',
             color: '#000000',
         },
     });
+
+    const MyButton = styled(Button)({
+        backgroundColor: '#c1bebe',
+        color: '#000000',
+        borderRadius: '20px',
+        paddingLeft: '30px',
+        paddingRight: '30px',
+        textTransform: 'none',
+        '&:hover': {
+            backgroundColor: '#bfbaba',
+        },
+    });
+
+    const blue = {
+        100: '#DAECFF',
+        200: '#b6daff',
+        400: '#3399FF',
+        500: '#007FFF',
+        600: '#0072E5',
+        900: '#003A75',
+    };
+
+    const grey = {
+        50: '#f6f8fa',
+        100: '#eaeef2',
+        200: '#d0d7de',
+        300: '#afb8c1',
+        400: '#8c959f',
+        500: '#6e7781',
+        600: '#57606a',
+        700: '#424a53',
+        800: '#32383f',
+        900: '#24292f',
+    };
+
+    const StyledTextarea = styled(TextareaAutosize)(
+        ({ theme }) => `
+        width: 770px;
+        font-family: IBM Plex Sans, sans-serif;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        padding: 12px;
+        border-radius: 12px;
+        color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+        background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+        border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
+        box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
+      
+        &:hover {
+          border-color: ${blue[400]};
+        }
+      
+        &:focus {
+          border-color: ${blue[400]};
+          box-shadow: 0 0 0 3px ${theme.palette.mode === 'dark' ? blue[500] : blue[200]};
+        }
+      
+        // firefox
+        &:focus-visible {
+          outline: 0;
+        }
+      `,
+    );
 
     return (
         <div>
@@ -160,8 +226,10 @@ export default function DetailNanny() {
                                 />
                             </div>
                             <div className={styles.BookOrReport}>
-                                <Box sx={{ marginLeft: 16 }}>
-                                    <BookingButton variant="contained">Booking</BookingButton>
+                                <Box sx={{ marginLeft: '150px' }}>
+                                    <BookingButton variant="contained" sx={{ marginRight: '100px' }}>
+                                        Booking
+                                    </BookingButton>
                                     <FeedbackButton variant="contained" onClick={handleOpen}>
                                         Feedback
                                     </FeedbackButton>
@@ -173,21 +241,48 @@ export default function DetailNanny() {
                                     aria-describedby="modal-modal-description"
                                 >
                                     {/* Modal Feedback */}
-                                    <Box sx={style}>
-                                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                                            Customer
+                                    <Box sx={style} borderRadius={5} border="1px solid">
+                                        <Typography
+                                            id="modal-modal-title"
+                                            variant="h6"
+                                            component="h2"
+                                            fontWeight="bold"
+                                            fontSize="28px"
+                                        >
+                                            Feedback
                                         </Typography>
-                                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                            Name :
+                                        <Typography id="modal-modal-description" sx={{ mt: 2 }} fontWeight="bold">
+                                            Rating :
                                         </Typography>
-                                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                            Details :
+                                        <Typography sx={{ marginLeft: 8 }}>
+                                            <Rating
+                                                size="large"
+                                                name="simple-controlled"
+                                                value={value}
+                                                onChange={(event, newValue) => {
+                                                    setValue(newValue);
+                                                }}
+                                            />
                                         </Typography>
+
                                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                            Gender :
+                                            <StyledTextarea
+                                                aria-label="empty textarea"
+                                                placeholder="Write comment"
+                                                minRows={3}
+                                            />
                                         </Typography>
-                                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                            <Rating value={1} />
+
+                                        <Typography
+                                            sx={{
+                                                marginTop: '20px',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                display: 'flex',
+                                            }}
+                                        >
+                                            <MyButton sx={{ marginRight: '25px' }}>Submit</MyButton>
+                                            <MyButton onClick={handleClose}>Cancel</MyButton>
                                         </Typography>
                                     </Box>
                                 </Modal>
