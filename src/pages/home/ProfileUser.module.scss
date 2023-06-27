@@ -84,6 +84,23 @@
     border-radius: 10px;
 }
 
+.errorMsg {
+    color: white;
+    background-color: red;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.alert-icon {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #ff0000; /* Màu sắc của tam giác */
+}
+
 .imgDiv {
     width: 100%;
 }
@@ -109,7 +126,7 @@
 }
 
 .CancelBtn:hover {
-    background-color: rgb(38, 94, 24);
+    background-color: rgb(135, 196, 120);
     cursor: pointer;
 }
 
@@ -120,7 +137,7 @@
     font-weight: bold;
     font-size: 24px;
     padding: 4px 50px;
-    background-color: rgb(135, 196, 120);
+    background-color: green;
     border: none;
 }
 

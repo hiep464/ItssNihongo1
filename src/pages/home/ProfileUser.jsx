@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './ProfileUser.module.scss';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 export default function ProfileUser() {
     const [name, setName] = useState('');
@@ -13,6 +14,8 @@ export default function ProfileUser() {
     const [target, setTarget] = useState('');
     const [password, setPassword] = useState('');
     const { userId } = useParams();
+    const [inputError, setInputError] = useState(false);
+
     useEffect(() => {
         //useEffect la 1 ham chay ngay khi component duoc render
         getUsers();
@@ -47,6 +50,10 @@ export default function ProfileUser() {
     }
     // update user
     function updateUsers() {
+        if (!nationality || !address || !target) {
+            setInputError(true);
+            return;
+        }
         fetch('https://babybuddies-be-dev.onrender.com/api/v1/accounts/647b77348af6c322511fed59/update', {
             method: 'POST',
             headers: {
@@ -66,15 +73,19 @@ export default function ProfileUser() {
             }),
         }).then((result) => {
             result.json().then((resp) => {
+                window.location.href = '/home';
                 console.log(resp);
-                alert('Update successfully');
             });
         });
+    }
+    function cancelUpdate() {
+        window.location.href = '/login';
     }
     return (
         <div>
             <div className={styles.container1}>
                 <div className={styles.leftBox}>
+                    {inputError && <div className={styles.errorMsg}>Please fill in all fields!</div>}
                     <label className={styles.labelName}>Name</label>
                     <input
                         className={styles.inputField}
@@ -90,6 +101,7 @@ export default function ProfileUser() {
                         onChange={(e) => setNationality(e.target.value)}
                     />
                     <label className={styles.labelName}>Gender</label>
+
                     <ul className={styles.ulgender}>
                         <li className={styles.font24}>
                             <input
@@ -124,6 +136,7 @@ export default function ProfileUser() {
                     </ul>
 
                     <label className={styles.labelName}>Address</label>
+
                     <input
                         className={styles.inputField}
                         type="text"
@@ -185,7 +198,9 @@ export default function ProfileUser() {
                         <button className={styles.SaveBtn} onClick={updateUsers}>
                             Save
                         </button>
-                        <button className={styles.CancelBtn}>Cancel</button>
+                        <button className={styles.CancelBtn} onClick={cancelUpdate}>
+                            Cancel
+                        </button>
                     </div>
                 </div>
 

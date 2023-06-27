@@ -13,6 +13,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import { useState } from 'react';
+import axios from 'axios';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -23,13 +25,15 @@ const MyAppBar = styled(Button)({
 const defaultTheme = createTheme();
 
 export default function Login() {
+    const [userId, setUserId] = useState('');
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const newUserId = '/profile/' + data.get('userId');
+        setUserId(newUserId);
+        console.log(userId);
+        window.location.href = newUserId;
     };
 
     return (
@@ -68,7 +72,6 @@ export default function Login() {
                                 label="Remember me"
                             />
                             <MyAppBar
-                                href="/home"
                                 type="submit"
                                 fullWidth
                                 variant="contained"
