@@ -56,22 +56,13 @@ export default function Login() {
                                 margin="normal"
                                 required
                                 fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
+                                id="userId"
+                                label="Enter userId"
+                                name="userId"
+                                autoComplete="userId"
                                 autoFocus
                             />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
+
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
@@ -85,18 +76,6 @@ export default function Login() {
                             >
                                 Log In
                             </MyAppBar>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2" color={'#1d9a1d'}>
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link href="/signup" variant="body2" color={'#1d9a1d'}>
-                                        {"Don't have an account? Sign Up"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
                         </Box>
                     </Box>
                 </Grid>

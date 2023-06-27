@@ -12,5 +12,5 @@ export const publicRoutes = [
     { path: '/signup', element: SignUp, layout: RegisterLayout },
     { path: '/home', element: ListNanny, layout: DefaultLayout },
     { path: '/details/:id', element: DetailNanny, layout: DefaultLayout },
-    { path: '/profile', element: ProfileUser, layout: DefaultLayout },
+    { path: '/profile/:userId', element: ProfileUser, layout: DefaultLayout },
 ];

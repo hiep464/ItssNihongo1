@@ -49,6 +49,8 @@
     border: none;
     height: 30px;
     display: block;
+    font-size: 20px;
+    text-indent: 4px;
 }
 
 .inputFieldPass {
@@ -58,6 +60,7 @@
     margin-left: 12px;
     border: none;
     height: 30px;
+    text-indent: 4px;
     display: block;
 }
 .labelName {
@@ -78,7 +81,7 @@
     width: 460px;
     height: 460px;
     border: 1px solid #1d9a1d;
-    border-radius: 10px ;
+    border-radius: 10px;
 }
 
 .imgDiv {
