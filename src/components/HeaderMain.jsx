@@ -9,14 +9,15 @@ import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
+
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Button from '@mui/material/Button';
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+
+import AvatarImg from './img/avatar.png';
+import Avatar from '@mui/material/Avatar';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -101,7 +102,7 @@ export default function HeadederMain() {
                 <Button href="/hired">Hired Nanny</Button>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-                <Button href="/">Logout</Button>
+                <Button href="/logout">Logout</Button>
             </MenuItem>
         </Menu>
     );
@@ -162,9 +163,9 @@ export default function HeadederMain() {
                         <MenuIcon />
                     </IconButton> */}
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        <Button href="/home">
-                            <HomeRoundedIcon sx={{ color: '#1d9a1d' }} fontSize="large" />
-                        </Button>{' '}
+                        <Button href="/">
+                            <Avatar alt="Avatar" src={AvatarImg} />
+                        </Button>
                     </Typography>
 
                     <Box sx={{ flexGrow: 1 }} />

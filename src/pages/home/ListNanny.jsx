@@ -23,8 +23,7 @@ import axios from 'axios';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import GTranslateIcon from '@mui/icons-material/GTranslate';
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
-import TakeoutDiningIcon from '@mui/icons-material/TakeoutDining';
+
 import { Link } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import TranslateIcon from '@mui/icons-material/Translate';
@@ -32,6 +31,10 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
 import ChildFriendlyIcon from '@mui/icons-material/ChildFriendly';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import Cook from './img/cook.png';
+import Child from './img/child.png';
+
+import Avatar from '@mui/material/Avatar';
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
@@ -108,7 +111,6 @@ export default function ListNanny() {
     const [childCares, setChildCares] = React.useState(childCare);
     const [prices, setPrices] = React.useState(price);
     const [reload, setReload] = React.useState(0);
-    const [progress, setProgress] = React.useState(10);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -595,13 +597,22 @@ export default function ListNanny() {
                                                     display="flex"
                                                     justifyContent="space-between"
                                                 >
-                                                    <Typography color={'#10a710'}>
-                                                        <AutoGraphIcon />
-                                                        {nanny.care_exp}
+                                                    <Typography color={'#10a710'} sx={{ display: 'flex' }}>
+                                                        <Avatar
+                                                            alt="Avatar"
+                                                            src={Child}
+                                                            sx={{ width: 24, height: 24 }}
+                                                        />
+                                                        <Typography marginLeft={1}> {nanny.care_exp}</Typography>
                                                     </Typography>
-                                                    <Typography color={'#10a710'}>
-                                                        <TakeoutDiningIcon />
-                                                        {nanny.cook_exp}
+                                                    <Typography color={'#10a710'} sx={{ display: 'flex' }}>
+                                                        <Avatar
+                                                            alt="Avatar"
+                                                            src={Cook}
+                                                            sx={{ width: 24, height: 24 }}
+                                                        />
+
+                                                        <Typography marginLeft={1}>{nanny.cook_exp}</Typography>
                                                     </Typography>
                                                 </Typography>
 
