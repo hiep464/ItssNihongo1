@@ -19,7 +19,7 @@ export default function HeaderRegister() {
             <MyAppBar position="static">
                 <Toolbar align="center" sx={{ justifyContent: 'space-between' }}>
                     <Button href="/">
-                        <Avatar alt="Avatar" src="./img/avatar.png" />
+                        <Avatar alt="Avatar" src={AvatarImg} />
                     </Button>
 
                     <Box>
