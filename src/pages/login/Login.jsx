@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -25,15 +26,29 @@ const MyAppBar = styled(Button)({
 const defaultTheme = createTheme();
 
 export default function Login() {
-    const [userId, setUserId] = useState('');
-
-    const handleSubmit = (event) => {
+    const [userIdError, setUserIdError] = useState(false);
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const newUserId = '/profile/' + data.get('userId');
-        setUserId(newUserId);
-        console.log(userId);
-        window.location.href = newUserId;
+        const userId = data.get('userId');
+        try {
+            const response = await axios.get(`https://babybuddies-be-dev.onrender.com/api/v1/accounts/${userId}`);
+            console.log(response);
+            if (response.data.result) {
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('isLogin', true);
+                window.location.href = newUserId;
+            } else {
+                setUserIdError(true);
+            }
+        } catch (error) {
+            console.log(error);
+            // Xử lý khi userId không hợp lệ, ví dụ hiển thị thông báo lỗi
+        }
+        // localStorage.setItem('userId', data.get('userId'));
+        // localStorage.setItem('isLogin', true);
+        // window.location.href = newUserId;
     };
 
     return (
@@ -52,8 +67,11 @@ export default function Login() {
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <Typography inpography component="h1" variant="h5" color={'#1d9a1d'}>
+                        {/* <Typography inpography component="h1" variant="h5" color={'#1d9a1d'}>
                             Log In
+                        </Typography> */}
+                        <Typography component="h1" variant="h5" color={userIdError ? 'red' : '#1d9a1d'}>
+                            {userIdError ? 'Uncorrect userId' : 'Log In'}
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                             <TextField
@@ -71,6 +89,7 @@ export default function Login() {
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
+
                             <MyAppBar
                                 type="submit"
                                 fullWidth

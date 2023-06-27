@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, { createContext, useState } from 'react';
 
 export const AuthContext = createContext({});
 
@@ -12,11 +12,19 @@ export const AuthContext = createContext({});
  * logout is a function that will set the userId, token, username, isLogin to false and remove it from localStorage.
  */
 export const AuthContextProvider = ({ children }) => {
-
+    // const [userName, setUserName] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [updated, setUpdated] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
     return (
         <AuthContext.Provider
             value={{
-                state: {},
+                userId,
+                setUserId,
+                updated,
+                setUpdated,
+                isLogin,
+                setIsLogin,
             }}
         >
             {children}

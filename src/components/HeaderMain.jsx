@@ -20,6 +20,8 @@ import AvatarImg from './img/avatar.png';
 import Avt from './img/avt.png';
 
 import Avatar from '@mui/material/Avatar';
+import { AuthContext } from '../context/AuthContext';
+import axios from 'axios';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -59,9 +61,14 @@ const MyAppBar = styled(AppBar)({
 export default function HeadederMain() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [userName, setUserName] = React.useState();
+    const [address, setAddress] = React.useState();
+    var isLogin = localStorage.getItem('isLogin');
+    const userId = localStorage.getItem('userId');
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const isUpdated = localStorage.getItem('isUpdated');
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -79,6 +86,35 @@ export default function HeadederMain() {
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
+
+    const handleLogout = () => {
+        // Xóa thông tin trong localStorage
+        localStorage.removeItem('isLogin');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('isUpdated');
+        window.location.href = '/logout';
+    };
+
+    React.useEffect(() => {
+        const url = 'https://babybuddies-be-dev.onrender.com/api/v1/accounts/' + userId;
+        axios
+            .get(url)
+            .then(function (response) {
+                // handle success
+                console.log(response);
+                const data = response.data.result.user_info;
+                setUserName(data.name);
+                setAddress(data.address);
+                console.log(data);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .finally(function () {
+                // always executed
+            });
+    });
 
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
@@ -99,7 +135,7 @@ export default function HeadederMain() {
         >
             <MenuItem onClick={handleMenuClose}>
                 <Button
-                    href="/profile"
+                    href={`/profile/${userId}`}
                     sx={{
                         textTransform: 'none',
                         color: '#000000',
@@ -114,7 +150,7 @@ export default function HeadederMain() {
                 </Button>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-                <Button href="/logout" sx={{ textTransform: 'none', color: '#000000' }}>
+                <Button onClick={handleLogout} sx={{ textTransform: 'none', color: '#000000' }}>
                     Logout
                 </Button>
             </MenuItem>
@@ -177,7 +213,7 @@ export default function HeadederMain() {
                         <MenuIcon />
                     </IconButton> */}
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        <Button href="/">
+                        <Button href={isUpdated ? '/home' : ''}>
                             <Avatar alt="Avatar" src={AvatarImg} />
                         </Button>
                     </Typography>
@@ -194,10 +230,13 @@ export default function HeadederMain() {
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton> */}
-                        <Box>
-                            <Typography sx={{ fontSize: '22px' }}>Brad Nguyen</Typography>
-                            <Typography sx={{ fontSize: '14px' }}>brad.nguyen2309</Typography>
-                        </Box>
+                        {isLogin && (
+                            <Box>
+                                <Typography sx={{ fontSize: '22px' }}>{userName}</Typography>
+                                <Typography sx={{ fontSize: '14px' }}>{address}</Typography>
+                            </Box>
+                        )}
+
                         <IconButton
                             size="large"
                             edge="end"

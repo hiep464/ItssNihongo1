@@ -3,8 +3,10 @@ import styles from './ProfileUser.module.scss';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function ProfileUser() {
+    const { userId, setUserId, updated, setUpdated } = React.useContext(AuthContext);
     const [name, setName] = useState('');
     const [gender, setGender] = useState('');
     const [nationality, setNationality] = useState('');
@@ -13,21 +15,22 @@ export default function ProfileUser() {
     const [phone, setPhone] = useState('');
     const [target, setTarget] = useState('');
     const [password, setPassword] = useState('');
-    const { userId } = useParams();
+    const { userId: routeParams } = useParams();
     const [inputError, setInputError] = useState(false);
+    const isLogin = localStorage.getItem('isLogin');
 
     useEffect(() => {
         //useEffect la 1 ham chay ngay khi component duoc render
         getUsers();
-    }, []);
+    }, [userId, updated]);
 
     function getUsers() {
-        const url = 'https://babybuddies-be-dev.onrender.com/api/v1/accounts/' + userId;
+        const url = 'https://babybuddies-be-dev.onrender.com/api/v1/accounts/' + routeParams;
         axios
             .get(url)
             .then(function (response) {
                 // handle success
-                // console.log(response);
+                console.log(response);
                 const data = response.data.result.user_info;
                 console.log(data);
                 if (data) {
@@ -54,7 +57,9 @@ export default function ProfileUser() {
             setInputError(true);
             return;
         }
-        fetch('https://babybuddies-be-dev.onrender.com/api/v1/accounts/647b77348af6c322511fed59/update', {
+        const url = 'https://babybuddies-be-dev.onrender.com/api/v1/accounts/' + routeParams + '/update';
+        console.log(url);
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,10 +77,8 @@ export default function ProfileUser() {
                 },
             }),
         }).then((result) => {
-            result.json().then((resp) => {
-                window.location.href = '/home';
-                console.log(resp);
-            });
+            localStorage.setItem('isUpdated', true);
+            window.location.href = '/home';
         });
     }
     function cancelUpdate() {

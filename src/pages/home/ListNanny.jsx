@@ -35,6 +35,8 @@ import Cook from './img/cook.png';
 import Child from './img/child.png';
 
 import Avatar from '@mui/material/Avatar';
+
+import { AuthContext } from '../../context/AuthContext';
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
@@ -111,8 +113,11 @@ export default function ListNanny() {
     const [childCares, setChildCares] = React.useState(childCare);
     const [prices, setPrices] = React.useState(price);
     const [reload, setReload] = React.useState(0);
+    const { userId, updated } = React.useContext(AuthContext);
 
     React.useEffect(() => {
+        console.log(userId, updated);
+
         const fetchData = async () => {
             const reponse = await fetch(
                 'https://babybuddies-be-dev.onrender.com/api/v1/home?fbclid=IwAR0YWt_3e9gKOT4E6uDFFe5aQl4lZ6GMheji7DLbuXTORu1V2j5x8JUrDQQ',

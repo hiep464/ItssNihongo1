@@ -25,6 +25,7 @@ const style = {
 export default function DetailNanny() {
     const [nannys, setNannys] = React.useState([]);
     const { id } = useParams();
+    var isLogin = localStorage.getItem('isLogin');
 
     const [open, setOpen] = React.useState(false);
 
@@ -169,7 +170,7 @@ export default function DetailNanny() {
 
     return (
         <div>
-            {nanny && (
+            {nanny && isLogin && (
                 <div>
                     <div className={styles.container1}>
                         <div className={styles.leftBox}>
