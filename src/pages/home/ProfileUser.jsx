@@ -19,6 +19,15 @@ export default function ProfileUser() {
     const isLogin = localStorage.getItem('isLogin');
     const isUpdated = localStorage.getItem('isUpdated');
 
+    const language = {
+        Vietnam: 'Vietnamese',
+        England: 'English',
+        Japan: 'Japanese',
+        French: 'French',
+        Spanin: 'Spanish',
+        China: 'Chinese',
+    };
+
     useEffect(() => {
         //useEffect la 1 ham chay ngay khi component duoc render
         getUsers();
@@ -77,7 +86,7 @@ export default function ProfileUser() {
                 },
             }),
         }).then((result) => {
-            localStorage.setItem('language', nationality);
+            localStorage.setItem('language', language[nationality]);
             localStorage.setItem('address', address);
             if (target === 'ChildCare') {
                 localStorage.setItem('childCare', 1);

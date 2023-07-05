@@ -118,28 +118,15 @@ export default function ListNanny() {
     React.useEffect(() => {
         console.log(userId, updated);
 
-        const fetchData = async () => {
-            const reponse = await fetch(
-                'https://babybuddies-be-dev.onrender.com/api/v1/home?fbclid=IwAR0YWt_3e9gKOT4E6uDFFe5aQl4lZ6GMheji7DLbuXTORu1V2j5x8JUrDQQ',
-            );
-            const reponseJSON = await reponse.json();
-            setNannys(reponseJSON.result.staffs);
-        };
-        fetchData();
-        // let formData = {
-        //     // rating: rating,
-        //     userLanguage: localStorage.getItem('language'),
-        //     // cookExp: localStorage.getItem('address'),
-        //     careExp: localStorage.getItem('childCare'),
-        //     cookExp: localStorage.getItem('cooking'),
+        // const fetchData = async () => {
+        //     const reponse = await fetch(
+        //         'https://babybuddies-be-dev.onrender.com/api/v1/home?fbclid=IwAR0YWt_3e9gKOT4E6uDFFe5aQl4lZ6GMheji7DLbuXTORu1V2j5x8JUrDQQ',
+        //     );
+        //     const reponseJSON = await reponse.json();
+        //     setNannys(reponseJSON.result.staffs);
         // };
-
-        // postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
-        //     .then((data) => {
-        //         setFilter(false);
-        //         setNannys(data);
-        //     })
-        //     .catch((error) => console.error(error));
+        // fetchData();
+        handleFilterFromProfile();
     }, [reload]);
 
     // Tính tuổi
@@ -153,6 +140,40 @@ export default function ListNanny() {
         }
         return age;
     }
+
+    const handleFilterFromProfile = () => {
+        const languageF = localStorage.getItem('language');
+        const cookingF = localStorage.getItem('cooking') + ' years';
+        const childCareF = localStorage.getItem('childCare') + ' years';
+
+        let formData = {
+            // rating: rating,
+            userLanguage: languageF.length === 1 ? languageF[0] : languageF,
+            cookExp: cookingF.length === 1 ? cookingF[0] : cookingF,
+            careExp: childCareF.length === 1 ? childCareF[0] : childCareF,
+        };
+        console.log(formData);
+        if (languageF.length === 0) {
+            delete formData.userLanguage;
+        }
+
+        if (cookingF.length === 0) {
+            delete formData.cookExp;
+        }
+
+        if (childCareF.length === 0) {
+            delete formData.careExp;
+        }
+
+        postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
+            .then((data) => {
+                console.log(data);
+                setFilter(false);
+                setNannys(data);
+            })
+            .catch((error) => console.error(error));
+        // console.log(language, rating, experience, salary);
+    };
 
     const handleFilter = () => {
         const languageF = getActiveNames(languages);
@@ -185,6 +206,7 @@ export default function ListNanny() {
 
         postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
             .then((data) => {
+                console.log(data);
                 setFilter(false);
                 setNannys(data);
             })
