@@ -26,12 +26,38 @@ const MyAppBar = styled(Button)({
 const defaultTheme = createTheme();
 
 export default function Login() {
+    const [userInfos, setUserInfos] = useState();
     const [userIdError, setUserIdError] = useState(false);
+
+    const accountIds = [
+        '647b77348af6c322511fed58',
+        '647b77348af6c322511fed59',
+        '647b77348af6c322511fed5a',
+        '647b77348af6c322511fed5b',
+        '647b77348af6c322511fed5c',
+        '647b77348af6c322511fed5d',
+        '647b77348af6c322511fed5e',
+        '647b77348af6c322511fed5f',
+        '647b77348af6c322511fed60',
+        '647b77348af6c322511fed61',
+        '647b77348af6c322511fed62',
+        '647b77348af6c322511fed63',
+        '647b77348af6c322511fed64',
+        '647b77348af6c322511fed65',
+        '647b77348af6c322511fed66',
+        '647b77348af6c322511fed67',
+        '647b77348af6c322511fed68',
+        '647b77348af6c322511fed69',
+        '647b77348af6c322511fed6a',
+        '647b77348af6c322511fed6b',
+    ];
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const newUserId = '/profile/' + data.get('userId');
-        const userId = data.get('userId');
+        console.log(accountIds[data.get('userId') - 1]);
+        const newUserId = '/profile/' + accountIds[data.get('userId') - 1];
+        const userId = accountIds[data.get('userId') - 1];
         try {
             const response = await axios.get(`https://babybuddies-be-dev.onrender.com/api/v1/accounts/${userId}`);
             console.log(response);
