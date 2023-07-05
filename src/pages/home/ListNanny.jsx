@@ -244,47 +244,48 @@ export default function ListNanny() {
                     component="div"
                     sx={{
                         position: 'fixed',
-                        top: '64px',
-                        right: '0',
+                        top: '100px',
+                        right: '20px',
                         bottom: '0',
-                        width: '36vw',
-                        backgroundColor: 'rgba(41, 137, 66, 0.7)',
-                        height: '640px',
+                        width: '28vw',
+                        // backgroundColor: 'rgba(41, 137, 66, 0.7)',
+                        height: 'min-content',
                         zIndex: '1000',
                         backgroundColor: 'white',
-                        padding: 1,
+                        border: '1px solid #a4a4a4',
+                        borderRadius: '20px',
                     }}
                 >
-                    <Box borderRadius={'8px'} border={'1px solid #a4a4a4'} paddingBottom={'40px'}>
+                    <Box paddingBottom={'50px'} paddingLeft={'20px'}>
                         <Typography
                             component="h3"
                             sx={{
-                                fontSize: '20px',
+                                fontSize: '30px',
                                 color: 'black',
-                                fontWeight: '600',
+                                fontWeight: '700',
                                 marginLeft: '24px',
                                 marginTop: '14px',
-                                marginBottom: '6px',
+                                marginBottom: '8px'
                             }}
                         >
                             Interests
                         </Typography>
 
-                        <Typography component="div" sx={{ marginLeft: '10px' }}>
+                        <Typography component="div">
                             <Button
                                 size="small"
                                 sx={{
                                     width: '136px',
                                     borderRadius: '16px',
                                     backgroundColor: '#ebebeb',
-                                    color: 'black',
-                                    marginLeft: '14px',
+                                    color: '#a744be',
+                                    marginLeft: '14px', 
                                 }}
                                 startIcon={<TranslateIcon sx={{ color: '#a744be' }} />}
                             >
                                 Language
                             </Button>
-                            <Box display={'flex'} width={'100%'} flexWrap={'wrap'}>
+                            <Box margin={'10px'} display={'flex'} width={'100%'} flexWrap={'wrap'}>
                                 {languages.map((item, key) => {
                                     return (
                                         <Button
@@ -294,7 +295,7 @@ export default function ListNanny() {
                                             sx={{
                                                 borderRadius: '16px',
                                                 color: 'black',
-                                                width: '29%',
+                                                width: '25%',
                                                 margin: '6px 10px',
                                                 textTransform: 'none',
                                                 borderColor: item?.active ? 'black' : '#abaeb1',
@@ -346,7 +347,7 @@ export default function ListNanny() {
                                             sx={{
                                                 borderRadius: '16px',
                                                 color: 'black',
-                                                width: '29%',
+                                                width: '25%',
                                                 margin: '6px 10px',
                                                 textTransform: 'none',
                                                 borderColor: item?.active ? 'black' : '#abaeb1',
@@ -387,7 +388,7 @@ export default function ListNanny() {
                                 }}
                                 startIcon={<ChildFriendlyIcon sx={{ color: 'primary.main' }} />}
                             >
-                                Child Care
+                                Childcare
                             </Button>
                             <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
                                 {childCares.map((item, key) => {
@@ -399,7 +400,7 @@ export default function ListNanny() {
                                             sx={{
                                                 borderRadius: '16px',
                                                 color: 'black',
-                                                width: '29%',
+                                                width: '25%',
                                                 margin: '6px 10px',
                                                 textTransform: 'none',
                                                 borderColor: item?.active ? 'black' : '#abaeb1',
@@ -452,15 +453,17 @@ export default function ListNanny() {
                                             sx={{
                                                 borderRadius: '16px',
                                                 color: 'black',
-                                                width: '29%',
+                                                width: '26%',
                                                 margin: '6px 10px',
+                                                paddingRight: '15px',
                                                 borderColor: item?.active ? 'black' : '#abaeb1',
+                                                fontSize: '12px',
                                             }}
                                             startIcon={
                                                 <CheckCircleRoundedIcon
                                                     sx={{
                                                         color: 'primary.main',
-                                                        display: item?.active ? 'flex' : 'none',
+                                                        opacity: item?.active ? '1' : '0',
                                                     }}
                                                 />
                                             }
@@ -594,7 +597,7 @@ export default function ListNanny() {
                                                     color={'#137913'}
                                                 >
                                                     <Typography fontWeight="bold" sx={{ fontSize: '20px' }}>
-                                                        {getFirstName(nanny.full_name)},{getAge(nanny.birthday)}
+                                                        {getFirstName(nanny.full_name)}, {getAge(nanny.birthday)}
                                                     </Typography>
 
                                                     <Typography sx={{ display: 'flex' }} fontWeight="bold">
@@ -613,7 +616,7 @@ export default function ListNanny() {
                                                         <Avatar
                                                             alt="Avatar"
                                                             src={Child}
-                                                            sx={{ width: 24, height: 24 }}
+                                                            sx={{ width: 20, height: 20 }}
                                                         />
                                                         <Typography marginLeft={1}> {nanny.care_exp}</Typography>
                                                     </Typography>
@@ -621,7 +624,7 @@ export default function ListNanny() {
                                                         <Avatar
                                                             alt="Avatar"
                                                             src={Cook}
-                                                            sx={{ width: 24, height: 24 }}
+                                                            sx={{ width: 20, height: 20 }}
                                                         />
 
                                                         <Typography marginLeft={1}>{nanny.cook_exp}</Typography>
@@ -629,11 +632,11 @@ export default function ListNanny() {
                                                 </Typography>
 
                                                 <Typography color={'#10a710'} display="flex">
-                                                    <GTranslateIcon sx={{ fontSize: 20 }} />
+                                                    <GTranslateIcon sx={{ fontSize: 18 }} />
                                                     {nanny.user_language ? (
                                                         nanny.user_language.map((language) => (
                                                             <Typography marginLeft={1} key={language.id}>
-                                                                {language.name}{' '}
+                                                                {language.name} {' '}
                                                             </Typography>
                                                         ))
                                                     ) : (
@@ -643,9 +646,12 @@ export default function ListNanny() {
                                                     )}
                                                 </Typography>
 
-                                                <Typography color={'#10a710'} sx={{ fontSize: '14px' }}>
-                                                    <AddLocationIcon fontSize="small" />
-                                                    {getCity(nanny.address)}
+                                                <Typography color={'#10a710'} sx={{ fontSize: '14px' }} display="flex">
+                                                    <AddLocationIcon sx={{ fontSize: 18 }} />
+                                                    <Typography marginLeft={1}>
+                                                        {getCity(nanny.address)}
+                                                    </Typography>
+                                                    
                                                 </Typography>
                                                 <Typography
                                                     display="flex"
