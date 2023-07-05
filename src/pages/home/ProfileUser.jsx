@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styles from './ProfileUser.module.scss';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
 export default function ProfileUser() {
@@ -18,6 +17,7 @@ export default function ProfileUser() {
     const { userId: routeParams } = useParams();
     const [inputError, setInputError] = useState(false);
     const isLogin = localStorage.getItem('isLogin');
+    const isUpdated = localStorage.getItem('isUpdated');
 
     useEffect(() => {
         //useEffect la 1 ham chay ngay khi component duoc render
@@ -77,13 +77,32 @@ export default function ProfileUser() {
                 },
             }),
         }).then((result) => {
-            console.log(result)
+            localStorage.setItem('language', nationality);
+            localStorage.setItem('address', address);
+            if (target === 'ChildCare') {
+                localStorage.setItem('childCare', 1);
+                localStorage.removeItem('cooking');
+            }
+            if (target === 'Cooking') {
+                localStorage.setItem('cooking', 1);
+                localStorage.removeItem('childCare');
+            }
+            if (target === 'Cooking and ChildCare') {
+                localStorage.setItem('childCare', 1);
+                localStorage.setItem('cooking', 1);
+            }
+            console.log(result);
             localStorage.setItem('isUpdated', true);
             window.location.href = '/home';
         });
     }
     function cancelUpdate() {
-        window.location.href = '/login';
+        if (isLogin && isUpdated) {
+            window.location.href = '/home';
+        } else {
+            localStorage.setItem('isLogin', false);
+            window.location.href = '/login';
+        }
     }
     return (
         <div>

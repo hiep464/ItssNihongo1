@@ -126,6 +126,20 @@ export default function ListNanny() {
             setNannys(reponseJSON.result.staffs);
         };
         fetchData();
+        // let formData = {
+        //     // rating: rating,
+        //     userLanguage: localStorage.getItem('language'),
+        //     // cookExp: localStorage.getItem('address'),
+        //     careExp: localStorage.getItem('childCare'),
+        //     cookExp: localStorage.getItem('cooking'),
+        // };
+
+        // postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
+        //     .then((data) => {
+        //         setFilter(false);
+        //         setNannys(data);
+        //     })
+        //     .catch((error) => console.error(error));
     }, [reload]);
 
     // Tính tuổi
@@ -265,7 +279,7 @@ export default function ListNanny() {
                                 fontWeight: '700',
                                 marginLeft: '24px',
                                 marginTop: '14px',
-                                marginBottom: '8px'
+                                marginBottom: '8px',
                             }}
                         >
                             Interests
@@ -279,7 +293,7 @@ export default function ListNanny() {
                                     borderRadius: '16px',
                                     backgroundColor: '#ebebeb',
                                     color: '#a744be',
-                                    marginLeft: '14px', 
+                                    marginLeft: '14px',
                                 }}
                                 startIcon={<TranslateIcon sx={{ color: '#a744be' }} />}
                             >
@@ -636,7 +650,7 @@ export default function ListNanny() {
                                                     {nanny.user_language ? (
                                                         nanny.user_language.map((language) => (
                                                             <Typography marginLeft={1} key={language.id}>
-                                                                {language.name} {' '}
+                                                                {language.name}{' '}
                                                             </Typography>
                                                         ))
                                                     ) : (
@@ -648,10 +662,7 @@ export default function ListNanny() {
 
                                                 <Typography color={'#10a710'} sx={{ fontSize: '14px' }} display="flex">
                                                     <AddLocationIcon sx={{ fontSize: 18 }} />
-                                                    <Typography marginLeft={1}>
-                                                        {getCity(nanny.address)}
-                                                    </Typography>
-                                                    
+                                                    <Typography marginLeft={1}>{getCity(nanny.address)}</Typography>
                                                 </Typography>
                                                 <Typography
                                                     display="flex"
