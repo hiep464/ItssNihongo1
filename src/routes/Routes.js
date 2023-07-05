@@ -5,6 +5,7 @@ import ListNanny from '../pages/home/ListNanny';
 import Login from '../pages/login/Login';
 import SignUp from '../pages/signUp/SignUp';
 import ProfileUser from '../pages/home/ProfileUser';
+import Hired from '../pages/hired';
 
 export const publicRoutes = [
     { path: '/', element: ListNanny, layout: DefaultLayout },
@@ -14,4 +15,5 @@ export const publicRoutes = [
     { path: '/home', element: ListNanny, layout: DefaultLayout },
     { path: '/details/:id', element: DetailNanny, layout: DefaultLayout },
     { path: '/profile/:userId', element: ProfileUser, layout: DefaultLayout },
+    { path: '/hired', element: Hired, layout: DefaultLayout },
 ];

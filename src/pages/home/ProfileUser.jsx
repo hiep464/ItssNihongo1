@@ -77,6 +77,7 @@ export default function ProfileUser() {
                 },
             }),
         }).then((result) => {
+            console.log(result)
             localStorage.setItem('isUpdated', true);
             window.location.href = '/home';
         });
