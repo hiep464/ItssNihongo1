@@ -92,8 +92,29 @@ export default function HeadederMain() {
         localStorage.removeItem('isLogin');
         localStorage.removeItem('userId');
         localStorage.removeItem('isUpdated');
+        localStorage.removeItem('childCare');
+        localStorage.removeItem('cooking');
+        localStorage.removeItem('language');
+        localStorage.removeItem('address');
         window.location.href = '/logout';
     };
+    // const handleLogout = () => {
+    //     return new Promise((resolve, reject) => {
+    //         // Xóa thông tin trong localStorage
+    //         localStorage.removeItem('isLogin');
+    //         localStorage.removeItem('userId');
+    //         localStorage.removeItem('isUpdated');
+
+    //         // Giải quyết promise sau khi xóa thông tin thành công
+    //         resolve();
+    //     });
+    // };
+
+    // Sử dụng hàm handleLogout với promise
+    // handleLogout().then(() => {
+    //     // Chuyển trang sau khi xóa thông tin thành công
+    //     window.location.href = '/logout';
+    // });
 
     React.useEffect(() => {
         const url = 'https://babybuddies-be-dev.onrender.com/api/v1/accounts/' + userId;

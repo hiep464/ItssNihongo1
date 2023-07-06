@@ -9,9 +9,9 @@ import Hired from '../pages/hired';
 
 export const publicRoutes = [
     { path: '/', element: ListNanny, layout: DefaultLayout },
-    { path: '/login', element: Login, layout: RegisterLayout },
+    { path: '/login', element: Login },
     { path: '/signup', element: SignUp, layout: RegisterLayout },
-    { path: '/logout', element: Login, layout: RegisterLayout },
+    { path: '/logout', element: Login },
     { path: '/home', element: ListNanny, layout: DefaultLayout },
     { path: '/details/:id', element: DetailNanny, layout: DefaultLayout },
     { path: '/profile/:userId', element: ProfileUser, layout: DefaultLayout },
