@@ -205,7 +205,7 @@ export default function HeadederMain() {
             </MenuItem>
             <MenuItem>
                 <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                    <Badge badgeContent={17}>
+                    <Badge badgeContent={5}>
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
@@ -235,7 +235,7 @@ export default function HeadederMain() {
                     </IconButton> */}
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
                         <Button href={isUpdated ? '/home' : ''}>
-                            <Avatar alt="Avatar" src={AvatarImg} />
+                            <Avatar alt="Avatar" src={AvatarImg} sx={{ width: '60px', height: '60px' }} />
                         </Button>
                     </Typography>
 
@@ -245,16 +245,21 @@ export default function HeadederMain() {
                             <Badge badgeContent={4} color="success">
                                 <MailIcon />
                             </Badge>
-                        </IconButton>
-                        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={17} color="success">
-                                <NotificationsIcon />
-                            </Badge>
                         </IconButton> */}
+                        <IconButton
+                            size="large"
+                            aria-label="show 17 new notifications"
+                            color="inherit"
+                            sx={{ width: '50px', height: '50px', marginTop: '7px', marginRight: '6px' }}
+                        >
+                            <Badge badgeContent={5} color="success">
+                                <NotificationsIcon sx={{ width: '30px', height: '30px' }} />
+                            </Badge>
+                        </IconButton>
                         {isLogin && (
-                            <Box>
-                                <Typography sx={{ fontSize: '22px' }}>{userName}</Typography>
-                                <Typography sx={{ fontSize: '14px' }}>{address}</Typography>
+                            <Box sx={{ marginTop: '6px' }}>
+                                <Typography sx={{ fontSize: '20px' }}>{userName}</Typography>
+                                <Typography sx={{ fontSize: '12px' }}>{address}</Typography>
                             </Box>
                         )}
 
@@ -268,7 +273,7 @@ export default function HeadederMain() {
                             color="inherit"
                         >
                             {/* <AccountCircle /> */}
-                            <Avatar alt="Avt" src={Avt} />
+                            <Avatar alt="Avt" src={Avt} sx={{ width: '40px', height: '40px' }} />
                         </IconButton>
                     </Box>
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
