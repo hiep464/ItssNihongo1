@@ -8,7 +8,7 @@ import ProfileUser from '../pages/home/ProfileUser';
 import Hired from '../pages/hired';
 
 export const publicRoutes = [
-    { path: '/', element: ListNanny, layout: DefaultLayout },
+    { path: '/', element: ListNanny, layout: RegisterLayout },
     { path: '/login', element: Login, layout: RegisterLayout },
     { path: '/signup', element: SignUp, layout: RegisterLayout },
     { path: '/logout', element: Login, layout: RegisterLayout },

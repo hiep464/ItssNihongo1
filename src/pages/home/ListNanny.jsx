@@ -148,12 +148,12 @@ export default function ListNanny() {
 
         let formData = {
             // rating: rating,
-            userLanguage: languageF.length === 1 ? languageF[0] : languageF,
+            userLanguage: languageF?.length === 1 ? languageF[0] : languageF,
             cookExp: cookingF.length === 1 ? cookingF[0] : cookingF,
             careExp: childCareF.length === 1 ? childCareF[0] : childCareF,
         };
         console.log(formData);
-        if (languageF.length === 0) {
+        if (languageF?.length === 0) {
             delete formData.userLanguage;
         }
 
