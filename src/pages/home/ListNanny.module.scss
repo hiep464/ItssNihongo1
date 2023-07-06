@@ -141,3 +141,13 @@
     display: inline-block;
     text-align: center;
 }
+
+.close {
+    display: flex;
+    justify-content: space-between;
+}
+
+.delete {
+    padding-right: 10px;
+    cursor: pointer;
+}
