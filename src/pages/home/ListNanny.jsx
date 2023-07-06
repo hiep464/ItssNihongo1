@@ -115,8 +115,42 @@ export default function ListNanny() {
     const [reload, setReload] = React.useState(0);
     const { userId, updated } = React.useContext(AuthContext);
 
-    React.useEffect(() => {
-        console.log(userId, updated);
+    const handleFilterFromProfile = () => { //phải khai báo cái này truoc react.useEffect để nó chạy trước
+        const languageF = localStorage.getItem('language');
+        const cookingF = localStorage.getItem('cooking') + ' years';
+        const childCareF = localStorage.getItem('childCare') + ' years';
+
+        let formData = {
+            // rating: rating,
+            userLanguage: languageF.length === 1 ? languageF[0] : languageF,
+            cookExp: cookingF.length === 1 ? cookingF[0] : cookingF,
+            careExp: childCareF.length === 1 ? childCareF[0] : childCareF,
+        };
+        //console.log(formData);
+        if (languageF.length === 0) {
+            delete formData.userLanguage;
+        }
+
+        if (cookingF.length === 0) {
+            delete formData.cookExp;
+        }
+
+        if (childCareF.length === 0) {
+            delete formData.careExp;
+        }
+
+        postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
+            .then((data) => {
+                //console.log(data);
+                setFilter(false);
+                setNannys(data);
+            })
+            .catch((error) => console.error(error));
+        // console.log(language, rating, experience, salary);
+    };
+
+    React.useEffect(() => { 
+        // console.log(userId, updated);
 
         // const fetchData = async () => {
         //     const reponse = await fetch(
@@ -141,39 +175,7 @@ export default function ListNanny() {
         return age;
     }
 
-    const handleFilterFromProfile = () => {
-        const languageF = localStorage.getItem('language');
-        const cookingF = localStorage.getItem('cooking') + ' years';
-        const childCareF = localStorage.getItem('childCare') + ' years';
-
-        let formData = {
-            // rating: rating,
-            userLanguage: languageF.length === 1 ? languageF[0] : languageF,
-            cookExp: cookingF.length === 1 ? cookingF[0] : cookingF,
-            careExp: childCareF.length === 1 ? childCareF[0] : childCareF,
-        };
-        console.log(formData);
-        if (languageF.length === 0) {
-            delete formData.userLanguage;
-        }
-
-        if (cookingF.length === 0) {
-            delete formData.cookExp;
-        }
-
-        if (childCareF.length === 0) {
-            delete formData.careExp;
-        }
-
-        postData('https://babybuddies-be-dev.onrender.com/api/v1/search/matching', formData)
-            .then((data) => {
-                console.log(data);
-                setFilter(false);
-                setNannys(data);
-            })
-            .catch((error) => console.error(error));
-        // console.log(language, rating, experience, salary);
-    };
+    
 
     const handleFilter = () => {
         const languageF = getActiveNames(languages);
