@@ -114,19 +114,23 @@ export default function ListNanny() {
     const [prices, setPrices] = React.useState(price);
     const [reload, setReload] = React.useState(0);
     const { userId, updated } = React.useContext(AuthContext);
+    const isLogin = localStorage.getItem('isLogin');
 
     React.useEffect(() => {
-        console.log(userId, updated);
+        if (isLogin) {
+            handleFilterFromProfile();
+        } else {
+            console.log(userId, updated);
 
-        // const fetchData = async () => {
-        //     const reponse = await fetch(
-        //         'https://babybuddies-be-dev.onrender.com/api/v1/home?fbclid=IwAR0YWt_3e9gKOT4E6uDFFe5aQl4lZ6GMheji7DLbuXTORu1V2j5x8JUrDQQ',
-        //     );
-        //     const reponseJSON = await reponse.json();
-        //     setNannys(reponseJSON.result.staffs);
-        // };
-        // fetchData();
-        handleFilterFromProfile();
+            const fetchData = async () => {
+                const reponse = await fetch(
+                    'https://babybuddies-be-dev.onrender.com/api/v1/home?fbclid=IwAR0YWt_3e9gKOT4E6uDFFe5aQl4lZ6GMheji7DLbuXTORu1V2j5x8JUrDQQ',
+                );
+                const reponseJSON = await reponse.json();
+                setNannys(reponseJSON.result.staffs);
+            };
+            fetchData();
+        }
     }, [reload]);
 
     // Tính tuổi
@@ -148,12 +152,12 @@ export default function ListNanny() {
 
         let formData = {
             // rating: rating,
-            userLanguage: languageF.length === 1 ? languageF[0] : languageF,
+            userLanguage: languageF?.length === 1 ? languageF[0] : languageF,
             cookExp: cookingF.length === 1 ? cookingF[0] : cookingF,
             careExp: childCareF.length === 1 ? childCareF[0] : childCareF,
         };
         console.log(formData);
-        if (languageF.length === 0) {
+        if (languageF?.length === 0) {
             delete formData.userLanguage;
         }
 
