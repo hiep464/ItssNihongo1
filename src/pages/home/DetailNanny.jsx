@@ -103,7 +103,7 @@ export default function DetailNanny() {
     function FeedBack() {
         console.log(value);
         console.log(review);
-        const url = 'https://babybuddies-be-dev.onrender.com/api/v1/ratings/staff/' + id ;
+        const url = 'https://babybuddies-be-dev.onrender.com/api/v1/ratings/staff/' + id;
         console.log(url);
         fetch(url, {
             method: 'POST',
@@ -111,8 +111,8 @@ export default function DetailNanny() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "star": value,
-                "review": review,
+                star: value,
+                review: review,
             }),
         }).then(() => {
             //load lai phan danh gia cua nanny sau khi post
@@ -122,7 +122,7 @@ export default function DetailNanny() {
                 );
                 const reponseJSON = await reponse.json();
                 setNannys(reponseJSON.result.staffs);
-            }
+            };
             fetchData();
             //dong modal
             handleClose();
@@ -239,6 +239,13 @@ export default function DetailNanny() {
             setIsBooking(false);
             setMessage('');
         });
+    };
+
+    //handleDelete
+    const handleDeleteCMT = async (id) => {
+        await fetch(`https://babybuddies-be-dev.onrender.com/api/v1/ratings`, { method: 'DELETE' });
+        setNannys(nanny.filter((nanny) => nanny.id !== id));
+        setOpenDelete(true);
     };
 
     return (
@@ -417,7 +424,7 @@ export default function DetailNanny() {
                             </div>
                             <div className={styles.starList}>
                                 <Rating
-                                    style={{color: '#0d520d'}}
+                                    style={{ color: '#0d520d' }}
                                     name="read-only"
                                     value={calculateAverageRating(nanny.rating)}
                                     readOnly
@@ -462,6 +469,7 @@ export default function DetailNanny() {
                                         </Typography>
                                         <Typography sx={{ marginLeft: 8 }}>
                                             <Rating
+                                                color="red"
                                                 size="large"
                                                 name="simple-controlled"
                                                 value={value}
@@ -472,13 +480,19 @@ export default function DetailNanny() {
                                         </Typography>
 
                                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                        <textarea
-                                                style = {{width: '90%', height: '100px', borderRadius: '20px', padding: '25px',marginLeft: '15px',}}
+                                            <textarea
+                                                style={{
+                                                    width: '90%',
+                                                    height: '100px',
+                                                    borderRadius: '20px',
+                                                    padding: '25px',
+                                                    marginLeft: '15px',
+                                                }}
                                                 aria-label="empty textarea"
                                                 placeholder="Write comment"
-                                                minRows={3} 
-                                                value =  {review}
-                                                onChange= {e => setReview(e.target.value)}
+                                                minRows={3}
+                                                value={review}
+                                                onChange={(e) => setReview(e.target.value)}
                                             />
                                         </Typography>
 
@@ -490,7 +504,9 @@ export default function DetailNanny() {
                                                 display: 'flex',
                                             }}
                                         >
-                                            <MyButton onClick={FeedBack} sx={{ marginRight: '25px' }}>Submit</MyButton>
+                                            <MyButton onClick={FeedBack} sx={{ marginRight: '25px' }}>
+                                                Submit
+                                            </MyButton>
                                             <MyButton onClick={handleClose}>Cancel</MyButton>
                                         </Typography>
                                     </Box>
