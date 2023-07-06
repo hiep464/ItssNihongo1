@@ -13,6 +13,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import { useState } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import axios from 'axios';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -23,13 +26,55 @@ const MyAppBar = styled(Button)({
 const defaultTheme = createTheme();
 
 export default function Login() {
-    const handleSubmit = (event) => {
+    const [userInfos, setUserInfos] = useState();
+    const [userIdError, setUserIdError] = useState(false);
+
+    const accountIds = [
+        '647b77348af6c322511fed58',
+        '647b77348af6c322511fed59',
+        '647b77348af6c322511fed5a',
+        '647b77348af6c322511fed5b',
+        '647b77348af6c322511fed5c',
+        '647b77348af6c322511fed5d',
+        '647b77348af6c322511fed5e',
+        '647b77348af6c322511fed5f',
+        '647b77348af6c322511fed60',
+        '647b77348af6c322511fed61',
+        '647b77348af6c322511fed62',
+        '647b77348af6c322511fed63',
+        '647b77348af6c322511fed64',
+        '647b77348af6c322511fed65',
+        '647b77348af6c322511fed66',
+        '647b77348af6c322511fed67',
+        '647b77348af6c322511fed68',
+        '647b77348af6c322511fed69',
+        '647b77348af6c322511fed6a',
+        '647b77348af6c322511fed6b',
+    ];
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        console.log(accountIds[data.get('userId') - 1]);
+        const newUserId = '/profile/' + accountIds[data.get('userId') - 1];
+        const userId = accountIds[data.get('userId') - 1];
+        try {
+            const response = await axios.get(`https://babybuddies-be-dev.onrender.com/api/v1/accounts/${userId}`);
+            console.log(response);
+            if (response.data.result) {
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('isLogin', true);
+                window.location.href = newUserId;
+            } else {
+                setUserIdError(true);
+            }
+        } catch (error) {
+            console.log(error);
+            // Xử lý khi userId không hợp lệ, ví dụ hiển thị thông báo lỗi
+        }
+        // localStorage.setItem('userId', data.get('userId'));
+        // localStorage.setItem('isLogin', true);
+        // window.location.href = newUserId;
     };
 
     return (
@@ -48,36 +93,30 @@ export default function Login() {
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <Typography inpography component="h1" variant="h5" color={'#1d9a1d'}>
+                        {/* <Typography inpography component="h1" variant="h5" color={'#1d9a1d'}>
                             Log In
+                        </Typography> */}
+                        <Typography component="h1" variant="h5" color={userIdError ? 'red' : '#1d9a1d'}>
+                            {userIdError ? 'Uncorrect userId' : 'Log In'}
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                             <TextField
                                 margin="normal"
                                 required
                                 fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
+                                id="userId"
+                                label="Enter userId"
+                                name="userId"
+                                autoComplete="userId"
                                 autoFocus
                             />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
+
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
+
                             <MyAppBar
-                                href="/home"
                                 type="submit"
                                 fullWidth
                                 variant="contained"
@@ -85,18 +124,6 @@ export default function Login() {
                             >
                                 Log In
                             </MyAppBar>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2" color={'#1d9a1d'}>
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link href="/signup" variant="body2" color={'#1d9a1d'}>
-                                        {"Don't have an account? Sign Up"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
                         </Box>
                     </Box>
                 </Grid>

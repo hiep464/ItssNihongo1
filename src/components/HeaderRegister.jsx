@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 
@@ -14,11 +14,12 @@ const MyAppBar = styled(AppBar)({
     color: '#1d9a1d',
 });
 export default function HeaderRegister() {
+    const updateProfile = useContext(true);
     return (
         <div>
             <MyAppBar position="static">
                 <Toolbar align="center" sx={{ justifyContent: 'space-between' }}>
-                    <Button href="/">
+                    <Button href="\">
                         <Avatar alt="Avatar" src={AvatarImg} />
                     </Button>
 

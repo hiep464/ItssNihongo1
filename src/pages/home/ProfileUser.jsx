@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ProfileUser.module.scss';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function ProfileUser() {
+    const { userId, setUserId, updated, setUpdated } = React.useContext(AuthContext);
     const [name, setName] = useState('');
     const [gender, setGender] = useState('');
     const [nationality, setNationality] = useState('');
@@ -10,32 +14,61 @@ export default function ProfileUser() {
     const [phone, setPhone] = useState('');
     const [target, setTarget] = useState('');
     const [password, setPassword] = useState('');
+    const { userId: routeParams } = useParams();
+    const [inputError, setInputError] = useState(false);
+    const isLogin = localStorage.getItem('isLogin');
+    const isUpdated = localStorage.getItem('isUpdated');
+
+    const language = {
+        Vietnam: 'Vietnamese',
+        England: 'English',
+        Japan: 'Japanese',
+        French: 'French',
+        Spanin: 'Spanish',
+        China: 'Chinese',
+    };
 
     useEffect(() => {
         //useEffect la 1 ham chay ngay khi component duoc render
         getUsers();
-    }, []);
+    }, [userId, updated]);
 
     function getUsers() {
-        fetch('https://babybuddies-be-dev.onrender.com/api/v1/accounts/647b77348af6c322511fed59').then((result) => {
-            //console.log(result);
-            result.json().then((resp) => {
-                //console.log(resp.result);
-                //console.log(resp.result.user_info);
-                setName(resp.result.user_info.name);
-                setGender(resp.result.user_info.gender);
-                setNationality(resp.result.user_info.nationality);
-                setBirthday(resp.result.user_info.birthday);
-                setAddress(resp.result.user_info.address);
-                setPhone(resp.result.user_info.phone);
-                setTarget(resp.result.user_info.want_to);
-                setPassword(resp.result.password);
+        const url = 'https://babybuddies-be-dev.onrender.com/api/v1/accounts/' + routeParams;
+        axios
+            .get(url)
+            .then(function (response) {
+                // handle success
+                console.log(response);
+                const data = response.data.result.user_info;
+                console.log(data);
+                if (data) {
+                    setName(data.name);
+                    setNationality(data.nationality);
+                    setPhone(data.phone);
+                    setAddress(data.address);
+                    setTarget(data.want_to);
+                    setGender(data.gender);
+                    setPassword(response.data.result.password);
+                }
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .finally(function () {
+                // always executed
             });
-        });
     }
-    //update user
+    // update user
     function updateUsers() {
-        fetch('https://babybuddies-be-dev.onrender.com/api/v1/accounts/647b77348af6c322511fed59/update', {
+        if (!nationality || !address || !target) {
+            setInputError(true);
+            return;
+        }
+        const url = 'https://babybuddies-be-dev.onrender.com/api/v1/accounts/' + routeParams + '/update';
+        console.log(url);
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,16 +86,38 @@ export default function ProfileUser() {
                 },
             }),
         }).then((result) => {
-            result.json().then((resp) => {
-                //console.log(resp);
-                alert('Update successfully');
-            });
+            localStorage.setItem('language', language[nationality]);
+            localStorage.setItem('address', address);
+            if (target === 'ChildCare') {
+                localStorage.setItem('childCare', 1);
+                localStorage.removeItem('cooking');
+            }
+            if (target === 'Cooking') {
+                localStorage.setItem('cooking', 1);
+                localStorage.removeItem('childCare');
+            }
+            if (target === 'Cooking and ChildCare') {
+                localStorage.setItem('childCare', 1);
+                localStorage.setItem('cooking', 1);
+            }
+            console.log(result);
+            localStorage.setItem('isUpdated', true);
+            window.location.href = '/home';
         });
+    }
+    function cancelUpdate() {
+        if (isLogin && isUpdated) {
+            window.location.href = '/home';
+        } else {
+            localStorage.setItem('isLogin', false);
+            window.location.href = '/login';
+        }
     }
     return (
         <div>
             <div className={styles.container1}>
                 <div className={styles.leftBox}>
+                    {inputError && <div className={styles.errorMsg}>Please fill in all fields!</div>}
                     <label className={styles.labelName}>Name</label>
                     <input
                         className={styles.inputField}
@@ -70,7 +125,15 @@ export default function ProfileUser() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
+                    <label className={styles.labelName}>Nationnality</label>
+                    <input
+                        className={styles.inputField}
+                        type="text"
+                        value={nationality}
+                        onChange={(e) => setNationality(e.target.value)}
+                    />
                     <label className={styles.labelName}>Gender</label>
+
                     <ul className={styles.ulgender}>
                         <li className={styles.font24}>
                             <input
@@ -104,15 +167,8 @@ export default function ProfileUser() {
                         </li>
                     </ul>
 
-                    <label className={styles.labelName}>Nationnality</label>
-                    <input
-                        className={styles.inputField}
-                        type="text"
-                        value={nationality}
-                        onChange={(e) => setNationality(e.target.value)}
-                    />
-
                     <label className={styles.labelName}>Address</label>
+
                     <input
                         className={styles.inputField}
                         type="text"
@@ -174,21 +230,13 @@ export default function ProfileUser() {
                         <button className={styles.SaveBtn} onClick={updateUsers}>
                             Save
                         </button>
-                        <button className={styles.CancelBtn}>Cancel</button>
+                        <button className={styles.CancelBtn} onClick={cancelUpdate}>
+                            Cancel
+                        </button>
                     </div>
                 </div>
 
-                <div className={styles.rightBox}>
-                    <div className={styles.imgDiv}>
-                        <img
-                            className={styles.userImg}
-                            src="https://kenh14cdn.com/thumb_w/660/2020/5/28/0-1590653959375414280410.jpg"
-                            alt=""
-                        />
-                        <br />
-
-                    </div>
-                </div>
+                <div className={styles.rightBox}></div>
             </div>
         </div>
     );

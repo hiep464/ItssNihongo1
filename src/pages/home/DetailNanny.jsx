@@ -9,6 +9,7 @@ import Modal from '@mui/material/Modal';
 import { Button, styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
+import axios from 'axios';
 
 const style = {
     position: 'absolute',
@@ -25,10 +26,22 @@ const style = {
 export default function DetailNanny() {
     const [nannys, setNannys] = React.useState([]);
     const { id } = useParams();
+    var isLogin = localStorage.getItem('isLogin');
 
     const [open, setOpen] = React.useState(false);
 
     const [value, setValue] = React.useState(2);
+    const [isBooking, setIsBooking] = React.useState(false);
+    const [message, setMessage] = React.useState('');
+
+    // Lấy giá trị ngày hôm nay
+    let today = new Date();
+    console.log(today);
+
+    // Lấy giá trị ngày mai
+    let tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    console.log(tomorrow);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -167,10 +180,150 @@ export default function DetailNanny() {
       `,
     );
 
+    const handleBooking = () => {
+        console.log(nanny);
+        const formData = {
+            staffId: nanny.id,
+            endDay: tomorrow.toLocaleDateString(),
+            message: message,
+            total: nanny.salary,
+            startDay: today.toLocaleDateString(),
+        };
+        axios.post('https://babybuddies-be-dev.onrender.com/api/v1/bookings/store', formData).then(() => {
+            setIsBooking(false);
+            setMessage('')
+        });
+    };
+
     return (
         <div>
+            {/* {nanny && isLogin && ( */}
             {nanny && (
                 <div>
+                    <Box
+                        display={isBooking ? 'flex' : 'none'}
+                        position={'fixed'}
+                        top={0}
+                        left={0}
+                        right={0}
+                        bottom={0}
+                        alignItems={'center'}
+                        justifyContent={'center'}
+                        backgroundColor={'rgba(0, 0, 0, 0.5)'}
+                        zIndex={1000}
+                    >
+                        <Box
+                            width={'50%'}
+                            backgroundColor={'white'}
+                            borderRadius={'6px'}
+                            display={'flex'}
+                            alignItems={'center'}
+                            justifyContent={'center'}
+                        >
+                            <Box width={'90%'}>
+                                <h1 style={{ color: '#007320' }}>Confirm booking</h1>
+                                <h4 style={{ color: '#007320' }}>Staff Name</h4>
+                                <Box
+                                    sx={{
+                                        backgroundColor: '#d6d6d6',
+                                        fontSize: '24px',
+                                        borderRadius: '6px',
+                                        padding: '2px',
+                                    }}
+                                >
+                                    {nanny.full_name}
+                                </Box>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div style={{ width: '49%' }}>
+                                        <h4 style={{ color: '#007320' }}>Start day</h4>
+                                        <Box
+                                            sx={{
+                                                backgroundColor: '#d6d6d6',
+                                                fontSize: '24px',
+                                                borderRadius: '6px',
+                                                padding: '2px',
+                                            }}
+                                        >
+                                            {today.toLocaleDateString()}
+                                        </Box>
+                                    </div>
+                                    <div style={{ width: '49%' }}>
+                                        <h4 style={{ color: '#007320' }}>Finish day</h4>
+                                        <Box
+                                            sx={{
+                                                backgroundColor: '#d6d6d6',
+                                                fontSize: '24px',
+                                                borderRadius: '6px',
+                                                padding: '2px',
+                                            }}
+                                        >
+                                            {tomorrow.toLocaleDateString()}
+                                        </Box>
+                                    </div>
+                                </div>
+                                <h4 style={{ color: '#007320' }}>Total price</h4>
+                                <Box
+                                    sx={{
+                                        width: '49%',
+                                        backgroundColor: '#d6d6d6',
+                                        fontSize: '24px',
+                                        borderRadius: '6px',
+                                        padding: '2px',
+                                        marginBottom: '18px',
+                                    }}
+                                >
+                                    {formatNumber(nanny.salary)} VND
+                                </Box>
+                                {/* <TextField
+                                    multiline
+                                    maxRows={4}
+                                    sx={{margin: '10px 0', width: '80%'}}
+                                /> */}
+                                <textarea
+                                    name="des"
+                                    id=""
+                                    cols="30"
+                                    rows="6"
+                                    placeholder="Write a sentence you want to send to the staff"
+                                    value={message}
+                                    onChange={(e) => {
+                                        setMessage(e.target.value);
+                                    }}
+                                    style={{ width: '100%', fontSize: '14px', padding: '10px', marginBottom: '10px' }}
+                                ></textarea>
+                                <Box display={'flex'} justifyContent={'space-around'} paddingBottom={'24px'}>
+                                    <Button
+                                        sx={{
+                                            backgroundColor: '#007320',
+                                            fontWeight: '600',
+                                            borderRadius: '15px',
+                                            width: '160px',
+                                        }}
+                                        variant="contained"
+                                        onClick={handleBooking}
+                                    >
+                                        Confirm
+                                    </Button>
+                                    <Button
+                                        sx={{
+                                            backgroundColor: '#E5E5E5',
+                                            fontWeight: '600',
+                                            color: '#007320',
+                                            borderRadius: '15px',
+                                            width: '160px',
+                                        }}
+                                        variant="outline"
+                                        onClick={() => {
+                                            setIsBooking(false);
+                                            setMessage('');
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
                     <div className={styles.container1}>
                         <div className={styles.leftBox}>
                             <label className={styles.labelName}>Name</label>
@@ -227,7 +380,13 @@ export default function DetailNanny() {
                             </div>
                             <div className={styles.BookOrReport}>
                                 <Box sx={{ marginLeft: '150px' }}>
-                                    <BookingButton variant="contained" sx={{ marginRight: '100px' }}>
+                                    <BookingButton
+                                        variant="contained"
+                                        sx={{ marginRight: '100px' }}
+                                        onClick={() => {
+                                            setIsBooking(true);
+                                        }}
+                                    >
                                         Booking
                                     </BookingButton>
                                     <FeedbackButton variant="contained" onClick={handleOpen}>
