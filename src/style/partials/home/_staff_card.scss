@@ -1,0 +1,96 @@
+.staff-card {
+    border-radius: 20px;
+    border: 1px solid #007320;
+    background: #f8f8f8;
+    width: 315px;
+    height: fit-content;
+    flex-shrink: 0;
+    margin: 30px 0;
+    padding: 10px;
+    cursor: pointer;
+    transition: all .2s linear;
+
+    .staff-card__image {
+        height: 208px;
+        min-height: 208px;
+        width: 100%;
+        overflow: hidden;
+        border: inherit;
+        border-radius: 13px;
+    }
+
+    .staff-card__info {
+        span {
+            font-family: Inter;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .staff-card__item {
+            display: flex;
+
+            img {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+        }
+
+        .staff-card__name-age-star {
+            display: flex;
+            justify-content: space-between;
+
+            span {
+                color: var(--primary-color);
+                font-size: 36px;
+
+                svg {
+                    font-size: inherit;
+                }
+            }
+        }
+
+        .staff-card__experience {
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .staff-card__address,
+        .staff-card__language {
+            display: flex;
+            align-items: center;
+            color: var(--secondary-color);
+
+            svg {
+                font-size: 24px;
+                margin-right: 10px;
+            }
+
+            span {
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: 100%;
+            }
+        }
+        .staff-card__salary {
+        }
+    }
+
+    &:hover {
+        background-color: #eaeaea;
+        .staff-card__image {
+            img {
+                transition: transform .2s linear;
+                transform: scale(1.1);
+            }
+        }
+    }
+}

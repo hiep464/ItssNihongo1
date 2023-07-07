@@ -1,0 +1,80 @@
+.home-container {
+    .list-staffs {
+        background-color: #ffffff;
+        border-radius: 20px;
+        border: 1px solid var(--primary-color);
+        padding: 20px;
+        min-height: 500px;
+
+        .list-staffs__head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+
+            .list-staffs__title {
+                color: #007320;
+                font-size: 48px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+        }
+
+        .list-staffs__body {
+            width: 100%;
+
+            .list-staffs__loading {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 300px;
+            }
+
+            .list-staffs__data {
+                width: 100%;
+                padding: 20px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+            .list-staffs__empty {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 300px;
+                font-size: 25px;
+                font-weight: 600;
+                color: var(--secondary-color);
+            }
+        }
+
+        .list-staffs__paging {
+        }
+    }
+
+    .filter-container {
+        position: fixed;
+        top: 72px;
+        right: 0;
+        width: 500px;
+        height: calc(100vh - 72px);
+        background-color: #fff;
+        animation: showFilter 0.3s forwards;
+        padding: 20px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+}
+
+@keyframes showFilter {
+    from {
+        opacity: 0;
+        width: 0;
+    }
+
+    to {
+        opacity: 1;
+        width: 500px;
+    }
+}
