@@ -10,6 +10,12 @@ import { Button, styled } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import BookingForm from '../../components/HomeComponent/BookingForm';
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { motion } from "framer-motion"
+
 
 const style = {
     position: 'absolute',
@@ -47,6 +53,7 @@ export default function DetailNanny() {
     const [isBooking, setIsBooking] = React.useState(false);
     const [message, setMessage] = React.useState('');
     const [review, setReview] = React.useState('');
+    const [parent, enableAnimations] = useAutoAnimate(/* optional config */)
 
     // Lấy giá trị ngày hôm nay
     let today = new Date();
@@ -174,6 +181,19 @@ export default function DetailNanny() {
         },
     });
 
+    const BookingModalStyle = {
+        display: 'flex',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: 1000
+    }
+
     const blue = {
         100: '#DAECFF',
         200: '#b6daff',
@@ -226,20 +246,7 @@ export default function DetailNanny() {
       `,
     );
 
-    const handleBooking = () => {
-        console.log(nanny);
-        const formData = {
-            staffId: nanny.id,
-            endDay: tomorrow.toLocaleDateString(),
-            message: message,
-            total: nanny.salary,
-            startDay: today.toLocaleDateString(),
-        };
-        axios.post('https://babybuddies-be-dev.onrender.com/api/v1/bookings/store', formData).then(() => {
-            setIsBooking(false);
-            setMessage('');
-        });
-    };
+
 
     //handleDelete
     const handleDeleteCMT = async (id) => {
@@ -248,135 +255,30 @@ export default function DetailNanny() {
         setOpenDelete(true);
     };
 
+    const notify = () => toast("Booking Success!");
+
     return (
-        <div>
+        <div ref={parent}>
+            <ToastContainer />
             {/* {nanny && isLogin && ( */}
             {nanny && (
                 <div>
-                    <Box
-                        display={isBooking ? 'flex' : 'none'}
-                        position={'fixed'}
-                        top={0}
-                        left={0}
-                        right={0}
-                        bottom={0}
-                        alignItems={'center'}
-                        justifyContent={'center'}
-                        backgroundColor={'rgba(0, 0, 0, 0.5)'}
-                        zIndex={1000}
-                    >
-                        <Box
-                            width={'50%'}
-                            backgroundColor={'white'}
-                            borderRadius={'6px'}
-                            display={'flex'}
-                            alignItems={'center'}
-                            justifyContent={'center'}
-                        >
-                            <Box width={'90%'}>
-                                <h1 style={{ color: '#007320' }}>Confirm booking</h1>
-                                <h4 style={{ color: '#007320' }}>Staff Name</h4>
-                                <Box
-                                    sx={{
-                                        backgroundColor: '#d6d6d6',
-                                        fontSize: '24px',
-                                        borderRadius: '6px',
-                                        padding: '2px',
-                                    }}
+                    {
+                        isBooking && (
+                            <div
+                                style={BookingModalStyle}
+                            >
+                                <BookingForm
+                                    nanny={nanny}
+                                    setisbooking={setIsBooking}
+                                    notify={notify}
                                 >
-                                    {nanny.full_name}
-                                </Box>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <div style={{ width: '49%' }}>
-                                        <h4 style={{ color: '#007320' }}>Start day</h4>
-                                        <Box
-                                            sx={{
-                                                backgroundColor: '#d6d6d6',
-                                                fontSize: '24px',
-                                                borderRadius: '6px',
-                                                padding: '2px',
-                                            }}
-                                        >
-                                            {today.toLocaleDateString()}
-                                        </Box>
-                                    </div>
-                                    <div style={{ width: '49%' }}>
-                                        <h4 style={{ color: '#007320' }}>Finish day</h4>
-                                        <Box
-                                            sx={{
-                                                backgroundColor: '#d6d6d6',
-                                                fontSize: '24px',
-                                                borderRadius: '6px',
-                                                padding: '2px',
-                                            }}
-                                        >
-                                            {tomorrow.toLocaleDateString()}
-                                        </Box>
-                                    </div>
-                                </div>
-                                <h4 style={{ color: '#007320' }}>Total price</h4>
-                                <Box
-                                    sx={{
-                                        width: '49%',
-                                        backgroundColor: '#d6d6d6',
-                                        fontSize: '24px',
-                                        borderRadius: '6px',
-                                        padding: '2px',
-                                        marginBottom: '18px',
-                                    }}
-                                >
-                                    {formatNumber(nanny.salary)} VND
-                                </Box>
-                                {/* <TextField
-                                    multiline
-                                    maxRows={4}
-                                    sx={{margin: '10px 0', width: '80%'}}
-                                /> */}
-                                <textarea
-                                    name="des"
-                                    id=""
-                                    cols="30"
-                                    rows="6"
-                                    placeholder="Write a sentence you want to send to the staff"
-                                    value={message}
-                                    onChange={(e) => {
-                                        setMessage(e.target.value);
-                                    }}
-                                    style={{ width: '100%', fontSize: '14px', padding: '10px', marginBottom: '10px' }}
-                                ></textarea>
-                                <Box display={'flex'} justifyContent={'space-around'} paddingBottom={'24px'}>
-                                    <Button
-                                        sx={{
-                                            backgroundColor: '#007320',
-                                            fontWeight: '600',
-                                            borderRadius: '15px',
-                                            width: '160px',
-                                        }}
-                                        variant="contained"
-                                        onClick={handleBooking}
-                                    >
-                                        Confirm
-                                    </Button>
-                                    <Button
-                                        sx={{
-                                            backgroundColor: '#E5E5E5',
-                                            fontWeight: '600',
-                                            color: '#007320',
-                                            borderRadius: '15px',
-                                            width: '160px',
-                                        }}
-                                        variant="outline"
-                                        onClick={() => {
-                                            setIsBooking(false);
-                                            setMessage('');
-                                        }}
-                                    >
-                                        Cancel
-                                    </Button>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Box>
+                                </BookingForm>
+                            </div>
+                        )
+                    }
+
+
                     <div className={styles.container1}>
                         <div className={styles.leftBox}>
                             <label className={styles.labelName}>Name</label>
