@@ -18,7 +18,6 @@ function App() {
         if (userId) {
             loginUser(userId)
                 .then(res => {
-                    console.log(res.data.result)
                     const { id, account_status, user_info, username, booking } = res.data.result;
                     dispatch(saveUserInfo({ id, account_status, user_info, username, booking }))
                 })

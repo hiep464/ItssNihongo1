@@ -114,7 +114,7 @@ export default function ProfileUser() {
         }
     }
     return (
-        <div>
+        <div className='main-session profile-container'>
             <div className={styles.container1}>
                 <div className={styles.leftBox}>
                     {inputError && <div className={styles.errorMsg}>Please fill in all fields!</div>}
