@@ -52,7 +52,7 @@ function BookingForm(props) {
 
         axios.post('https://babybuddies-be-dev.onrender.com/api/v1/bookings/store', formData).then(() => {
             setMessage('');    
-            notify();
+            notify("Booking Success!");
             setIsBooking(false);
         });
 

@@ -48,10 +48,10 @@ export default function DetailNanny() {
 
     const [open, setOpen] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
+    const [currentSelectDeleteComment, setCurrentSelectDeleteComment] = React.useState(0);
 
     const [value, setValue] = React.useState(2);
     const [isBooking, setIsBooking] = React.useState(false);
-    const [message, setMessage] = React.useState('');
     const [review, setReview] = React.useState('');
     const [parent, enableAnimations] = useAutoAnimate(/* optional config */)
 
@@ -133,13 +133,33 @@ export default function DetailNanny() {
             fetchData();
             //dong modal
             handleClose();
+            notify('Add rating success!');
         });
     }
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const handleOpenDelete = () => setOpenDelete(true);
-    const handleCloseDelete = () => setOpenDelete(false);
+    const handleOpenDelete = (id) => {
+        console.log('select: ',id);
+        setCurrentSelectDeleteComment(id);
+        setOpenDelete(true)
+    };
+    const handleCloseDelete = () => {
+        console.log('select: ',0);
+        setCurrentSelectDeleteComment(0);
+        setOpenDelete(false)
+    };
+
+    //handleDelete
+    const handleDeleteCMT = () => {
+        console.log("Now delete comment: ", currentSelectDeleteComment);
+        setOpenDelete(false);
+        notify("Delete Comment Success!");
+        // axios.delete('https://babybuddies-be-dev.onrender.com/api/v1/ratings').then(() => {
+        //     notify();
+        // });
+
+    };
 
     const BookingButton = styled(Button)({
         backgroundColor: '#007320',
@@ -246,16 +266,7 @@ export default function DetailNanny() {
       `,
     );
 
-
-
-    //handleDelete
-    const handleDeleteCMT = async (id) => {
-        await fetch(`https://babybuddies-be-dev.onrender.com/api/v1/ratings`, { method: 'DELETE' });
-        setNannys(nanny.filter((nanny) => nanny.id !== id));
-        setOpenDelete(true);
-    };
-
-    const notify = () => toast.success('Booking success', {
+    const notify = (message) => toast.success(message, {
         position: "bottom-right",
         autoClose: 4000,
         hideProgressBar: false,
@@ -448,73 +459,69 @@ export default function DetailNanny() {
 
                     <span className={styles.commentText}>Previous comment</span>
                     <div className={styles.container3}>
+                    <Modal
+                        open={openDelete}
+                        onClose={handleCloseDelete}
+                        aria-labelledby="modal-modal-title1"
+                        aria-describedby="modal-modal-description1"
+                    >
+                        {/* Modal delete */}
+                        <Box sx={styleDelete} borderRadius={5} border="1px solid">
+                            <Typography
+                                id="modal-modal-title1"
+                                variant="h6"
+                                component="h2"
+                                fontWeight="bold"
+                                fontSize="28px"
+                                textAlign={'center'}
+                            >
+                                Delete Comment?
+                            </Typography>
+                            <Typography
+                                id="modal-modal-description"
+                                sx={{ mt: 2 }}
+                                fontWeight="semibold"
+                                textAlign={'center'}
+                            >
+                                Are you sure want to delete the comment? 
+                                Once deleteed, it cannot be restored.
+                            </Typography>
+
+                            <Typography
+                                sx={{
+                                    marginTop: '20px',
+                                    alignItems: 'center',
+                                    display: 'flex',
+                                    justifyContent: 'space-evenly',
+                                }}
+                            >
+                                    <MyButton
+                                        onClick={handleCloseDelete}
+                                    >
+                                        Cancel
+                                    </MyButton>
+                                    <MyButton
+                                        onClick={() => handleDeleteCMT(1)}
+                                    >
+                                        Delete
+                                    </MyButton>
+                            </Typography>
+                        </Box>
+                    </Modal>
                         {nanny &&
                             nanny.rating.map((item, index) => (
                                 <div key={index} className={styles.prevComment}>
                                     <div className={styles.close}>
                                         <span style={{ fontWeight: 'bold', marginLeft: '16px' }}>
+                                            <span className={styles.commentUser}> {item.name ? item.name  : 'Phan Dang Minh' } </span>
                                             {item.star}
                                             <span className={styles.greenStar2}>&#9733;</span>
                                         </span>
-                                        <span className={styles.delete} onClick={handleOpenDelete}>
+                                        <span className={styles.delete} onClick={() => handleOpenDelete(item.id)}>
                                             X
                                         </span>
-                                        <Modal
-                                            open={openDelete}
-                                            onClose={handleCloseDelete}
-                                            aria-labelledby="modal-modal-title1"
-                                            aria-describedby="modal-modal-description1"
-                                        >
-                                            {/* Modal delete */}
-                                            <Box sx={styleDelete} borderRadius={5} border="1px solid">
-                                                <Typography
-                                                    id="modal-modal-title1"
-                                                    variant="h6"
-                                                    component="h2"
-                                                    fontWeight="bold"
-                                                    fontSize="28px"
-                                                    textAlign={'center'}
-                                                >
-                                                    Delete Comment?
-                                                </Typography>
-                                                <Typography
-                                                    id="modal-modal-description"
-                                                    sx={{ mt: 2 }}
-                                                    fontWeight="bold"
-                                                    textAlign={'center'}
-                                                >
-                                                    Are you sure want to delete the comment ? Once deleted, it the
-                                                    comment? Once deleteed, it cannot be restored.
-                                                </Typography>
-
-                                                <Typography
-                                                    sx={{
-                                                        marginTop: '20px',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                        display: 'flex',
-                                                    }}
-                                                >
-                                                    <Typography>
-                                                        <MyButton onClick={handleCloseDelete}>Cancel</MyButton>
-                                                        <MyButton
-                                                            sx={{ marginRight: '5px' }}
-                                                        // onClick={() => handleDeleteCustomer(nanny.id)}
-                                                        >
-                                                            Delete
-                                                        </MyButton>
-                                                    </Typography>
-                                                </Typography>
-                                            </Box>
-                                        </Modal>
                                     </div>
-                                    <br />
-                                    <span
-                                        style={{
-                                            marginLeft: '16px',
-                                            display: 'block',
-                                            marginBottom: '12px',
-                                        }}
+                                    <span className={styles.review}
                                     >
                                         {item.review}
                                     </span>
