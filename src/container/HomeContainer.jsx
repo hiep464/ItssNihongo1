@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Home from '../components/Home/Home'
 import { getAllNanniesApi, matchingNannyApi } from '../api/home.api';
 
@@ -60,7 +60,6 @@ const HomeContainer = () => {
         setIsLoading(true)
         matchingNannyApi(formData)
             .then(res => {
-                console.log(res);
                 setNannies(res.data)
                 setIsLoading(false)
             })
@@ -103,7 +102,7 @@ const HomeContainer = () => {
             handleChangeCurrentPage={handleChangeCurrentPage}
             isFilter={isFilter}
             setIsFilter={handleChangeIsFilter}
-            setIsLoading = {setIsLoading}
+            setIsLoading={setIsLoading}
         />
     )
 }
