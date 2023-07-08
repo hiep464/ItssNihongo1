@@ -1,0 +1,38 @@
+.form-container {
+    .title {
+        color: #007320;
+        padding: 20px 0px 0px 0px;
+    }
+
+    .subtitle {
+        display: block;
+        color: #007320;
+        padding: 10px 0px 15px 0px;
+        font-weight: 500;
+    }
+
+    .message-input {
+        border: solid 2px #51a869;
+        border-radius: 10px;
+        width: 100%; 
+        font-size: 14px; 
+        font-weight: 600;
+        padding: 20px; 
+        margin-bottom: 10px;
+    }
+}
+
+// Datepicker
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.datepicker {
+    border: none;
+    background-color: #d6d6d6;
+    border-radius: 6px;
+    font-size: 20px;
+    padding: 10px!important;
+    padding-left: 12px!important;
+    width: 100%;
+}

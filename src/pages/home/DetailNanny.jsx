@@ -12,7 +12,7 @@ import TextareaAutosize from '@mui/base/TextareaAutosize';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import BookingForm from '../../components/HomeComponent/BookingForm';
+import BookingForm from '../../components/StaffDetailComponent/BookingForm';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { motion } from "framer-motion"
 
@@ -255,11 +255,34 @@ export default function DetailNanny() {
         setOpenDelete(true);
     };
 
-    const notify = () => toast("Booking Success!");
+    const notify = () => toast.success('Booking success', {
+        position: "bottom-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });;
 
     return (
-        <div ref={parent}>
-            <ToastContainer />
+        <div 
+            ref={parent}
+            className='main-session home-container'
+        >
+            <ToastContainer
+                position="top-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             {/* {nanny && isLogin && ( */}
             {nanny && (
                 <div>
