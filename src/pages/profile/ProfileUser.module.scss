@@ -13,9 +13,9 @@
     display: flex;
     flex-direction: row;
     overflow: hidden;
-    border: 1px solid #1d9a1d;
+    border: 1px solid var(--primary-color);
     border-radius: 20px;
-    margin: 44px 88px;
+    // margin: 44px 88px;
     padding-bottom: 20px;
     position: relative;
 }
@@ -23,7 +23,7 @@
 .container2 {
     flex-direction: row;
     overflow: hidden;
-    border: 1px solid #1d9a1d;
+    border: 1px solid var(--primary-color);
     border-radius: 10px;
     margin: 44px 88px 0px 88px;
     position: relative;
@@ -35,7 +35,7 @@
 .container3 {
     display: flex;
     overflow: hidden;
-    border: 1px solid #1d9a1d;
+    border: 1px solid var(--primary-color);
     border-radius: 10px;
     margin: 4px 88px 44px 88px;
     position: relative;
@@ -66,7 +66,7 @@
 .labelName {
     display: block;
     margin-left: 12px;
-    color: #1d9a1d;
+    color: var(--primary-color);
     font-size: 24px;
     margin-top: 12px;
     margin-bottom: 12px;
@@ -80,7 +80,7 @@
     margin-top: 36px;
     width: 460px;
     height: 460px;
-    border: 1px solid #1d9a1d;
+    border: 1px solid var(--primary-color);
     border-radius: 10px;
 }
 
@@ -146,7 +146,7 @@
 }
 .labelImg {
     margin-left: 12px;
-    color: #1d9a1d;
+    color: var(--primary-color);
     font-size: 17px;
     margin-top: 12px;
     margin-bottom: 12px;
@@ -163,7 +163,7 @@
 
 .ulgender li a {
     text-decoration: none;
-    color: #1d9a1d;
+    color: var(--primary-color);
     font-size: 24px;
     font-weight: bold;
     margin-left: 10px;
@@ -181,7 +181,7 @@
 
 .ultarget li a {
     text-decoration: none;
-    color: #1d9a1d;
+    color: var(--primary-color);
     font-size: 24px;
     font-weight: bold;
     margin-left: 10px;
