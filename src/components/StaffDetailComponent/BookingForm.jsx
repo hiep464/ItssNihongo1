@@ -48,14 +48,14 @@ function BookingForm(props) {
             total: total,
             startDay: endDate,
         };
-        notify();
         console.log(formData);
 
-        setIsBooking(false);
-        // axios.post('https://babybuddies-be-dev.onrender.com/api/v1/bookings/store', formData).then(() => {
-        //     setMessage('');    
-        //     // <button onClick={notify}>Notify!</button>
-        // });
+        axios.post('https://babybuddies-be-dev.onrender.com/api/v1/bookings/store', formData).then(() => {
+            setMessage('');    
+            notify();
+            setIsBooking(false);
+        });
+
     };
 
     return (
