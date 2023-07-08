@@ -1,0 +1,26 @@
+.paginate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+
+    .paginate-item {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+        margin: 0 5px;
+        transition: all 0.2s linear;
+        background-color: #fff;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #e0e0e0;
+        }
+    }
+
+    .paginate-item.active {
+        background-color: #e0e0e0;
+    }
+}

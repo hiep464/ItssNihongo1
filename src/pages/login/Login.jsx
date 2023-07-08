@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -14,8 +13,11 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
-import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
+import { loginUser } from '../../api/auth.api';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveUserInfo } from '../../redux/slices/auth.slice';
+import { useNavigate } from 'react-router-dom';
+import { authSelector } from '../../redux/selector';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -28,6 +30,9 @@ const defaultTheme = createTheme();
 export default function Login() {
     const [userInfos, setUserInfos] = useState();
     const [userIdError, setUserIdError] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const user = useSelector(authSelector);
 
     const accountIds = [
         '647b77348af6c322511fed58',
@@ -55,31 +60,48 @@ export default function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log(accountIds[data.get('userId') - 1]);
+        // console.log(accountIds[data.get('userId') - 1]);
         const newUserId = '/profile/' + accountIds[data.get('userId') - 1];
         const userId = accountIds[data.get('userId') - 1];
-        try {
-            const response = await axios.get(`https://babybuddies-be-dev.onrender.com/api/v1/accounts/${userId}`);
-            console.log(response);
-            if (response.data.result) {
-                localStorage.setItem('userId', userId);
-                localStorage.setItem('isLogin', true);
-                window.location.href = newUserId;
-            } else {
-                setUserIdError(true);
-            }
-        } catch (error) {
-            console.log(error);
-            // Xử lý khi userId không hợp lệ, ví dụ hiển thị thông báo lỗi
-        }
+        // try {
+        //     const response = await axios.get(`https://babybuddies-be-dev.onrender.com/api/v1/accounts/${userId}`);
+        //     console.log(response);
+        //     if (response.data.result) {
+        //         localStorage.setItem('userId', userId);
+        //         localStorage.setItem('isLogin', true);
+        //         window.location.href = newUserId;
+        //     } else {
+        //         setUserIdError(true);
+        //     }
+        // } catch (error) {
+        //     console.log(error);
+        //     // Xử lý khi userId không hợp lệ, ví dụ hiển thị thông báo lỗi
+        // }
+
+        loginUser(userId)
+            .then(res => {
+                console.log(res.data.result)
+                const { id, account_status, user_info, username, booking } = res.data.result;
+                dispatch(saveUserInfo({ id, account_status, user_info, username, booking }))
+                navigate(`/profile/${id}`);
+            })
+            .catch(err => {
+
+            })
         // localStorage.setItem('userId', data.get('userId'));
         // localStorage.setItem('isLogin', true);
         // window.location.href = newUserId;
     };
 
+    React.useEffect(() => {
+        if(user.isLogin){
+            navigate("/")
+        }
+    }, [user, navigate])
+
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
+            <Grid container component="main" sx={{ height: 'calc(100vh - 72px)', marginTop: "72px" }}>
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <Box
                         sx={{
