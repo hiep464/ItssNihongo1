@@ -7,14 +7,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Button, styled } from '@mui/material';
-import TextField from '@mui/material/TextField';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BookingForm from '../../components/HomeComponent/BookingForm';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { motion } from "framer-motion"
 
 
 const style = {

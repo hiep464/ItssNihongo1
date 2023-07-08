@@ -13,6 +13,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import { useSelector } from 'react-redux';
+import { authSelector } from '../../redux/selector';
+import { useNavigate } from 'react-router';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -24,6 +27,10 @@ const MyAppBar = styled(Button)({
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+
+    const user = useSelector(authSelector);
+    const navigate = useNavigate();
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -32,6 +39,12 @@ export default function SignUp() {
             password: data.get('password'),
         });
     };
+
+    React.useEffect(() => {
+        if(user.isLogin){
+            navigate("/")
+        }
+    }, [user, navigate])
 
     return (
         <ThemeProvider theme={defaultTheme}>
