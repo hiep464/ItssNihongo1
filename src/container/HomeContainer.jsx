@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Home from '../components/Home/Home'
 import { getAllNanniesApi, matchingNannyApi } from '../api/home.api';
+import { useSelector } from 'react-redux';
+import { authSelector } from '../redux/selector';
 
 const HomeContainer = () => {
     const [nannies, setNannies] = useState([]);
@@ -13,7 +15,7 @@ const HomeContainer = () => {
     })
     const [isFilter, setIsFilter] = useState(false);
 
-    const isLogin = localStorage.getItem('isLogin');
+    const user = useSelector(authSelector);
 
     const handleChangeIsFilter = () => {
         setIsFilter(!isFilter);
@@ -35,7 +37,7 @@ const HomeContainer = () => {
         })
     }
 
-    const handleFilterFromProfile = () => {
+    const handleFilterFromProfile = (profile) => {
         const languageF = localStorage.getItem('language');
         const cookingF = localStorage.getItem('cooking') + ' years';
         const childCareF = localStorage.getItem('childCare') + ' years';
@@ -60,7 +62,6 @@ const HomeContainer = () => {
         setIsLoading(true)
         matchingNannyApi(formData)
             .then(res => {
-                console.log(res);
                 setNannies(res.data)
                 setIsLoading(false)
             })
@@ -70,8 +71,8 @@ const HomeContainer = () => {
     };
 
     useEffect(() => {
-        if (isLogin) {
-            handleFilterFromProfile();
+        if (user.user_info) {
+            handleFilterFromProfile(user.user_info);
         } else {
             setIsLoading(true);
             getAllNanniesApi()
@@ -79,19 +80,23 @@ const HomeContainer = () => {
                     const data = [...res.data.result.staffs];
                     setIsLoading(false);
                     setNannies(data);
-                    setTotalPages(Math.ceil(data.length / paging.size));
                 })
                 .catch(err => {
 
                 })
         }
         //eslint-disable-next-line
-    }, [isLogin])
+    }, [user])
 
     useEffect(() => {
         handleChangeShowData(paging.currentPage, nannies);
         //eslint-disable-next-line
     }, [nannies, paging.currentPage])
+
+    useEffect(() => {
+        console.log(nannies)
+        setTotalPages(Math.ceil(nannies.length / paging.size))
+    }, [nannies, paging])
 
     return (
         <Home

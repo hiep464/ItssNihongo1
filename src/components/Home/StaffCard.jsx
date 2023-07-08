@@ -2,6 +2,9 @@ import React from 'react'
 import { IoStarSharp } from 'react-icons/io5'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography'
 
 const StaffCard = ({ staff }) => {
 
@@ -74,11 +77,12 @@ const StaffCard = ({ staff }) => {
                     </span>
                 </div>
                 <div className="staff-card__item staff-card__language">
-                    <img src={require("../../assets/img/child.png")} alt=""
-                        className='experience-icon'
+                    <img src={require("../../assets/img/language.png")} alt=""
+                        className='staff-card__language__icon'
                     />
                     <span>
                         {staff.user_language && [...staff.user_language]?.map(language => language.name).join(", ")}
+                        {staff.user_language_names && [...staff.user_language_names].join(", ")}
                     </span>
                 </div>
                 <div className="staff-card__item staff-card__address">
@@ -88,6 +92,47 @@ const StaffCard = ({ staff }) => {
                 <div className="staff-card__item staff-card__salary">
                     <span>{staff?.salary.toLocaleString("vi-VN")} VND/day</span>
                 </div>
+            </div>
+            <div className="staff-card__matching-score">
+                <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                    <CircularProgress
+                        variant="determinate"
+                        // value={20}
+                        value={
+                            isNaN(parseFloat(staff.matching_score))
+                                ? 0
+                                : parseFloat(staff.matching_score)
+                        }
+                        sx={{ color: 'red' }}
+                    />
+                    <Box
+                        sx={{
+                            top: 0,
+                            left: 0,
+                            bottom: 0,
+                            right: 0,
+                            position: 'absolute',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Typography
+                            variant="caption"
+                            component="div"
+                            color="black"
+                            fontWeight="bold"
+                        >
+                            {`${Math.round(
+                                parseFloat(
+                                    isNaN(parseFloat(staff.matching_score))
+                                        ? 0
+                                        : parseFloat(staff.matching_score),
+                                ),
+                            )}%`}
+                        </Typography>
+                    </Box>
+                </Box>
             </div>
         </div>
     )
