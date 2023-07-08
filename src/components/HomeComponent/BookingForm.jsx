@@ -92,7 +92,8 @@ function BookingForm(props) {
                                 </div>
                                 <div style={{ width: '49%' }}>
                                     <h4 style={{ color: '#007320' }}>Finish day</h4>
-                                    <DatePicker 
+                                    <DatePicker
+                                        showIcon 
                                         style={{backgroundColor: 'red'}} 
                                         selected={endDate} 
                                         onChange={(date) => setEndDate(date)} 
