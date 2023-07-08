@@ -21,6 +21,13 @@ function formatNumber(number) {
     return formattedNumber;
 }
 
+function dateCaculate(date1, date2) {
+    let Difference_In_Time = date2.getTime() - date1.getTime();
+    let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    console.log(Difference_In_Time, Difference_In_Days, parseInt(Difference_In_Days.toFixed()+1));
+    return parseInt(Difference_In_Days.toFixed())+1;
+}
+
 
 function BookingForm(props) {
     let nanny = props.nanny;
@@ -30,7 +37,7 @@ function BookingForm(props) {
     const [message, setMessage] = React.useState('');
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-
+    const [total, setTotal] = useState(nanny.salary)
 
     const handleBooking = () => {
         console.log(nanny);
@@ -38,15 +45,17 @@ function BookingForm(props) {
             staffId: nanny.id,
             endDay: startDate,
             message: message,
-            total: nanny.salary,
+            total: total,
             startDay: endDate,
         };
-        notify();
         console.log(formData);
-        // axios.post('https://babybuddies-be-dev.onrender.com/api/v1/bookings/store', formData).then(() => {
-        //     setMessage('');    
-        //     // <button onClick={notify}>Notify!</button>
-        // });
+
+        axios.post('https://babybuddies-be-dev.onrender.com/api/v1/bookings/store', formData).then(() => {
+            setMessage('');    
+            notify();
+            setIsBooking(false);
+        });
+
     };
 
     return (
@@ -66,52 +75,66 @@ function BookingForm(props) {
                         display={'flex'}
                         alignItems={'center'}
                         justifyContent={'center'}
+                        padding={"20px 25px"}
                     >
-                        <Box width={'90%'}>
-                            <h1 style={{ color: '#007320' }}>Confirm booking</h1>
-                            <h4 style={{ color: '#007320' }}>Staff Name</h4>
+                        <Box width={'100%'} className="form-container">
+                            <h1 class="title">
+                                Confirm booking
+                            </h1>
+                            <span class="subtitle">Staff Name</span>
                             <Box
                                 sx={{
                                     backgroundColor: '#d6d6d6',
-                                    fontSize: '24px',
+                                    fontSize: '20px',
                                     borderRadius: '6px',
-                                    padding: '2px',
+                                    padding: '10px',
+                                    paddingLeft: '12px',
                                 }}
                             >
                                 {nanny.full_name}
                             </Box>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <div style={{ width: '49%' }}>
-                                    <h4 style={{ color: '#007320' }}>Start day</h4>
+                                    <span class="subtitle">Start day</span>
                                     <DatePicker
                                         showIcon
                                         selected={startDate} 
                                         onChange={(date) => setStartDate(date)}
                                         className='datepicker'
+                                        startDate={startDate}
+                                        endDate={endDate}
                                     />
                                 </div>
                                 <div style={{ width: '49%' }}>
-                                    <h4 style={{ color: '#007320' }}>Finish day</h4>
+                                    <span class="subtitle">Finish day</span>
                                     <DatePicker
-                                        showIcon 
-                                        style={{backgroundColor: 'red'}} 
+                                        showIcon
                                         selected={endDate} 
-                                        onChange={(date) => setEndDate(date)} 
+                                        onChange={(date) => {
+                                            setEndDate(date)
+                                            setTotal(dateCaculate(startDate, date)*nanny.salary)
+                                            console.log('change', dateCaculate(startDate, endDate), startDate, endDate);
+                                        }}
+                                        className='datepicker'
+                                        startDate={startDate}
+                                        endDate={endDate}
+                                        minDate={startDate}
                                     />
                                 </div>
                             </div>
-                            <h4 style={{ color: '#007320' }}>Total price</h4>
+                            <span class="subtitle">Total price</span>
                             <Box
                                 sx={{
                                     width: '49%',
                                     backgroundColor: '#d6d6d6',
-                                    fontSize: '24px',
+                                    fontSize: '20px',
                                     borderRadius: '6px',
-                                    padding: '2px',
+                                    padding: '10px',
+                                    paddingLeft: '12px',
                                     marginBottom: '18px',
                                 }}
                             >
-                                {formatNumber(nanny.salary)} VND
+                                {formatNumber(total)} VND
                             </Box>
                             {/* <TextField
                                 multiline
@@ -123,12 +146,12 @@ function BookingForm(props) {
                                 id=""
                                 cols="30"
                                 rows="6"
-                                placeholder="Write a sentence you want to send to the staff"
+                                placeholder="Write a message you want to send to the staff"
                                 value={message}
                                 onChange={(e) => {
                                     setMessage(e.target.value);
                                 }}
-                                style={{ width: '100%', fontSize: '14px', padding: '10px', marginBottom: '10px' }}
+                                className='message-input'
                             ></textarea>
                             <Box display={'flex'} justifyContent={'space-around'} paddingBottom={'24px'}>
                                 <Button
@@ -137,6 +160,7 @@ function BookingForm(props) {
                                         fontWeight: '600',
                                         borderRadius: '15px',
                                         width: '160px',
+                                        ':hover': { backgroundColor: 'rgb(135, 196, 120)' }
                                     }}
                                     variant="contained"
                                     onClick={handleBooking}

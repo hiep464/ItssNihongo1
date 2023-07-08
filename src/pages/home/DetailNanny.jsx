@@ -12,7 +12,7 @@ import TextareaAutosize from '@mui/base/TextareaAutosize';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import BookingForm from '../../components/HomeComponent/BookingForm';
+import BookingForm from '../../components/StaffDetailComponent/BookingForm';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { motion } from "framer-motion"
 
@@ -255,11 +255,34 @@ export default function DetailNanny() {
         setOpenDelete(true);
     };
 
-    const notify = () => toast("Booking Success!");
+    const notify = () => toast.success('Booking success', {
+        position: "bottom-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });;
 
     return (
-        <div ref={parent} className='main-session staff-detail-container'>
-            <ToastContainer />
+        <div 
+            ref={parent}
+            className='main-session home-container'
+        >
+            <ToastContainer
+                position="top-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             {/* {nanny && isLogin && ( */}
             {nanny && (
                 <div>
@@ -288,7 +311,10 @@ export default function DetailNanny() {
 
                             <label className={styles.labelName}>Gender</label>
                             <ul>
-                                <li className={styles.font24}>{nanny.gender}</li>
+                                <li className={styles.font24}> 
+                                    <span className={styles.dot}></span> 
+                                    {nanny.gender}
+                                </li>
                             </ul>
 
                             <label className={styles.labelName}>Birthday</label>
@@ -335,7 +361,7 @@ export default function DetailNanny() {
                                 />
                             </div>
                             <div className={styles.BookOrReport}>
-                                <Box sx={{ marginLeft: '150px' }}>
+                                <Box className={styles.BookOrReportButton}>
                                     <BookingButton
                                         variant="contained"
                                         sx={{ marginRight: '100px' }}
@@ -345,7 +371,9 @@ export default function DetailNanny() {
                                     >
                                         Booking
                                     </BookingButton>
-                                    <FeedbackButton variant="contained" onClick={handleOpen}>
+                                    <FeedbackButton 
+                                        variant="contained" 
+                                        onClick={handleOpen}>
                                         Feedback
                                     </FeedbackButton>
                                 </Box>
@@ -354,6 +382,7 @@ export default function DetailNanny() {
                                     onClose={handleClose}
                                     aria-labelledby="modal-modal-title"
                                     aria-describedby="modal-modal-description"
+                                    closeAfterTransition
                                 >
                                     {/* Modal Feedback */}
                                     <Box sx={style} borderRadius={5} border="1px solid">
@@ -417,7 +446,7 @@ export default function DetailNanny() {
                         </div>
                     </div>
 
-                    <span className={styles.commentText}>previous comment</span>
+                    <span className={styles.commentText}>Previous comment</span>
                     <div className={styles.container3}>
                         {nanny &&
                             nanny.rating.map((item, index) => (
