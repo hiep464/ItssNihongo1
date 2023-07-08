@@ -311,7 +311,10 @@ export default function DetailNanny() {
 
                             <label className={styles.labelName}>Gender</label>
                             <ul>
-                                <li className={styles.font24}>{nanny.gender}</li>
+                                <li className={styles.font24}> 
+                                    <span className={styles.dot}></span> 
+                                    {nanny.gender}
+                                </li>
                             </ul>
 
                             <label className={styles.labelName}>Birthday</label>
@@ -358,7 +361,7 @@ export default function DetailNanny() {
                                 />
                             </div>
                             <div className={styles.BookOrReport}>
-                                <Box sx={{ marginLeft: '150px' }}>
+                                <Box className={styles.BookOrReportButton}>
                                     <BookingButton
                                         variant="contained"
                                         sx={{ marginRight: '100px' }}
@@ -368,7 +371,9 @@ export default function DetailNanny() {
                                     >
                                         Booking
                                     </BookingButton>
-                                    <FeedbackButton variant="contained" onClick={handleOpen}>
+                                    <FeedbackButton 
+                                        variant="contained" 
+                                        onClick={handleOpen}>
                                         Feedback
                                     </FeedbackButton>
                                 </Box>
@@ -377,6 +382,7 @@ export default function DetailNanny() {
                                     onClose={handleClose}
                                     aria-labelledby="modal-modal-title"
                                     aria-describedby="modal-modal-description"
+                                    closeAfterTransition
                                 >
                                     {/* Modal Feedback */}
                                     <Box sx={style} borderRadius={5} border="1px solid">
@@ -440,7 +446,7 @@ export default function DetailNanny() {
                         </div>
                     </div>
 
-                    <span className={styles.commentText}>previous comment</span>
+                    <span className={styles.commentText}>Previous comment</span>
                     <div className={styles.container3}>
                         {nanny &&
                             nanny.rating.map((item, index) => (
