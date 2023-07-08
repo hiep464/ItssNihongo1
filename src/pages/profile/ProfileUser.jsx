@@ -39,9 +39,7 @@ export default function ProfileUser() {
             .get(url)
             .then(function (response) {
                 // handle success
-                console.log(response);
                 const data = response.data.result.user_info;
-                console.log(data);
                 if (data) {
                     setName(data.name);
                     setNationality(data.nationality);
@@ -100,7 +98,6 @@ export default function ProfileUser() {
                 localStorage.setItem('childCare', 1);
                 localStorage.setItem('cooking', 1);
             }
-            console.log(result);
             localStorage.setItem('isUpdated', true);
             window.location.href = '/home';
         });

@@ -82,6 +82,13 @@
         }
         .staff-card__salary {
         }
+
+        .staff-card__language {
+            .staff-card__language__icon {
+                border-radius: 0;
+                object-fit: contain;
+            }
+        }
     }
 
     &:hover {
