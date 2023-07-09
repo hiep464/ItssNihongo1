@@ -7,6 +7,7 @@ import { offDualRingLoading, onDualRingLoading } from '../redux/slices/loading.s
 import { validateProfile } from '../validation'
 import { getProfileForUser, updateProfileUserApi } from '../api/profile.api'
 import Swal from 'sweetalert2'
+import { saveUserInfo } from '../redux/slices/auth.slice'
 
 const ProfileContainer = () => {
 
@@ -28,7 +29,11 @@ const ProfileContainer = () => {
         onSubmit: values => {
             dispatch(onDualRingLoading());
             if (user.userId) {
-                updateProfileUserApi(user.userId, values)
+                const { address, gender, name, nationality, password, phone, want_to } = values;
+                updateProfileUserApi(user.userId, {
+                    userInfo: { address, gender, name, nationality, phone, wantTo: want_to },
+                    password: password
+                })
                     .then(res => {
                         dispatch(offDualRingLoading())
                         setMessage(message => message + 'success')
@@ -38,6 +43,7 @@ const ProfileContainer = () => {
                             icon: 'success',
                             confirmButtonText: 'OK'
                         })
+                        dispatch(saveUserInfo(res.data.result))
                     })
                     .catch(err => {
                         dispatch(offDualRingLoading())
@@ -51,11 +57,11 @@ const ProfileContainer = () => {
         if (user.userId) {
             getProfileForUser(user.userId)
                 .then(res => {
-                    const data = res.data.result.user_info;
+                    const user_info = res.data.result.user_info;
                     const formData = { ...formik.values };
-                    for (const key in data) {
+                    for (const key in user_info) {
                         if (Object.hasOwnProperty.call(formData, key)) {
-                            formData[key] = data[key];
+                            formData[key] = user_info[key];
                         }
                     }
                     formik.setValues(formData);
@@ -66,8 +72,6 @@ const ProfileContainer = () => {
         }
         //eslint-disable-next-line
     }, [user, message])
-
-    console.log(formik.values)
 
     return (
         <Profile formik={formik} />
