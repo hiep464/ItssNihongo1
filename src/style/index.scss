@@ -1,6 +1,7 @@
 :root {
     --primary-color: #007320;
-    --secondary-color: rgba(0, 115, 32, 0.65);
+    --secondary-color: #007320a6;
+    --third-color: #72c78a;
 }
 
 // import font-family
@@ -21,6 +22,12 @@
 @import url("./partials/staffdetail/_staffdetail.scss");
 @import url("./partials/staffdetail/_bookingform.scss");
 
+//profile style
+@import url("./partials/profile/_profile.scss");
+
+//hired style
+@import url("./partials/hired/_hired.scss");
+
 * {
     margin: 0;
     padding: 0;
@@ -29,7 +36,6 @@
 }
 
 body {
-
     &::-webkit-scrollbar {
         width: 3px;
     }
@@ -47,7 +53,7 @@ body {
 .main-session {
     margin-top: 72px;
     padding: 50px;
-    background-color: #F9F9F9;
+    background-color: #f9f9f9;
     min-width: 600px;
 }
 

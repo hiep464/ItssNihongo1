@@ -11,16 +11,20 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector } from 'react-redux';
 import { authSelector } from '../../redux/selector';
+import { useNavigate } from 'react-router';
 
 export default function Hired() {
     const [bookings, setBookings] = React.useState([]);
     const user = useSelector(authSelector);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user.booking) {
             setBookings([...user.booking])
         }
     }, [user]);
+
+    console.log(bookings)
 
     return (
         <div className="main-session hired-container">
@@ -66,19 +70,22 @@ export default function Hired() {
                                                 src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
                                             />
                                             <Box marginLeft={'8px'} display={'flex'} flexDirection={'column'}>
-                                                <span>{row.full_name || 'Bui Gia Bao'}</span>
+                                                <span>{row.full_name}</span>
                                                 <span style={{ color: '#B5B5C3' }}>{row.code || 'CN1111'}</span>
                                             </Box>
                                         </Box>
                                     </TableCell>
                                     <TableCell align="left">
-                                        {row.start_day?.split('T')[0].replace(/-/g, '/')}-{row.end_day.split('T')[0].replace(/-/g, '/')}
-                                        {/* {console.log(formatDate(row.start_day), formatDate(row.end_day), row.start_day.split('T')[0].replace(/-/g, '/'), row.end_day)} */}
+                                        {row.start_day?.split('T')[0].replace(/-/g, '/')}-{row.end_day?.split('T')[0].replace(/-/g, '/')}
                                     </TableCell>
                                     <TableCell align="left">{row.status}</TableCell>
                                     <TableCell align="right">
-                                        <RemoveRedEyeIcon />
-                                        <DeleteIcon />
+                                        <span
+                                            onClick={() => {
+                                                navigate(`/details/${row.staff_id}`)
+                                            }}
+                                        ><RemoveRedEyeIcon className='hired-table__icon'/></span>
+                                        <DeleteIcon className='hired-table__icon' />
                                     </TableCell>
                                 </TableRow>
                             ))}

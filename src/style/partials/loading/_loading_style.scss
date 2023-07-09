@@ -53,6 +53,18 @@
     }
 }
 
+.dual-ring-container {
+    width: 100vw;
+    height: calc(100vh - 72px);
+    background-color: rgba(171, 171, 171, 0.329);
+    position: fixed;
+    top: 72px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @keyframes lds-dual-ring {
     0% {
         transform: rotate(0deg);

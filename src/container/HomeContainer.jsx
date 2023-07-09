@@ -94,7 +94,6 @@ const HomeContainer = () => {
     }, [nannies, paging.currentPage])
 
     useEffect(() => {
-        console.log(nannies)
         setTotalPages(Math.ceil(nannies.length / paging.size))
     }, [nannies, paging])
 

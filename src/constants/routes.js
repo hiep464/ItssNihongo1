@@ -5,6 +5,6 @@ export const ROUTE = {
     SIGNUP: '/signup',
     LOGOUT: '/logout',
     NANNY_DETAIL: '/details/:id',
-    PROFILE: '/profile/:userId',
+    PROFILE: '/profile',
     HIRED: '/hired'
 }

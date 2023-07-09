@@ -135,7 +135,7 @@ export default function DetailNanny() {
             handleClose();
         });
     }
-
+    console.log(nannys)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleOpenDelete = () => setOpenDelete(true);
@@ -354,7 +354,7 @@ export default function DetailNanny() {
                                 <Rating
                                     style={{ color: '#0d520d' }}
                                     name="read-only"
-                                    value={calculateAverageRating(nanny.rating)}
+                                    value={calculateAverageRating(nanny.ratings)}
                                     readOnly
                                     precision={0.1}
                                     sx={{ fontSize: '58px' }}
@@ -449,7 +449,7 @@ export default function DetailNanny() {
                     <span className={styles.commentText}>Previous comment</span>
                     <div className={styles.container3}>
                         {nanny &&
-                            nanny.rating.map((item, index) => (
+                            nanny.ratings.map((item, index) => (
                                 <div key={index} className={styles.prevComment}>
                                     <div className={styles.close}>
                                         <span style={{ fontWeight: 'bold', marginLeft: '16px' }}>

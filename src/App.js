@@ -9,10 +9,12 @@ import { authSelector } from './redux/selector';
 import { useEffect } from 'react';
 import { loginUser } from './api/auth.api';
 import { saveUserInfo } from './redux/slices/auth.slice';
+import DualRingLoading from './components/Loading/DualRingLoading';
 
 function App() {
     const userId = useSelector(authSelector).userId;
     const dispatch = useDispatch();
+    
 
     useEffect(() => {
         if (userId) {
@@ -34,6 +36,7 @@ function App() {
             <BrowserRouter>
                 <AppRouter />
             </BrowserRouter>
+            <DualRingLoading/>
         </>
     );
 }

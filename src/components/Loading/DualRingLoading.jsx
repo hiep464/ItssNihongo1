@@ -1,10 +1,18 @@
 import React from 'react'
+import { loadingSelector } from '../../redux/selector'
+import { useSelector } from 'react-redux'
 
 const DualRingLoading = () => {
+  const loading = useSelector(loadingSelector)
+
   return (
-    <div className='dual-ring-container'>
-        <div class="lds-dual-ring"></div>
-    </div>
+    <>
+      {loading.dualRing.isLoading &&
+        <div className='dual-ring-container'>
+          <div className="lds-dual-ring"></div>
+        </div>
+      }
+    </>
   )
 }
 

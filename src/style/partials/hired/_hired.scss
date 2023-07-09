@@ -1,0 +1,11 @@
+.hired-container {
+    .hired-table__icon {
+        cursor: pointer;
+        margin: 0 5px;
+        transition: color .1s linear;
+
+        &:hover {
+            color: red;
+        }
+    }
+}

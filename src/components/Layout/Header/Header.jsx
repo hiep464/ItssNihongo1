@@ -28,7 +28,7 @@ const Header = () => {
                             key={link.title}
                         >
                             <UserArea handleChangeHeight={handleChangeHeight} />
-                            <DropDownMenu height={height} setHeight={handleChangeHeight} />
+                            <DropDownMenu height={height} setHeight={handleChangeHeight}/>
                         </div>
                     ))}
                     </>

@@ -33,7 +33,7 @@ const StaffCard = ({ staff }) => {
 
     function calculateAverageRating(reviews) {
         var totalStars = 0;
-        var totalReviews = reviews.length;
+        var totalReviews = reviews?.length;
 
         for (var i = 0; i < totalReviews; i++) {
             totalStars += reviews[i].star;
