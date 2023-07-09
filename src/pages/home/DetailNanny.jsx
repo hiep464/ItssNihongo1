@@ -45,6 +45,7 @@ export default function DetailNanny() {
     const [nannys, setNannys] = React.useState([]);
     const { id } = useParams();
     var isLogin = localStorage.getItem('isLogin');
+    var currentUser = localStorage.getItem('userId');
 
     const [open, setOpen] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
@@ -153,11 +154,11 @@ export default function DetailNanny() {
     //handleDelete
     const handleDeleteCMT = () => {
         console.log("Now delete comment: ", currentSelectDeleteComment);
-        setOpenDelete(false);
-        notify("Delete Comment Success!");
-        // axios.delete('https://babybuddies-be-dev.onrender.com/api/v1/ratings').then(() => {
-        //     notify();
-        // });
+        
+        axios.delete('https://babybuddies-be-dev.onrender.com/api/v1/ratings').then(() => {
+            notify("Delete Comment Success!");
+            setOpenDelete(false);
+        });
 
     };
 
@@ -315,46 +316,47 @@ export default function DetailNanny() {
 
                     <div className={styles.container1}>
                         <div className={styles.leftBox}>
-                            <label className={styles.labelName}>Name</label>
+                            <label className={styles.labelName}>スタッフ名</label>
                             <span className={styles.inputField}>
                                 <p className={styles.inputFieldText}>{nanny.full_name}</p>
                             </span>
 
-                            <label className={styles.labelName}>Gender</label>
+                            <label className={styles.labelName}>性別</label>
                             <ul>
                                 <li className={styles.font24}> 
                                     <span className={styles.dot}></span> 
-                                    {nanny.gender}
+                                    
+                                    {nanny.gender === 'male' ? '男' : '女'}
                                 </li>
                             </ul>
 
-                            <label className={styles.labelName}>Birthday</label>
+                            <label className={styles.labelName}>誕生日</label>
                             <span className={styles.inputField}>
                                 <p className={styles.inputFieldText}>{nanny.birthday}</p>
                             </span>
 
-                            <label className={styles.labelName}>Address</label>
+                            <label className={styles.labelName}>住所</label>
                             <span className={styles.inputField}>
                                 <p className={styles.inputFieldText}>{nanny.address}</p>
                             </span>
 
-                            <label className={styles.labelName}>Experience of Cooking</label>
+                            <label className={styles.labelName}>料理経験</label>
                             <span className={styles.inputField}>
-                                <p className={styles.inputFieldText}>{nanny.cook_exp} of experience</p>
+                                <p className={styles.inputFieldText}>{nanny.cook_exp}</p>
                             </span>
 
-                            <label className={styles.labelName}>Experience of Child Care</label>
+                            <label className={styles.labelName}>子供の世話経験</label>
                             <span className={styles.inputField}>
-                                <p className={styles.inputFieldText}>{nanny.care_exp} of experience</p>
+                                <p className={styles.inputFieldText}>{nanny.care_exp}</p>
                             </span>
 
-                            <label className={styles.labelName}>Languages</label>
+                            <label className={styles.labelName}>言語</label>
                             <span className={styles.inputField}>
                                 <p className={styles.inputFieldText}>{nannyLanguagesString}</p>
                             </span>
 
-                            <label className={styles.labelName}>Price</label>
-                            <span className={styles.staffPrice}> {formatNumber(nanny.salary)} VND/day</span>
+                            <label className={styles.labelName}>価格</label>
+                            <span className={styles.staffPrice}> {formatNumber(nanny.salary)} VND/日</span>
                         </div>
 
                         <div className={styles.rightBox}>
@@ -375,17 +377,19 @@ export default function DetailNanny() {
                                 <Box className={styles.BookOrReportButton}>
                                     <BookingButton
                                         variant="contained"
-                                        sx={{ marginRight: '100px' }}
+                                        sx={{ marginRight: '100px', width: '100%', fontWeight: 600 }}
                                         onClick={() => {
                                             setIsBooking(true);
                                         }}
                                     >
-                                        Booking
+                                        予約
                                     </BookingButton>
                                     <FeedbackButton 
                                         variant="contained" 
-                                        onClick={handleOpen}>
-                                        Feedback
+                                        onClick={handleOpen}
+                                        sx={{width: '100%', fontWeight: 600}}
+                                    >
+                                        フィードバック
                                     </FeedbackButton>
                                 </Box>
                                 <Modal
@@ -404,10 +408,10 @@ export default function DetailNanny() {
                                             fontWeight="bold"
                                             fontSize="28px"
                                         >
-                                            Feedback
+                                            フィードバック
                                         </Typography>
                                         <Typography id="modal-modal-description" sx={{ mt: 2 }} fontWeight="bold">
-                                            Rating :
+                                            星付け
                                         </Typography>
                                         <Typography sx={{ marginLeft: 8 }}>
                                             <Rating
@@ -447,9 +451,9 @@ export default function DetailNanny() {
                                             }}
                                         >
                                             <MyButton onClick={FeedBack} sx={{ marginRight: '25px' }}>
-                                                Submit
+                                                OK
                                             </MyButton>
-                                            <MyButton onClick={handleClose}>Cancel</MyButton>
+                                            <MyButton onClick={handleClose}>キャンセル</MyButton>
                                         </Typography>
                                     </Box>
                                 </Modal>
@@ -457,7 +461,7 @@ export default function DetailNanny() {
                         </div>
                     </div>
 
-                    <span className={styles.commentText}>Previous comment</span>
+                    <span className={styles.commentText}>コメント</span>
                     <div className={styles.container3}>
                     <Modal
                         open={openDelete}
@@ -475,7 +479,7 @@ export default function DetailNanny() {
                                 fontSize="28px"
                                 textAlign={'center'}
                             >
-                                Delete Comment?
+                                コメントを削除しますか？
                             </Typography>
                             <Typography
                                 id="modal-modal-description"
@@ -483,8 +487,8 @@ export default function DetailNanny() {
                                 fontWeight="semibold"
                                 textAlign={'center'}
                             >
-                                Are you sure want to delete the comment? 
-                                Once deleteed, it cannot be restored.
+                                コメントを削除してもよろしいですか？
+                                削除した後は復元することはできません。
                             </Typography>
 
                             <Typography
@@ -513,13 +517,17 @@ export default function DetailNanny() {
                                 <div key={index} className={styles.prevComment}>
                                     <div className={styles.close}>
                                         <span style={{ fontWeight: 'bold', marginLeft: '16px' }}>
-                                            <span className={styles.commentUser}> {item.name ? item.name  : 'Phan Dang Minh' } </span>
+                                            <span className={styles.commentUser}> {item.username ? item.username  : 'Phan Dang Minh' } </span>
                                             {item.star}
                                             <span className={styles.greenStar2}>&#9733;</span>
                                         </span>
-                                        <span className={styles.delete} onClick={() => handleOpenDelete(item.id)}>
-                                            X
-                                        </span>
+                                        {
+                                            (item.user_id == currentUser) && (
+                                                <span className={styles.delete} onClick={() => handleOpenDelete(item.id)}>
+                                                    X
+                                                </span>
+                                            )
+                                        }
                                     </div>
                                     <span className={styles.review}
                                     >

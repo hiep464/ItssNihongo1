@@ -79,9 +79,9 @@ function BookingForm(props) {
                     >
                         <Box width={'100%'} className="form-container">
                             <h1 class="title">
-                                Confirm booking
+                                予約確認
                             </h1>
-                            <span class="subtitle">Staff Name</span>
+                            <span class="subtitle">スタッフ名</span>
                             <Box
                                 sx={{
                                     backgroundColor: '#d6d6d6',
@@ -95,7 +95,7 @@ function BookingForm(props) {
                             </Box>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <div style={{ width: '49%' }}>
-                                    <span class="subtitle">Start day</span>
+                                    <span class="subtitle">開始日</span>
                                     <DatePicker
                                         showIcon
                                         selected={startDate} 
@@ -106,7 +106,7 @@ function BookingForm(props) {
                                     />
                                 </div>
                                 <div style={{ width: '49%' }}>
-                                    <span class="subtitle">Finish day</span>
+                                    <span class="subtitle">終了日</span>
                                     <DatePicker
                                         showIcon
                                         selected={endDate} 
@@ -122,7 +122,7 @@ function BookingForm(props) {
                                     />
                                 </div>
                             </div>
-                            <span class="subtitle">Total price</span>
+                            <span class="subtitle">合計</span>
                             <Box
                                 sx={{
                                     width: '49%',
@@ -146,7 +146,7 @@ function BookingForm(props) {
                                 id=""
                                 cols="30"
                                 rows="6"
-                                placeholder="Write a message you want to send to the staff"
+                                placeholder="スタッフ・管理者にメッセージを送信したい場合は、ここで書いてください"
                                 value={message}
                                 onChange={(e) => {
                                     setMessage(e.target.value);
@@ -165,7 +165,7 @@ function BookingForm(props) {
                                     variant="contained"
                                     onClick={handleBooking}
                                 >
-                                    Confirm
+                                    Ok
                                 </Button>
                                 <Button
                                     sx={{
@@ -181,7 +181,7 @@ function BookingForm(props) {
                                         setIsBooking(false);
                                     }}
                                 >
-                                    Cancel
+                                    キャンセル
                                 </Button>
                             </Box>
                         </Box>

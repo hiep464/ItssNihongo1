@@ -35,28 +35,28 @@ export default function Hired() {
                 flexDirection={'column'}
                 paddingBottom={'40px'}
             >
-                <h1 style={{ textAlign: 'left', width: '80%', padding: '20px 0', fontSize: '40px' }}>Hired staff</h1>
+                <h1 style={{ textAlign: 'left', width: '80%', padding: '20px 0', fontSize: '40px' }}>予約管理</h1>
                 <TableContainer component={Paper} sx={{ width: '80%' }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell width={400}
-                                    sx={{ fontWeight: 600, fontSize: 20 }}
+                                    sx={{ fontWeight: 600, fontSize: 18 }}
                                 >Staff</TableCell>
                                 <TableCell width={300} align="left"
-                                    sx={{ fontWeight: 600, fontSize: 20 }}
+                                    sx={{ fontWeight: 600, fontSize: 18 }}
                                 >
-                                    Hired day
+                                    予約時間
                                 </TableCell>
                                 <TableCell width={200} align="left"
-                                    sx={{ fontWeight: 600, fontSize: 20 }}
+                                    sx={{ fontWeight: 600, fontSize: 18 }}
                                 >
-                                    Status
+                                    ステータス
                                 </TableCell>
                                 <TableCell width={100} align="right"
-                                    sx={{ fontWeight: 600, fontSize: 20 }}
+                                    sx={{ fontWeight: 600, fontSize: 18 }}
                                 >
-                                    Action
+                                    アクション
                                 </TableCell>
                             </TableRow>
                         </TableHead>
