@@ -1,4 +1,8 @@
-const Profile = ({ formik }) => {
+import AnimateHeight from "react-animate-height"
+import { nationalities } from "../../constants/nationality"
+
+const Profile = ({ formik, handleSelectNationality, nationHeight, setNationHeight }) => {
+
     return (
         <div className="main-session profile-container">
             <form className="profile-form"
@@ -16,8 +20,26 @@ const Profile = ({ formik }) => {
                     <label className="profile-form__label">Nationality</label>
                     <input type="text" name="nationality" className="profile-form__input"
                         value={formik.values.nationality}
-                        onChange={formik.handleChange}
+                        readOnly
+                        onClick={() => {
+                            setNationHeight(nationHeight === 0 ? "auto" : 0);
+                        }}
                     />
+                    <AnimateHeight
+                        duration={300}
+                        height={nationHeight}
+                        className="animate-height--nationality"
+                    >
+                        <div className="select-nationality">
+                            {nationalities.map(item => (
+                                <div className="select-nationality__item" key={item.id}
+                                    onClick={() => {
+                                        handleSelectNationality(item.id)
+                                    }}
+                                >{item.value}</div>
+                            ))}
+                        </div>
+                    </AnimateHeight>
                     <p className="profile-error-message">{formik.errors.nationality}</p>
                 </div>
                 <div className="profile-form__item">

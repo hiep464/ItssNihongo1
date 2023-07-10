@@ -8,12 +8,14 @@ import { validateProfile } from '../validation'
 import { getProfileForUser, updateProfileUserApi } from '../api/profile.api'
 import Swal from 'sweetalert2'
 import { saveUserInfo } from '../redux/slices/auth.slice'
+import { nationalities } from '../constants/nationality'
 
 const ProfileContainer = () => {
 
     const user = useSelector(authSelector);
     const dispatch = useDispatch();
     const [message, setMessage] = useState('');
+    const [nationHeight, setNationHeight] = useState(0)
 
     const formik = useFormik({
         initialValues: {
@@ -53,6 +55,14 @@ const ProfileContainer = () => {
         }
     })
 
+    const handleSelectNationality = (nationality_id) => {
+        const nationality = nationalities.find(item => item.id === nationality_id);
+        if (nationality) {
+            formik.setFieldValue("nationality", nationality.value);
+            setNationHeight(0);
+        }
+    }
+
     useEffect(() => {
         if (user.userId) {
             getProfileForUser(user.userId)
@@ -74,7 +84,12 @@ const ProfileContainer = () => {
     }, [user, message])
 
     return (
-        <Profile formik={formik} />
+        <Profile
+            formik={formik}
+            handleSelectNationality={handleSelectNationality}
+            nationHeight={nationHeight}
+            setNationHeight={setNationHeight}
+        />
     )
 }
 
