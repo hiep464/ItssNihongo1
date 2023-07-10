@@ -15,6 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import BookingForm from '../../components/StaffDetailComponent/BookingForm';
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { motion } from "framer-motion"
+import { useNavigate } from 'react-router-dom'
+
 
 
 const style = {
@@ -42,7 +44,10 @@ const styleDelete = {
 };
 
 export default function DetailNanny() {
-    const [nannys, setNannys] = React.useState([]);
+    const [nanny, setNanny] = React.useState({
+        ratings: [],
+        user_language: [],
+    });
     const { id } = useParams();
     var isLogin = localStorage.getItem('isLogin');
     var currentUser = localStorage.getItem('userId');
@@ -65,19 +70,17 @@ export default function DetailNanny() {
     tomorrow.setDate(tomorrow.getDate() + 1);
     console.log(tomorrow);
 
+    const fetchData = async () => {
+        const reponse = await fetch(
+            'https://babybuddies-be-dev.onrender.com/api/v1/staffs/'+ id,
+        );
+        const reponseJSON = await reponse.json();
+        setNanny(reponseJSON.result);
+    };
+
     React.useEffect(() => {
-        const fetchData = async () => {
-            const reponse = await fetch(
-                'https://babybuddies-be-dev.onrender.com/api/v1/home?fbclid=IwAR0YWt_3e9gKOT4E6uDFFe5aQl4lZ6GMheji7DLbuXTORu1V2j5x8JUrDQQ',
-            );
-            const reponseJSON = await reponse.json();
-            setNannys(reponseJSON.result.staffs);
-        };
         fetchData();
     }, []);
-
-    const nanny = nannys.find((nanny) => nanny.id === id);
-    console.log(nanny);
 
     function getNannyLanguages(nanny) {
         if (nanny) {
@@ -91,7 +94,7 @@ export default function DetailNanny() {
 
     // format số tiền 100000 => 100,000
     function formatNumber(number) {
-        const formattedNumber = number.toLocaleString('en-US');
+        const formattedNumber = number?.toLocaleString('en-US');
         return formattedNumber;
     }
 
@@ -125,20 +128,13 @@ export default function DetailNanny() {
             }),
         }).then(() => {
             //load lai phan danh gia cua nanny sau khi post
-            const fetchData = async () => {
-                const reponse = await fetch(
-                    'https://babybuddies-be-dev.onrender.com/api/v1/home?fbclid=IwAR0YWt_3e9gKOT4E6uDFFe5aQl4lZ6GMheji7DLbuXTORu1V2j5x8JUrDQQ',
-                );
-                const reponseJSON = await reponse.json();
-                setNannys(reponseJSON.result.staffs);
-            };
             fetchData();
             //dong modal
             handleClose();
             notify('Add rating success!');
         });
     }
-    console.log(nannys)
+    console.log(nanny)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleOpenDelete = (id) => {
@@ -156,9 +152,11 @@ export default function DetailNanny() {
     const handleDeleteCMT = () => {
         console.log("Now delete comment: ", currentSelectDeleteComment);
         
-        axios.delete('https://babybuddies-be-dev.onrender.com/api/v1/ratings').then(() => {
+        axios.delete(`https://babybuddies-be-dev.onrender.com/api/v1/ratings/${currentSelectDeleteComment}/delete`).then(() => {
             notify("Delete Comment Success!");
             setOpenDelete(false);
+
+            fetchData();
         });
 
     };
@@ -281,7 +279,6 @@ export default function DetailNanny() {
 
     return (
         <div 
-            ref={parent}
             className='main-session home-container'
         >
             <ToastContainer
@@ -463,7 +460,10 @@ export default function DetailNanny() {
                     </div>
 
                     <span className={styles.commentText}>コメント</span>
-                    <div className={styles.container3}>
+                    <div
+                        ref={parent}
+                        className={styles.container3} 
+                    >
                     <Modal
                         open={openDelete}
                         onClose={handleCloseDelete}

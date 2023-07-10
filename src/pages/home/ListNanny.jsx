@@ -715,14 +715,15 @@ export default function ListNanny() {
                                                         {formatNumber(nanny.salary)} VND/day
                                                     </Typography>
 
-                                                    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                                                    {
+                                                        (isNaN(parseFloat(nanny.matching_score)) || (parseFloat(nanny.matching_score) == 0))  &&
+                                                        (
+                                                        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
                                                         <CircularProgress
                                                             variant="determinate"
                                                             // value={20}
                                                             value={
-                                                                isNaN(parseFloat(nanny.matching_score))
-                                                                    ? 0
-                                                                    : parseFloat(nanny.matching_score)
+                                                                parseFloat(nanny.matching_score)
                                                             }
                                                             sx={{ color: 'red' }}
                                                         />
@@ -746,14 +747,15 @@ export default function ListNanny() {
                                                             >
                                                                 {`${Math.round(
                                                                     parseFloat(
-                                                                        isNaN(parseFloat(nanny.matching_score))
-                                                                            ? 0
-                                                                            : parseFloat(nanny.matching_score),
+                                                                        parseFloat(nanny.matching_score),
                                                                     ),
                                                                 )}%`}
                                                             </Typography>
                                                         </Box>
-                                                    </Box>
+                                                        </Box>
+                                                        )
+                                                    }
+
                                                 </Typography>
                                             </CardContent>
                                         </Card>
