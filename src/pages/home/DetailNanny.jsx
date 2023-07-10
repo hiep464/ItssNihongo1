@@ -121,6 +121,7 @@ export default function DetailNanny() {
             body: JSON.stringify({
                 star: value,
                 review: review,
+                userId: currentUser
             }),
         }).then(() => {
             //load lai phan danh gia cua nanny sau khi post

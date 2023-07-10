@@ -33,6 +33,7 @@ function BookingForm(props) {
     let nanny = props.nanny;
     const setIsBooking = props.setisbooking;
     const notify = props.notify;
+    const currentUser = localStorage.getItem('userId');
     console.log(nanny, setIsBooking);
     const [message, setMessage] = React.useState('');
     const [startDate, setStartDate] = useState(new Date());
@@ -47,6 +48,7 @@ function BookingForm(props) {
             message: message,
             total: total,
             startDay: endDate,
+            userId: currentUser
         };
         console.log(formData);
 
