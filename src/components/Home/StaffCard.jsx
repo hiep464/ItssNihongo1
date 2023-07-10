@@ -93,47 +93,54 @@ const StaffCard = ({ staff }) => {
                     <span>{staff?.salary.toLocaleString("vi-VN")} VND/day</span>
                 </div>
             </div>
-            <div className="staff-card__matching-score">
-                <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                    <CircularProgress
-                        variant="determinate"
-                        // value={20}
-                        value={
-                            isNaN(parseFloat(staff.matching_score))
-                                ? 0
-                                : parseFloat(staff.matching_score)
-                        }
-                        sx={{ color: 'red' }}
-                    />
-                    <Box
-                        sx={{
-                            top: 0,
-                            left: 0,
-                            bottom: 0,
-                            right: 0,
-                            position: 'absolute',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <Typography
-                            variant="caption"
-                            component="div"
-                            color="black"
-                            fontWeight="bold"
+            {
+                (!isNaN(parseFloat(staff.matching_score)) 
+                 && (parseFloat(staff.matching_score) != 0)
+                 && staff.matching_score != NaN) &&
+                (
+                    <div className="staff-card__matching-score">
+                    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                        <CircularProgress
+                            variant="determinate"
+                            // value={20}
+                            value={
+                                isNaN(parseFloat(staff.matching_score))
+                                    ? 0
+                                    : parseFloat(staff.matching_score)
+                            }
+                            sx={{ color: 'red' }}
+                        />
+                        <Box
+                            sx={{
+                                top: 0,
+                                left: 0,
+                                bottom: 0,
+                                right: 0,
+                                position: 'absolute',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
                         >
-                            {`${Math.round(
-                                parseFloat(
-                                    isNaN(parseFloat(staff.matching_score))
-                                        ? 0
-                                        : parseFloat(staff.matching_score),
-                                ),
-                            )}%`}
-                        </Typography>
+                            <Typography
+                                variant="caption"
+                                component="div"
+                                color="black"
+                                fontWeight="bold"
+                            >
+                                {`${Math.round(
+                                    parseFloat(
+                                        isNaN(parseFloat(staff.matching_score))
+                                            ? 0
+                                            : parseFloat(staff.matching_score),
+                                    ),
+                                )}%`}
+                            </Typography>
+                        </Box>
                     </Box>
-                </Box>
-            </div>
+                </div>
+                )
+            }
         </div>
     )
 }
