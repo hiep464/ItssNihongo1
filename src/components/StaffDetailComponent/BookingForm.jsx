@@ -15,6 +15,11 @@ import { motion } from "framer-motion"
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { offDualRingLoading, onDualRingLoading } from '../../redux/slices/loading.slice';
+import { useDispatch, useSelector } from 'react-redux'
+import Swal from 'sweetalert2';
+
+
 
 function formatNumber(number) {
     const formattedNumber = number?.toLocaleString('en-US');
@@ -30,10 +35,12 @@ function dateCaculate(date1, date2) {
 
 
 function BookingForm(props) {
+    const dispatch = useDispatch();
+
     let nanny = props.nanny;
     const setIsBooking = props.setisbooking;
     const notify = props.notify;
-    const currentUser = localStorage.getItem('userId');
+    const currentUser = localStorage.getItem('userId');    
     console.log(nanny, setIsBooking);
     const [message, setMessage] = React.useState('');
     const [startDate, setStartDate] = useState(new Date());
@@ -41,6 +48,8 @@ function BookingForm(props) {
     const [total, setTotal] = useState(nanny.salary)
 
     const handleBooking = () => {
+
+        dispatch(onDualRingLoading());
         console.log(nanny);
         const formData = {
             staffId: nanny.id,
@@ -56,6 +65,13 @@ function BookingForm(props) {
             setMessage('');    
             notify("Booking Success!");
             setIsBooking(false);
+            dispatch(offDualRingLoading())
+            Swal.fire({
+                title: 'Success',
+                text: "Successfully booking!",
+                icon: 'success',
+                confirmButtonText: 'OK'
+            })
         });
 
     };
