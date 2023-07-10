@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector } from 'react-redux';
 import { authSelector } from '../../redux/selector';
 import { useNavigate } from 'react-router';
+import { getProfileForUser } from '../../api/profile.api';
 
 export default function Hired() {
     const [bookings, setBookings] = React.useState([]);
@@ -19,12 +20,19 @@ export default function Hired() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user.booking) {
-            setBookings([...user.booking])
+        if (user.userId) {
+            getProfileForUser(user.userId)
+                .then(res => {
+                    const bookings = res.data.result.booking;
+                    setBookings([...bookings])
+                    console.log(bookings)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
-    }, [user]);
+    }, []);
 
-    console.log(bookings)
 
     return (
         <div className="main-session hired-container">
