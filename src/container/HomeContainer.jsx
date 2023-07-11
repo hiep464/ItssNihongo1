@@ -7,12 +7,11 @@ import { authSelector } from '../redux/selector';
 const HomeContainer = () => {
     const [nannies, setNannies] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [size, setSize] = useState(8);
+    const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [paging, setPaging] = useState({
-        currentPage: 1,
-        size: 8,
-        data: []
-    })
+    const [dataShow, setDataShow] = useState([]);
+
     const [isFilter, setIsFilter] = useState(false);
 
     const user = useSelector(authSelector);
@@ -22,19 +21,7 @@ const HomeContainer = () => {
     }
 
     const handleChangeCurrentPage = page => {
-        setPaging({
-            ...paging,
-            currentPage: page
-        })
-    }
-
-    const handleChangeShowData = (currentPage, nannies) => {
-        const startIndex = (currentPage - 1) * paging.size;
-        const data = [...nannies].splice(startIndex, paging.size);
-        setPaging({
-            ...paging,
-            data: data
-        })
+        setCurrentPage(page);
     }
 
     const handleFilterFromProfile = (profile) => {
@@ -89,20 +76,46 @@ const HomeContainer = () => {
     }, [user])
 
     useEffect(() => {
-        handleChangeShowData(paging.currentPage, nannies);
-        //eslint-disable-next-line
-    }, [nannies, paging.currentPage])
+        const startIndex = (currentPage - 1) * size;
+        const data = [...nannies].splice(startIndex, size);
+        setTotalPages(Math.ceil(nannies.length / size))
+        setDataShow(data);
+    }, [nannies, currentPage, size])
 
     useEffect(() => {
-        setTotalPages(Math.ceil(nannies.length / paging.size))
-    }, [nannies, paging])
+        if(totalPages > 0 && currentPage > totalPages){
+            setCurrentPage(totalPages);
+        }
+    }, [currentPage, totalPages])
+
+    useEffect(() => {
+        const handleResize = () => {
+            const numColumns = Math.floor((window.innerWidth - 180) / 315); // Số cột ước tính, 200px là kích thước ước lượng của StaffCard
+            const numRows = 2; // Số hàng ước tính, 200px là kích thước ước lượng của StaffCard
+            const maxItemsPerPage = numColumns * numRows;
+            if(numColumns > 3){
+                setSize(maxItemsPerPage);
+            } else {
+                setSize(8)
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+
+    }, [])
 
     return (
         <Home
-            nannies={paging.data}
+            nannies={dataShow}
             setNannies={setNannies}
             isLoading={isLoading}
-            currentPage={paging.currentPage}
+            currentPage={currentPage}
             totalPages={totalPages}
             handleChangeCurrentPage={handleChangeCurrentPage}
             isFilter={isFilter}

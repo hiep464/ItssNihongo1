@@ -37,9 +37,7 @@
                 padding: 20px;
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
-                grid-template-rows: auto;
                 row-gap: 60px;
-                column-gap: 10px;
             }
 
             .list-staffs__empty {
@@ -51,9 +49,6 @@
                 font-weight: 600;
                 color: var(--secondary-color);
             }
-        }
-
-        .list-staffs__paging {
         }
     }
 

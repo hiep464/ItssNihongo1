@@ -65,8 +65,8 @@ const Home = ({ nannies, setNannies, isLoading, isFilter, setIsFilter,
                         <CustomPaging
                             currentPage={currentPage}
                             totalPages={totalPages}
-                            firstLabel="First"
-                            lastLabel="Last"
+                            firstLabel="1"
+                            lastLabel={totalPages}
                             setCurrentPage={handleChangeCurrentPage}
                         />
                     </div>}
