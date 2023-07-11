@@ -122,7 +122,7 @@ const StaffCard = ({ staff }) => {
                     <span>{staff?.address}</span>
                 </div>
                 <div className="staff-card__item staff-card__salary">
-                    <span>{staff?.salary.toLocaleString("vi-VN")} VND/day</span>
+                    <span>{staff?.salary.toLocaleString("vi-VN")} VND/日</span>
                 </div>
             </div>
             {

@@ -114,7 +114,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             }}
             startIcon={<TranslateIcon sx={{ color: '#a744be' }} />}
           >
-            Language
+            言語
           </Button>
           <Box margin={'10px'} display={'flex'} width={'100%'} flexWrap={'wrap'}>
             {languages.map((item, key) => {
@@ -162,7 +162,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             }}
             startIcon={<OutdoorGrillIcon sx={{ color: '#ff6624' }} />}
           >
-            Cooking
+            料理
           </Button>
           <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
             {cookings.map((item, key) => {
@@ -189,7 +189,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     );
                   }}
                 >
-                  {item?.name === '> 3 years'? '3 years+' : item.name}
+                  {item?.name === '> 3 years'? '3 年+' : item.name}
                 </Button>
               );
             })}
@@ -211,7 +211,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             }}
             startIcon={<ChildFriendlyIcon sx={{ color: 'primary.main' }} />}
           >
-            Childcare
+            世話
           </Button>
           <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
             {childCares.map((item, key) => {
@@ -239,7 +239,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     );
                   }}
                 >
-                  {item?.name === '> 3 years'? '3 years+' : item.name}
+                  {item?.name === '> 3 years'? '3 年+' : item.name}
                 </Button>
               );
             })}
@@ -261,7 +261,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             }}
             startIcon={<AttachMoneyIcon sx={{ color: '#b70f0a' }} />}
           >
-            Price
+            価格
           </Button>
           <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
             {prices.map((item, key) => {
@@ -310,7 +310,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             }}
             onClick={handleSubmitFilter}
           >
-            Submit
+            マッチング
           </Button>
           <Button
             onClick={() => {
@@ -331,7 +331,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
               ':hover': { backgroundColor: 'red' },
             }}
           >
-            Cancel
+            キャンセル
           </Button>
         </Typography>
       </Box>
