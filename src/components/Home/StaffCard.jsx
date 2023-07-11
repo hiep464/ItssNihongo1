@@ -86,6 +86,7 @@ const StaffCard = ({ staff }) => {
             }}
         >
             <div className="staff-card__image">
+                <div></div>
                 <img src={staff?.image_link} alt="" />
             </div>
             <div className="staff-card__info">
@@ -156,7 +157,7 @@ const StaffCard = ({ staff }) => {
                             <Typography
                                 variant="caption"
                                 component="div"
-                                color="black"
+                                color="white"
                                 fontWeight="bold"
                             >
                                 {`${Math.round(

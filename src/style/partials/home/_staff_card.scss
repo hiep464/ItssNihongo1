@@ -1,5 +1,7 @@
 .staff-card {
+    position: relative;
     border-radius: 20px;
+    overflow: hidden;
     border: 1px solid #007320;
     background: #f8f8f8;
     width: 315px;
@@ -8,15 +10,25 @@
     margin: 30px 0;
     cursor: pointer;
     transition: all .2s linear;
-    box-shadow: 2px 2px 0.5em ;
+    box-shadow: 2px 2px 0.5em #00000050 ;
 
     .staff-card__image {
+        position: relative;
         height: 208px;
         min-height: 208px;
         width: 100%;
         overflow: hidden;
         border: inherit;
         border-radius: 13px 13px 0 0;
+        
+        
+        div {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            z-index: 10;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+        }
     }
 
     .staff-card__info {
@@ -41,7 +53,6 @@
             img {
                 width: 24px;
                 height: 24px;
-                border-radius: 50%;
                 margin-right: 10px;
             }
         }
@@ -97,6 +108,13 @@
                 object-fit: contain;
             }
         }
+    }
+
+    .staff-card__matching-score {
+        position: absolute;
+        bottom: 55%;
+        right: 10px;
+        z-index: 11;
     }
 
     &:hover {

@@ -57,9 +57,10 @@
 
     .filter-container {
         position: fixed;
+        z-index: 1000;
         top: 72px;
         right: 0;
-        width: 500px;
+        min-width: 680px;
         height: calc(100vh - 72px);
         background-color: #fff;
         animation: showFilter 0.3s forwards;

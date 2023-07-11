@@ -9,6 +9,7 @@ import ChildFriendlyIcon from '@mui/icons-material/ChildFriendly';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { childCare, cooking, language, price } from '../../constants/filter';
 import { matchingNannyApi } from '../../api/home.api';
+import { logDOM } from '@testing-library/react';
 
 
 const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
@@ -125,19 +126,12 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                   sx={{
                     borderRadius: '16px',
                     color: 'black',
-                    width: '25%',
+                    width: 'auto',
+                    padding: '0.5em 1em',
                     margin: '6px 10px',
                     textTransform: 'none',
                     borderColor: item?.active ? 'black' : '#abaeb1',
                   }}
-                  startIcon={
-                    <CheckCircleRoundedIcon
-                      sx={{
-                        color: 'primary.main',
-                        display: item?.active ? 'flex' : 'none',
-                      }}
-                    />
-                  }
                   onClick={() => {
                     setLanguages((prevItems) =>
                       prevItems.map((item, index) =>
@@ -180,19 +174,12 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                   sx={{
                     borderRadius: '16px',
                     color: 'black',
-                    width: '25%',
+                    width: 'auto',
+                    padding: '0.5em 1em',
                     margin: '6px 10px',
                     textTransform: 'none',
                     borderColor: item?.active ? 'black' : '#abaeb1',
                   }}
-                  startIcon={
-                    <CheckCircleRoundedIcon
-                      sx={{
-                        color: 'primary.main',
-                        display: item?.active ? 'flex' : 'none',
-                      }}
-                    />
-                  }
                   onClick={() => {
                     setCookings((prevItems) =>
                       prevItems.map((item, index) => ({
@@ -202,7 +189,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     );
                   }}
                 >
-                  {item?.name}
+                  {item?.name === '> 3 years'? '3 years+' : item.name}
                 </Button>
               );
             })}
@@ -228,6 +215,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
           </Button>
           <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
             {childCares.map((item, key) => {
+              console.log(childCares)
               return (
                 <Button
                   variant="outlined"
@@ -236,19 +224,12 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                   sx={{
                     borderRadius: '16px',
                     color: 'black',
-                    width: '25%',
+                    width: 'auto',
+                    padding: '0.5em 1em',
                     margin: '6px 10px',
                     textTransform: 'none',
                     borderColor: item?.active ? 'black' : '#abaeb1',
                   }}
-                  startIcon={
-                    <CheckCircleRoundedIcon
-                      sx={{
-                        color: 'primary.main',
-                        display: item?.active ? 'flex' : 'none',
-                      }}
-                    />
-                  }
                   onClick={() => {
                     setChildCares((prevItems) =>
                       prevItems.map((item, index) => ({
@@ -258,7 +239,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     );
                   }}
                 >
-                  {item?.name}
+                  {item?.name === '> 3 years'? '3 years+' : item.name}
                 </Button>
               );
             })}
@@ -292,20 +273,14 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                   sx={{
                     borderRadius: '16px',
                     color: 'black',
-                    width: '26%',
+                    width: 'auto',
+                    padding: '0.75em 1em',
                     margin: '6px 10px',
                     // paddingRight: '15px',
                     borderColor: item?.active ? 'black' : '#abaeb1',
                     fontSize: '12px',
                   }}
-                  startIcon={
-                    <CheckCircleRoundedIcon
-                      sx={{
-                        color: 'primary.main',
-                        opacity: item?.active ? '1' : '0',
-                      }}
-                    />
-                  }
+                  
                   onClick={() => {
                     setPrices((prevItems) =>
                       prevItems.map((item, index) => ({
@@ -330,6 +305,8 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
               padding: '10px 30px',
               marginLeft: '20px',
               textTransform: 'none',
+              backgroundColor: 'var(--secondary-color)',
+              ':hover': { backgroundColor: 'var(--secondary-color)', opacity: 0.85 }
             }}
             onClick={handleSubmitFilter}
           >
