@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo} from 'react'
 import { IoStarSharp } from 'react-icons/io5'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
@@ -9,6 +9,37 @@ import Typography from '@mui/material/Typography'
 const StaffCard = ({ staff }) => {
 
     const navigate = useNavigate();
+    const careExp = useMemo(() => {
+        let result = staff.care_exp;
+        if(result === undefined) {
+            return '';
+        }
+
+        if(result === 'non') {
+            result = 'no exp';
+        }
+        if(result.includes('>')) {
+            result = result.replace('>', '');
+            result += '+';
+        }
+        return result;
+    }, [staff])
+
+    const cookExp = useMemo(() => {
+        let result = staff.cook_exp;
+        if(result === undefined) {
+            return '';
+        }
+
+        if(result === 'non') {
+            result = 'no exp';
+        }
+        if(result.includes('>')) {
+            result = result.replace('>', '');
+            result += '+';
+        }
+        return result;
+    }, [staff])
 
     function getAge(dateString) {
         var today = new Date();
@@ -55,6 +86,7 @@ const StaffCard = ({ staff }) => {
             }}
         >
             <div className="staff-card__image">
+                <div></div>
                 <img src={staff?.image_link} alt="" />
             </div>
             <div className="staff-card__info">
@@ -67,13 +99,13 @@ const StaffCard = ({ staff }) => {
                         <img src={require("../../assets/img/child.png")} alt=""
                             className='experience-icon'
                         />
-                        {staff?.care_exp}
+                        {careExp}
                     </span>
                     <span>
                         <img src={require("../../assets/img/cook.png")} alt=""
                             className='experience-icon'
                         />
-                        {staff?.cook_exp}
+                        {cookExp}
                     </span>
                 </div>
                 <div className="staff-card__item staff-card__language">
@@ -125,7 +157,7 @@ const StaffCard = ({ staff }) => {
                             <Typography
                                 variant="caption"
                                 component="div"
-                                color="black"
+                                color="white"
                                 fontWeight="bold"
                             >
                                 {`${Math.round(

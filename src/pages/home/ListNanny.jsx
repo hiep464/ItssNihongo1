@@ -588,7 +588,7 @@ export default function ListNanny() {
                             color={'#137913'}
                             fontWeight="bold"
                         >
-                            The list of Staff
+                            Staff一覧
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                             <IconButton

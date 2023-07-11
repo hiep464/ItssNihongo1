@@ -41,7 +41,7 @@ const ProfileContainer = () => {
                         setMessage(message => message + 'success')
                         Swal.fire({
                             title: 'Success',
-                            text: "Successfully updated profile!",
+                            text: "プロフィールの更新に成功しました！",
                             icon: 'success',
                             confirmButtonText: 'OK'
                         })
