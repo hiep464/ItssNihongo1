@@ -35,9 +35,11 @@
             .list-staffs__data {
                 width: 100%;
                 padding: 20px;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
+                grid-template-rows: auto;
+                row-gap: 60px;
+                column-gap: 10px;
             }
 
             .list-staffs__empty {

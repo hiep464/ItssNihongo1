@@ -7,10 +7,11 @@
     width: 315px;
     height: fit-content;
     flex-shrink: 0;
-    margin: 30px 0;
+    // margin: 30px 0;
     cursor: pointer;
     transition: all .2s linear;
     box-shadow: 2px 2px 0.5em #00000050 ;
+    justify-self: center;
 
     .staff-card__image {
         position: relative;
