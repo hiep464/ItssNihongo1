@@ -6,9 +6,9 @@
     height: fit-content;
     flex-shrink: 0;
     margin: 30px 0;
-    padding: 10px;
     cursor: pointer;
     transition: all .2s linear;
+    box-shadow: 2px 2px 0.5em ;
 
     .staff-card__image {
         height: 208px;
@@ -16,10 +16,15 @@
         width: 100%;
         overflow: hidden;
         border: inherit;
-        border-radius: 13px;
+        border-radius: 13px 13px 0 0;
     }
 
     .staff-card__info {
+        padding: 1.5em 1em;
+        display: flex;
+        flex-flow: column;
+        gap: 0.5em;
+
         span {
             font-family: Inter;
             font-size: 24px;
@@ -47,10 +52,13 @@
 
             span {
                 color: var(--primary-color);
-                font-size: 36px;
+                font-size: 32px;
+                line-height: 1.5;
+                display: flex;
+                align-items: start;
 
                 svg {
-                    font-size: inherit;
+                    font-size: 0.5em;
                 }
             }
         }

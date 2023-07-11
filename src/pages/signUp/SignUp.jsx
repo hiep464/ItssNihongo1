@@ -124,7 +124,7 @@ export default function SignUp() {
                                 </Grid>
                                 <Grid item>
                                     <Link href="/login" variant="body2" color={'#1d9a1d'}>
-                                        {"Don't have an account? Sign In"}
+                                        {"Already have an account? Sign In"}
                                     </Link>
                                 </Grid>
                             </Grid>
@@ -138,7 +138,7 @@ export default function SignUp() {
                     sm={4}
                     md={7}
                     sx={{
-                        backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+                        backgroundImage: 'url(https://img.freepik.com/premium-vector/babysitter-nanny-services-care-baby-needs-play-with-children-flat-illustration_2175-8229.jpg?w=1380)',
                         backgroundRepeat: 'no-repeat',
                         backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
                         backgroundSize: 'cover',
