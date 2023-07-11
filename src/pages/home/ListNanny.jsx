@@ -81,14 +81,14 @@ const language = [
 ];
 const cooking = [
     { name: 'Not required', value: 'non', active: false },
-    { name: '1 years', value: '1 years', active: false },
+    { name: '1 year', value: '1 year', active: false },
     { name: '2 years', value: '2 years', active: false },
     { name: '3 years', value: '3 years', active: false },
     { name: '> 3 years', value: '> 3 years', active: false },
 ];
 const childCare = [
     { name: 'Not required', value: 'non', active: false },
-    { name: '1 years', value: '1 years', active: false },
+    { name: '1 year', value: '1 year', active: false },
     { name: '2 years', value: '2 years', active: false },
     { name: '3 years', value: '3 years', active: false },
     { name: '> 3 years', value: '> 3 years', active: false },
