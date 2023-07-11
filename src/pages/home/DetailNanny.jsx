@@ -126,13 +126,20 @@ export default function DetailNanny() {
                 review: review,
                 userId: currentUser
             }),
-        }).then(() => {
-            //load lai phan danh gia cua nanny sau khi post
-            fetchData();
-            //dong modal
-            handleClose();
-            notify('Add rating success!');
-        });
+        }).then((e) => {
+            console.log(e)
+
+            if (e.status !== 200) {
+                handleClose();
+                notify_failed('評価の追加に失敗しました！まず、このスタッフを予約する必要があります。');
+            } else {
+                //load lai phan danh gia cua nanny sau khi post
+                fetchData();
+                //dong modal
+                handleClose();
+                notify('評価の追加に成功しました！');
+            }
+        })
     }
     console.log(nanny)
     const handleOpen = () => setOpen(true);
@@ -153,7 +160,7 @@ export default function DetailNanny() {
         console.log("Now delete comment: ", currentSelectDeleteComment);
         
         axios.delete(`https://babybuddies-be-dev.onrender.com/api/v1/ratings/${currentSelectDeleteComment}/delete`).then(() => {
-            notify("Delete Comment Success!");
+            notify("コメントの削除に成功しました！");
             setOpenDelete(false);
 
             fetchData();
@@ -277,6 +284,17 @@ export default function DetailNanny() {
         theme: "light",
     });;
 
+    const notify_failed = (message) => toast.error(message, {
+        position: "bottom-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });;
+
     return (
         <div 
             className='main-session home-container'
@@ -375,7 +393,7 @@ export default function DetailNanny() {
                                 <Box className={styles.BookOrReportButton}>
                                     <BookingButton
                                         variant="contained"
-                                        sx={{ marginRight: '100px', width: '100%', fontWeight: 600 }}
+                                        sx={{ marginRight: '100px', width: '200px', fontWeight: 600 }}
                                         onClick={() => {
                                             setIsBooking(true);
                                         }}
@@ -385,7 +403,7 @@ export default function DetailNanny() {
                                     <FeedbackButton 
                                         variant="contained" 
                                         onClick={handleOpen}
-                                        sx={{width: '100%', fontWeight: 600}}
+                                        sx={{width: '300px', fontWeight: 600}}
                                     >
                                         フィードバック
                                     </FeedbackButton>

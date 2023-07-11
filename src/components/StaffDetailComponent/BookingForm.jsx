@@ -63,12 +63,12 @@ function BookingForm(props) {
 
         axios.post('https://babybuddies-be-dev.onrender.com/api/v1/bookings/store', formData).then(() => {
             setMessage('');    
-            notify("Booking Success!");
+            notify("予約に成功しました！");
             setIsBooking(false);
             dispatch(offDualRingLoading())
             Swal.fire({
                 title: 'Success',
-                text: "Successfully booking!",
+                text: "予約に成功しました！",
                 icon: 'success',
                 confirmButtonText: 'OK'
             })

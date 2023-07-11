@@ -30,7 +30,7 @@ const Home = ({ nannies, setNannies, isLoading, isFilter, setIsFilter,
         <div className='main-session home-container'>
             <div className="list-staffs">
                 <Box className="list-staffs__head">
-                    <h1 className="list-staffs__title">The list of Staff</h1>
+                    <h1 className="list-staffs__title">Staff一覧</h1>
                     <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                         <IconButton
                             onClick={setIsFilter}
