@@ -43,6 +43,21 @@ const styleDelete = {
     p: 4,
 };
 
+const styleViewImage = {
+    position: 'absolute',
+    top: '40%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 5, 
+    height: '600px',
+    width: '800px',
+    overflow: 'scroll',
+};
+
 export default function DetailNanny() {
     const [nanny, setNanny] = React.useState({
         ratings: [],
@@ -54,6 +69,7 @@ export default function DetailNanny() {
 
     const [open, setOpen] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
+    const [openLanguageDetail, setOpenLanguageDetail] = React.useState(false);
     const [currentSelectDeleteComment, setCurrentSelectDeleteComment] = React.useState(0);
 
     const [value, setValue] = React.useState(2);
@@ -91,6 +107,35 @@ export default function DetailNanny() {
     }
     var nannyLanguages = getNannyLanguages(nanny);
     var nannyLanguagesString = nannyLanguages ? nannyLanguages.join(', ') : '';
+
+    var nannyLanguagesCer = () => {
+        // <img id="modal-language-des" src={require("../../assets/img/japanese.png")} alt="" />
+        // <img id="modal-language-des" src={require("../../assets/img/chinese.png")} alt="" />
+        // <img id="modal-language-des" src={require("../../assets/img/english.png")} alt="" />
+        // <img id="modal-language-des" src={require("../../assets/img/spanish.png")} alt="" />
+        // <img id="modal-language-des" src={require("../../assets/img/french.png")} alt="" />
+        // <img id="modal-language-des" src={require("../../assets/img/vietnamese.png")} alt="" />
+        let cers = nannyLanguages.map(element => {
+            switch (element) {
+                case 'Vietnamese':
+                    return <img key={1} id="modal-language-des" src={require("../../assets/img/vietnamese.png")} alt="" />
+                case 'Japanese':
+                    return <img key={2} id="modal-language-des" src={require("../../assets/img/japanese.png")} alt="" />
+                case 'French':
+                    return <img key={3} id="modal-language-des" src={require("../../assets/img/french.png")} alt="" />
+                case 'Spanish':
+                    return <img key={4} id="modal-language-des" src={require("../../assets/img/spanish.png")} alt="" />
+                case 'English':
+                    return <img key={5} id="modal-language-des" src={require("../../assets/img/english.png")} alt="" />
+                case 'Chinese':
+                    return <img key={6} id="modal-language-des" src={require("../../assets/img/chinese.png")} alt="" />
+                default:
+                    return <></>;
+            }
+        });
+        console.log(cers);
+        return cers;
+    };
 
     // format số tiền 100000 => 100,000
     function formatNumber(number) {
@@ -144,6 +189,11 @@ export default function DetailNanny() {
     console.log(nanny)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleOpenLanguageDetail = () => setOpenLanguageDetail(true);
+    const handleCloseLanguageDetail = () => setOpenLanguageDetail(false);
+
+
     const handleOpenDelete = (id) => {
         console.log('select: ',id);
         setCurrentSelectDeleteComment(id);
@@ -366,7 +416,39 @@ export default function DetailNanny() {
                                 <p className={styles.inputFieldText}>{nanny.care_exp}</p>
                             </span>
 
-                            <label className={styles.labelName}>言語</label>
+                            <label 
+                                className={styles.labelName} 
+                                style={{cursor: 'pointer'}}
+                                onClick={handleOpenLanguageDetail}
+                            >
+                                言語
+                            </label>
+                            <Modal
+                                open={openLanguageDetail}
+                                onClose={handleCloseLanguageDetail}
+                                aria-labelledby="modal-language"
+                                aria-describedby="modal-language-des"
+                            >
+                                {/* Modal delete */}
+                                <Box sx={styleViewImage} 
+                                >
+                                    <Typography
+                                        id="modal-language"
+                                        variant="h6"
+                                        component="h2"
+                                        fontWeight="bold"
+                                        fontSize="28px"
+                                        textAlign={'center'}
+                                    >
+                                        資格
+                                    </Typography>
+                                    <div 
+                                        id="modal-language-des"
+                                    >
+                                        {nannyLanguagesCer()}
+                                    </div>
+                                </Box>
+                            </Modal>
                             <span className={styles.inputField}>
                                 <p className={styles.inputFieldText}>{nannyLanguagesString}</p>
                             </span>
