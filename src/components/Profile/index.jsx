@@ -1,5 +1,5 @@
 import AnimateHeight from "react-animate-height"
-import { nationalities } from "../../constants/nationality"
+import { genders, nationalities, want_to } from "../../constants/profile";
 
 const Profile = ({ formik, handleSelectNationality, nationHeight, setNationHeight }) => {
 
@@ -14,7 +14,7 @@ const Profile = ({ formik, handleSelectNationality, nationHeight, setNationHeigh
                         value={formik.values.name}
                         onChange={formik.handleChange}
                     />
-                    <p className="profile-error-message">{formik.errors.name}</p>
+                    {/* <p className="profile-error-message">{formik.errors.name}</p> */}
                 </div>
                 <div className="profile-form__item">
                     <label className="profile-form__label">言語</label>
@@ -40,34 +40,22 @@ const Profile = ({ formik, handleSelectNationality, nationHeight, setNationHeigh
                             ))}
                         </div>
                     </AnimateHeight>
-                    <p className="profile-error-message">{formik.errors.nationality}</p>
+                    {/* <p className="profile-error-message">{formik.errors.nationality}</p> */}
                 </div>
                 <div className="profile-form__item">
                     <label className="profile-form__label">性別</label>
                     <div className="profile-form__input--target">
-                        <div className="profile-form__input--radio">
-                            <input type="radio" name="gender" id="gender-male" value="male"
-                                checked={formik.values.gender === "male"}
-                                onChange={formik.handleChange}
-                            />
-                            <label htmlFor="gender-male">男</label>
-                        </div>
-                        <div className="profile-form__input--radio">
-                            <input type="radio" name="gender" id="gender-female" value="female"
-                                checked={formik.values.gender === "female"}
-                                onChange={formik.handleChange}
-                            />
-                            <label htmlFor="gender-female">女</label>
-                        </div>
-                        <div className="profile-form__input--radio">
-                            <input type="radio" name="gender" id="gender-other" value="other"
-                                checked={formik.values.gender === "other"}
-                                onChange={formik.handleChange}
-                            />
-                            <label htmlFor="gender-other">他</label>
-                        </div>
+                        {genders.map(gender => (
+                            <div className="profile-form__input--radio" key={gender.id}>
+                                <input type="radio" name="gender" id={gender.id} value={gender.value}
+                                    checked={formik.values.gender === gender.value}
+                                    onChange={formik.handleChange}
+                                />
+                                <label htmlFor={gender.id}>{gender.label}</label>
+                            </div>
+                        ))}
                     </div>
-                    <p className="profile-error-message">{formik.errors.gender}</p>
+                    {/* <p className="profile-error-message">{formik.errors.gender}</p> */}
                 </div>
                 <div className="profile-form__item">
                     <label className="profile-form__label">住所</label>
@@ -75,7 +63,7 @@ const Profile = ({ formik, handleSelectNationality, nationHeight, setNationHeigh
                         value={formik.values.address}
                         onChange={formik.handleChange}
                     />
-                    <p className="profile-error-message">{formik.errors.address}</p>
+                    {/* <p className="profile-error-message">{formik.errors.address}</p> */}
                 </div>
                 <div className="profile-form__item">
                     <label className="profile-form__label">電話番号</label>
@@ -83,32 +71,21 @@ const Profile = ({ formik, handleSelectNationality, nationHeight, setNationHeigh
                         value={formik.values.phone}
                         onChange={formik.handleChange}
                     />
-                    <p className="profile-error-message">{formik.errors.phone}</p>
+                    {/* <p className="profile-error-message">{formik.errors.phone}</p> */}
                 </div>
                 <div className="profile-form__item profile-form__item--target">
                     <label className="profile-form__label">ニーズ</label>
-                    <div className="profile-form__input--radio">
-                        <input type="radio" name="want_to" id="target_find_child_care_staff" value="ChildCare"
-                            checked={formik.values.want_to === "ChildCare"}
-                            onChange={formik.handleChange}
-                        />
-                        <label htmlFor="target_find_child_care_staff">赤ちゃんの世話や料理をしてくれる人を探したい</label>
-                    </div>
-                    <div className="profile-form__input--radio">
-                        <input type="radio" name="want_to" id="target_find_cooking_staff" value="Cooking"
-                            checked={formik.values.want_to === "Cooking"}
-                            onChange={formik.handleChange}
-                        />
-                        <label htmlFor="target_find_cooking_staff">赤ちゃんに料理を作ってくれる人を探したい</label>
-                    </div>
-                    <div className="profile-form__input--radio">
-                        <input type="radio" name="want_to" id="input_both" value="Cooking and ChildCare"
-                            checked={formik.values.want_to === "Cooking and ChildCare"}
-                            onChange={formik.handleChange}
-                        />
-                        <label htmlFor="input_both">両方</label>
-                    </div>
-                    <p className="profile-error-message">{formik.errors.target}</p>
+                    {want_to.map(item => (
+                        <div className="profile-form__input--radio" key={item.id}>
+                            <input type="radio" name="want_to" id={item.id} value={item.value}
+                                checked={formik.values.want_to === item.value}
+                                onChange={formik.handleChange}
+                            />
+                            <label htmlFor={item.id}>{item.label}</label>
+                        </div>
+                    ))}
+
+                    {/* <p className="profile-error-message">{formik.errors.target}</p> */}
                 </div>
                 <div className="profile-form__item">
                     <label className="profile-form__label">パスワード</label>

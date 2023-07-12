@@ -1,27 +1,24 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-// import { publicRoutes } from './routes/Routes';
-// import { Fragment } from 'react';
-// import GlobalStyles from './components/GlobalStyles';
-import { AuthContextProvider } from './context/AuthContext';
+import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './routes/AppRouter';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector } from './redux/selector';
 import { useEffect } from 'react';
 import { loginUser } from './api/auth.api';
-import { saveUserInfo } from './redux/slices/auth.slice';
+import { updateUserInfo } from './redux/slices/auth.slice';
 import DualRingLoading from './components/Loading/DualRingLoading';
+import { saveProfileInfo } from './redux/slices/profile.slice';
 
 function App() {
-    const userId = useSelector(authSelector).userId;
+    const { userId } = useSelector(authSelector);
     const dispatch = useDispatch();
-    
 
     useEffect(() => {
         if (userId) {
             loginUser(userId)
                 .then(res => {
-                    const { id, account_status, user_info, username, booking } = res.data.result;
-                    dispatch(saveUserInfo({ id, account_status, user_info, username, booking }))
+                    const { account_status, user_info, username } = res.data.result;
+                    dispatch(updateUserInfo({ fullName: user_info.name, username, status: account_status }))
+                    dispatch(saveProfileInfo(user_info));
                 })
                 .catch(err => {
 
@@ -36,7 +33,7 @@ function App() {
             <BrowserRouter>
                 <AppRouter />
             </BrowserRouter>
-            <DualRingLoading/>
+            <DualRingLoading />
         </>
     );
 }

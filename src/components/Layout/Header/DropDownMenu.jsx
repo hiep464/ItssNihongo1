@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ROUTE } from '../../../constants/routes'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../../redux/slices/auth.slice'
+import { clearProfile } from '../../../redux/slices/profile.slice'
 
 const DropDownMenu = ({ height, setHeight }) => {
     const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const DropDownMenu = ({ height, setHeight }) => {
             <div className='dropdown-menu__item'
                 onClick={() => {
                     dispatch(logout());
+                    dispatch(clearProfile());
                     setHeight();
                     navigate("/")
                 }}

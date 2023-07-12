@@ -9,7 +9,7 @@ import DropDownMenu from './DropDownMenu';
 
 const Header = () => {
 
-    const user = useSelector(authSelector);
+    const {isLogin} = useSelector(authSelector);
     const [height, setHeight] = useState(0);
 
     const handleChangeHeight = () => {
@@ -22,7 +22,7 @@ const Header = () => {
                 <img src={require("../../../assets/img/logo.png")} alt="" />
             </Link>
             <div className="nav-links">
-                {user.isLogin ?
+                {isLogin ?
                     <>{link2.map(link => (
                         <div className={link.className}
                             key={link.title}

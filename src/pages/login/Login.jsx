@@ -28,12 +28,11 @@ const MyAppBar = styled(Button)({
 const defaultTheme = createTheme();
 
 export default function Login() {
-    const [userInfos, setUserInfos] = useState();
     const [userIdError, setUserIdError] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = useSelector(authSelector);
-
+    const {isLogin} = useSelector(authSelector);
+    const [userId, setUserId] = useState('');
     const accountIds = [
         '647b77348af6c322511fed58',
         '647b77348af6c322511fed59',
@@ -57,28 +56,35 @@ export default function Login() {
         '647b77348af6c322511fed6b',
     ];
 
+    const handleChangeUserId = (event) => {
+        setUserIdError(false);
+        if(event.target){
+            const {value} = event.target;
+            setUserId(value)
+        }
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const userId = accountIds[data.get('userId') - 1];
+        const id = accountIds[userId - 1];
 
-        loginUser(userId)
+        loginUser(id)
             .then(res => {
                 console.log(res.data.result)
-                const { id, account_status, user_info, username, booking } = res.data.result;
-                dispatch(saveUserInfo({ id, account_status, user_info, username, booking }))
+                const { id, account_status, user_info, username } = res.data.result;
+                dispatch(saveUserInfo({ id, account_status, username, fullName: user_info.name }))
                 navigate(`/profile`);
             })
             .catch(err => {
-
+                setUserIdError(true);
             })
     };
 
     React.useEffect(() => {
-        if(user.isLogin){
+        if (isLogin) {
             navigate("/")
         }
-    }, [user, navigate])
+    }, [isLogin, navigate])
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -96,9 +102,6 @@ export default function Login() {
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        {/* <Typography inpography component="h1" variant="h5" color={'#1d9a1d'}>
-                            Log In
-                        </Typography> */}
                         <Typography component="h1" variant="h5" color={userIdError ? 'red' : '#1d9a1d'}>
                             {userIdError ? 'Invalid User' : 'Log In'}
                         </Typography>
@@ -112,6 +115,8 @@ export default function Login() {
                                 name="userId"
                                 autoComplete="userId"
                                 autoFocus
+                                value={userId}
+                                onChange={handleChangeUserId}
                             />
 
                             <FormControlLabel

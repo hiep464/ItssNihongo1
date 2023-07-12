@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -8,17 +8,20 @@ import ChildFriendlyIcon from '@mui/icons-material/ChildFriendly';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import StarPurple500Icon from '@mui/icons-material/StarPurple500';
 import StarRateIcon from '@mui/icons-material/StarRate';
-import { childCare, cooking, language, price, rating } from '../../constants/filter';
 import { matchingNannyApi } from '../../api/home.api';
 
 
-const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
-
-  const [languages, setLanguages] = useState(language);
-  const [cookings, setCookings] = useState(cooking);
-  const [childCares, setChildCares] = useState(childCare);
-  const [prices, setPrices] = useState(price);
-  const [ratings, setRatings] = useState(rating);
+const NannyFilter = ({
+  setNannies,
+  setIsLoading,
+  setIsFilter,
+  languages, setLanguages,
+  cookings, setCookings,
+  childCares, setChildCares,
+  prices, setPrices,
+  ratings, setRatings,
+  handleCancelFilter
+}) => {
 
   const getActiveNames = (array) => {
     return array.filter((item) => item.active === true).map((item) => item.value);
@@ -53,12 +56,13 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
       delete formData.salary;
     }
 
-    setData([]);
-    setIsLoading(true)
+    setIsFilter(false);
+    setNannies([]);
+    setIsLoading(true);
     matchingNannyApi(formData)
       .then(res => {
         setIsLoading(false)
-        setData(res.data)
+        setNannies(res.data)
       })
       .catch(err => {
         setIsLoading(false)
@@ -103,7 +107,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
         <Typography component="div"
           className='filter-item'
         >
-          <Button className=''
+          <Button
             size="small"
             sx={{
               width: '136px',
@@ -121,7 +125,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             {languages.map((item, key) => {
               return (
                 <Button
-                  className={item.active && 'filter-language__btn--active'}
+                  className={item.active ? 'filter-language__btn--active' : ''}
                   variant="outlined"
                   size="small"
                   key={key}
@@ -148,7 +152,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
           </Box>
         </Typography>
 
-        <Typography component="div" 
+        <Typography component="div"
           className='filter-item'
         >
           <Button
@@ -169,7 +173,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             {cookings.map((item, key) => {
               return (
                 <Button
-                  className={item.active && 'filter-cookings__btn--active'}
+                  className={item.active ? 'filter-cookings__btn--active' : ''}
                   variant="outlined"
                   size="small"
                   key={key}
@@ -190,7 +194,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     );
                   }}
                 >
-                  {item?.name === '> 3 years' ? '3 年+' : item.name}
+                  {item?.name}
                 </Button>
               );
             })}
@@ -216,10 +220,9 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
           </Button>
           <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
             {childCares.map((item, key) => {
-              console.log(childCares)
               return (
                 <Button
-                  className={item.active && 'filter-childcare--active'}
+                  className={item.active ? 'filter-childcare--active' : ''}
                   variant="outlined"
                   key={key}
                   size="small"
@@ -240,7 +243,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     );
                   }}
                 >
-                  {item?.name === '> 3 years' ? '3 年+' : item.name}
+                  {item?.name}
                 </Button>
               );
             })}
@@ -268,7 +271,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             {prices.map((item, key) => {
               return (
                 <Button
-                  className={item.active && 'filter-prices__btn--active'}
+                  className={item.active ? 'filter-prices__btn--active' : ''}
                   variant="outlined"
                   key={key}
                   size="small"
@@ -318,7 +321,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             {ratings.map((item, key) => {
               return (
                 <Button
-                  className={item.active && 'filter-rating__btn--active'}
+                  className={item.active ? 'filter-rating__btn--active' : ''}
                   variant="outlined"
                   key={key}
                   size="small"
@@ -330,7 +333,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     margin: '6px 10px',
                     fontSize: '12px',
                   }}
-                  endIcon={<StarRateIcon color={item.active ? "#fff" : "#0ab718"}/>}
+                  endIcon={<StarRateIcon color={item.active ? "#fff" : "#0ab718"} />}
                   onClick={() => {
                     setRatings((prevItems) =>
                       prevItems.map((item, index) => ({
@@ -349,6 +352,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
 
         <Typography component="div" sx={{ float: 'right', marginRight: '14px' }}>
           <Button
+            type='button'
             variant="contained"
             sx={{
               borderRadius: '20px',
@@ -363,12 +367,9 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             マッチング
           </Button>
           <Button
+            type='button'
             onClick={() => {
-              setIsFilter();
-              setCookings(cooking);
-              setLanguages(language);
-              setChildCares(childCare);
-              setPrices(price);
+              handleCancelFilter()
             }}
             variant="contained"
             sx={{

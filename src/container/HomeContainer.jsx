@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Home from '../components/Home/Home'
 import { getAllNanniesApi, matchingNannyApi } from '../api/home.api';
-import { useSelector } from 'react-redux';
-import { authSelector } from '../redux/selector';
+import { useDispatch, useSelector } from 'react-redux';
+import { profileSelector } from '../redux/selector';
+import { changeIsUpdate } from '../redux/slices/profile.slice';
+import { childCare, cooking, language, price, rating } from '../constants/filter';
+import { BOTH, CHILD_CARE, COOKING } from '../constants/profile';
 
 const HomeContainer = () => {
     const [nannies, setNannies] = useState([]);
@@ -12,12 +15,43 @@ const HomeContainer = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [dataShow, setDataShow] = useState([]);
 
+    // states for filter component
+    const [languages, setLanguages] = useState(language);
+    const [cookings, setCookings] = useState(cooking);
+    const [childCares, setChildCares] = useState(childCare);
+    const [prices, setPrices] = useState(price);
+    const [ratings, setRatings] = useState(rating);
+
     const [isFilter, setIsFilter] = useState(false);
 
-    const user = useSelector(authSelector);
+    const { isUpdated, data } = useSelector(profileSelector);
+    const dispatch = useDispatch();
+
+    const getAllNannies = () => {
+        setIsLoading(true);
+        getAllNanniesApi()
+            .then(res => {
+                const data = [...res.data.result.staffs];
+                setIsLoading(false);
+                setNannies(data);
+            })
+            .catch(err => {
+                setIsLoading(false);
+            })
+    }
 
     const handleChangeIsFilter = () => {
         setIsFilter(!isFilter);
+    }
+
+    const handleCancelFilter = () => {
+        setLanguages(language);
+        setChildCares(childCare);
+        setCookings(cooking);
+        setPrices(price);
+        setRatings(rating);
+        handleChangeIsFilter();
+        getAllNannies();
     }
 
     const handleChangeCurrentPage = page => {
@@ -25,55 +59,44 @@ const HomeContainer = () => {
     }
 
     const handleFilterFromProfile = (profile) => {
-        const languageF = localStorage.getItem('language');
-        const cookingF = localStorage.getItem('cooking') + ' years';
-        const childCareF = localStorage.getItem('childCare') + ' years';
+        const { nationality, want_to } = profile;
+        let formData = {};
+        formData.userLanguage = nationality;
 
-        let formData = {
-            userLanguage: languageF?.length === 1 ? languageF[0] : languageF,
-            cookExp: cookingF.length === 1 ? cookingF[0] : cookingF,
-            careExp: childCareF.length === 1 ? childCareF[0] : childCareF,
-        };
-        if (languageF?.length === 0) {
-            delete formData.userLanguage;
-        }
-
-        if (cookingF.length === 0) {
-            delete formData.cookExp;
-        }
-
-        if (childCareF.length === 0) {
-            delete formData.careExp;
+        switch (want_to) {
+            case CHILD_CARE:
+                formData.careExp = childCare[1].value;
+                break;
+            case COOKING:
+                formData.cookExp = cooking[1].value;
+                break;
+            case BOTH:
+                formData.careExp = childCare[1].value;
+                formData.cookExp = cooking[1].value;
+                break;
+            default:
         }
 
         setIsLoading(true)
         matchingNannyApi(formData)
             .then(res => {
                 setNannies(res.data)
-                setIsLoading(false)
+                setIsLoading(false);
+                dispatch(changeIsUpdate(false));
             })
             .catch(err => {
-
+                dispatch(changeIsUpdate(false));
             })
     };
 
     useEffect(() => {
-        if (user.user_info) {
-            handleFilterFromProfile(user.user_info);
+        if (data && isUpdated) {
+            handleFilterFromProfile(data);
         } else {
-            setIsLoading(true);
-            getAllNanniesApi()
-                .then(res => {
-                    const data = [...res.data.result.staffs];
-                    setIsLoading(false);
-                    setNannies(data);
-                })
-                .catch(err => {
-
-                })
+            getAllNannies();
         }
         //eslint-disable-next-line
-    }, [user])
+    }, [data])
 
     useEffect(() => {
         const startIndex = (currentPage - 1) * size;
@@ -83,7 +106,7 @@ const HomeContainer = () => {
     }, [nannies, currentPage, size])
 
     useEffect(() => {
-        if(totalPages > 0 && currentPage > totalPages){
+        if (totalPages > 0 && currentPage > totalPages) {
             setCurrentPage(totalPages);
         }
     }, [currentPage, totalPages])
@@ -93,7 +116,7 @@ const HomeContainer = () => {
             const numColumns = Math.floor((window.innerWidth - 180) / 315); // Số cột ước tính, 200px là kích thước ước lượng của StaffCard
             const numRows = 2; // Số hàng ước tính, 200px là kích thước ước lượng của StaffCard
             const maxItemsPerPage = numColumns * numRows;
-            if(numColumns > 3){
+            if (numColumns > 3) {
                 setSize(maxItemsPerPage);
             } else {
                 setSize(8)
@@ -120,7 +143,18 @@ const HomeContainer = () => {
             handleChangeCurrentPage={handleChangeCurrentPage}
             isFilter={isFilter}
             setIsFilter={handleChangeIsFilter}
+            handleCancelFilter={handleCancelFilter}
             setIsLoading={setIsLoading}
+            setChildCares={setChildCares}
+            setCookings={setCookings}
+            setLanguages={setLanguages}
+            setPrices={setPrices}
+            setRatings={setRatings}
+            childCares={childCares}
+            cookings={cookings}
+            languages={languages}
+            prices={prices}
+            ratings={ratings}
         />
     )
 }

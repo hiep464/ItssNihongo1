@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import Profile from '../components/Profile'
 import { useDispatch, useSelector } from 'react-redux'
-import { authSelector } from '../redux/selector'
+import { authSelector, profileSelector } from '../redux/selector'
 import { useFormik } from 'formik'
 import { offDualRingLoading, onDualRingLoading } from '../redux/slices/loading.slice'
 import { validateProfile } from '../validation'
-import { getProfileForUser, updateProfileUserApi } from '../api/profile.api'
+import { updateProfileUserApi } from '../api/profile.api'
 import Swal from 'sweetalert2'
-import { saveUserInfo } from '../redux/slices/auth.slice'
+import { updateUserInfo } from '../redux/slices/auth.slice'
 import { nationalities } from '../constants/nationality'
+import { changeIsUpdate, saveProfileInfo } from '../redux/slices/profile.slice'
+import { useNavigate } from 'react-router-dom'
 
 const ProfileContainer = () => {
 
-    const user = useSelector(authSelector);
+    const { userId } = useSelector(authSelector);
+    const { data } = useSelector(profileSelector);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [message, setMessage] = useState('');
     const [nationHeight, setNationHeight] = useState(0)
 
@@ -30,7 +34,7 @@ const ProfileContainer = () => {
         validationSchema: validateProfile,
         onSubmit: values => {
             dispatch(onDualRingLoading());
-            if (user.userId) {
+            if (userId) {
                 const form = {
                     userInfo: {
                         address: values.address,
@@ -47,17 +51,25 @@ const ProfileContainer = () => {
                     delete form["password"]
                 }
 
-                updateProfileUserApi(user.userId, form)
+                updateProfileUserApi(userId, form)
                     .then(res => {
+                        const { user_info } = res.data.result;
+                        dispatch(updateUserInfo({ fullName: user_info.name }));
+                        dispatch(saveProfileInfo(user_info))
                         dispatch(offDualRingLoading())
                         setMessage(message => message + 'success')
+
                         Swal.fire({
                             title: 'Success',
                             text: "プロフィールの更新に成功しました！",
                             icon: 'success',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'Home Page'
+                        }).then(result => {
+                            if (result.isConfirmed) {
+                                dispatch(changeIsUpdate(true));
+                                navigate("/")
+                            }
                         })
-                        dispatch(saveUserInfo(res.data.result))
                     })
                     .catch(err => {
                         dispatch(offDualRingLoading())
@@ -76,24 +88,16 @@ const ProfileContainer = () => {
     }
 
     useEffect(() => {
-        if (user.userId) {
-            getProfileForUser(user.userId)
-                .then(res => {
-                    const user_info = res.data.result.user_info;
-                    const formData = { ...formik.values };
-                    for (const key in user_info) {
-                        if (Object.hasOwnProperty.call(formData, key)) {
-                            formData[key] = user_info[key];
-                        }
-                    }
-                    formik.setValues(formData);
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+        const user_info = data;
+        const formData = { ...formik.values };
+        for (const key in user_info) {
+            if (Object.hasOwnProperty.call(formData, key)) {
+                formData[key] = user_info[key];
+            }
         }
+        formik.setValues(formData);
         //eslint-disable-next-line
-    }, [user, message])
+    }, [message, data])
 
     return (
         <Profile

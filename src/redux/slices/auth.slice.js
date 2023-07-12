@@ -5,32 +5,41 @@ const authSlice = createSlice({
     initialState: {
         isLogin: localStorage.getItem("isLogin") || false,
         userId: localStorage.getItem("userId"),
-        user_info: null,
-        booking: null,
+        fullName: null,
         username: null,
         status: null,
     },
     reducers: {
         saveUserInfo: (state, action) => {
-            const { id, account_status, user_info, username, booking } = action.payload;
-            state.booking = booking;
-            state.isLogin = true;
-            state.status = account_status;
+            const { id, fullName, username, account_status } = action.payload;
+            //add data to state
             state.userId = id;
-            state.user_info = user_info;
+            state.isLogin = true;
+            state.fullName = fullName;
             state.username = username;
+            state.status = account_status;
+            //add data to local storage
             localStorage.setItem('userId', id);
             localStorage.setItem('isLogin', true);
         },
-
+        updateUserInfo: (state, action) => {
+            const payload = action.payload;
+            for (const key in payload) {
+                if (Object.hasOwnProperty.call(state, key)) {
+                    state[key] = payload[key]
+                }
+            }
+        },
         logout: (state) => {
             localStorage.clear();
             state.isLogin = false;
             state.userId = null;
-            state.profile = null;
+            state.fullName = null;
+            state.username = null;
+            state.status = null;
         }
     }
 })
 
-export const { logout, saveUserInfo } = authSlice.actions;
+export const { logout, saveUserInfo, updateUserInfo } = authSlice.actions;
 export default authSlice.reducer

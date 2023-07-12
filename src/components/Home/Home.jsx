@@ -7,8 +7,18 @@ import IconButton from '@mui/material/IconButton';
 import CustomPaging from '../Paging';
 import NannyFilter from './Filter';
 
-const Home = ({ nannies, setNannies, isLoading, isFilter, setIsFilter,
-    currentPage, totalPages, handleChangeCurrentPage, setIsLoading
+const Home = ({ 
+    nannies, setNannies, 
+    isLoading, 
+    isFilter, setIsFilter,
+    currentPage, totalPages, 
+    handleChangeCurrentPage, setIsLoading,
+    languages, setLanguages,
+    cookings, setCookings,
+    childCares, setChildCares,
+    prices, setPrices,
+    ratings, setRatings,
+    handleCancelFilter
 }) => {
 
     const filterRef = useRef();
@@ -73,9 +83,20 @@ const Home = ({ nannies, setNannies, isLoading, isFilter, setIsFilter,
             </div>
             {isFilter && <div className="filter-container" ref={filterRef}>
                 <NannyFilter
+                    childCares={childCares}
+                    cookings={cookings}
+                    languages={languages}
+                    prices={prices}
+                    ratings={ratings}
                     setIsFilter={setIsFilter}
+                    setChildCares={setChildCares}
+                    setCookings={setCookings}
+                    setLanguages={setLanguages}
+                    setPrices={setPrices}
+                    setRatings={setRatings}
                     setIsLoading={setIsLoading}
-                    setData={setNannies}
+                    setNannies={setNannies}
+                    handleCancelFilter={handleCancelFilter}
                 />
             </div>}
         </div>

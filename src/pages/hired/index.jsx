@@ -16,12 +16,12 @@ import { getProfileForUser } from '../../api/profile.api';
 
 export default function Hired() {
     const [bookings, setBookings] = React.useState([]);
-    const user = useSelector(authSelector);
+    const {userId} = useSelector(authSelector);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user.userId) {
-            getProfileForUser(user.userId)
+        if (userId) {
+            getProfileForUser(userId)
                 .then(res => {
                     const bookings = res.data.result.booking;
                     setBookings([...bookings])
@@ -31,7 +31,7 @@ export default function Hired() {
                     console.log(err)
                 })
         }
-    }, []);
+    }, [userId]);
 
 
     return (
