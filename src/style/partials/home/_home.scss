@@ -63,6 +63,28 @@
         animation: showFilter 0.3s forwards;
         padding: 20px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+        .filter-item {
+            .filter-language__btn--active {
+                background-color: #a744be;
+                color: #fff
+            }
+
+            .filter-childcare--active {
+                background-color: #1976d2;
+                color: #fff
+            }
+
+            .filter-cookings__btn--active {
+                background-color: #ff6624;
+                color: #fff
+            }
+
+            .filter-prices__btn--active {
+                background-color: #b70f0a;
+                color: #fff
+            }
+        }
     }
 
     .paginate {

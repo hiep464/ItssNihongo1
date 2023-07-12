@@ -3,13 +3,11 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TranslateIcon from '@mui/icons-material/Translate';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
 import ChildFriendlyIcon from '@mui/icons-material/ChildFriendly';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { childCare, cooking, language, price } from '../../constants/filter';
 import { matchingNannyApi } from '../../api/home.api';
-import { logDOM } from '@testing-library/react';
 
 
 const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
@@ -120,6 +118,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             {languages.map((item, key) => {
               return (
                 <Button
+                  className={item.active && 'filter-language__btn--active'}
                   variant="outlined"
                   size="small"
                   key={key}
@@ -130,7 +129,6 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     padding: '0.5em 1em',
                     margin: '6px 10px',
                     textTransform: 'none',
-                    borderColor: item?.active ? 'black' : '#abaeb1',
                   }}
                   onClick={() => {
                     setLanguages((prevItems) =>
@@ -147,7 +145,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
           </Box>
         </Typography>
 
-        <Typography component="div"
+        <Typography component="div" 
           className='filter-item'
         >
           <Button
@@ -168,6 +166,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             {cookings.map((item, key) => {
               return (
                 <Button
+                  className={item.active && 'filter-cookings__btn--active'}
                   variant="outlined"
                   size="small"
                   key={key}
@@ -178,7 +177,6 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     padding: '0.5em 1em',
                     margin: '6px 10px',
                     textTransform: 'none',
-                    borderColor: item?.active ? 'black' : '#abaeb1',
                   }}
                   onClick={() => {
                     setCookings((prevItems) =>
@@ -189,7 +187,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     );
                   }}
                 >
-                  {item?.name === '> 3 years'? '3 年+' : item.name}
+                  {item?.name === '> 3 years' ? '3 年+' : item.name}
                 </Button>
               );
             })}
@@ -218,6 +216,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
               console.log(childCares)
               return (
                 <Button
+                  className={item.active && 'filter-childcare--active'}
                   variant="outlined"
                   key={key}
                   size="small"
@@ -228,7 +227,6 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     padding: '0.5em 1em',
                     margin: '6px 10px',
                     textTransform: 'none',
-                    borderColor: item?.active ? 'black' : '#abaeb1',
                   }}
                   onClick={() => {
                     setChildCares((prevItems) =>
@@ -239,7 +237,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     );
                   }}
                 >
-                  {item?.name === '> 3 years'? '3 年+' : item.name}
+                  {item?.name === '> 3 years' ? '3 年+' : item.name}
                 </Button>
               );
             })}
@@ -267,6 +265,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
             {prices.map((item, key) => {
               return (
                 <Button
+                  className={item.active && 'filter-prices__btn--active'}
                   variant="outlined"
                   key={key}
                   size="small"
@@ -276,11 +275,9 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
                     width: 'auto',
                     padding: '0.75em 1em',
                     margin: '6px 10px',
-                    // paddingRight: '15px',
-                    borderColor: item?.active ? 'black' : '#abaeb1',
                     fontSize: '12px',
                   }}
-                  
+
                   onClick={() => {
                     setPrices((prevItems) =>
                       prevItems.map((item, index) => ({
