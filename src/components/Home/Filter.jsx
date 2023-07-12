@@ -6,7 +6,9 @@ import TranslateIcon from '@mui/icons-material/Translate';
 import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
 import ChildFriendlyIcon from '@mui/icons-material/ChildFriendly';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import { childCare, cooking, language, price } from '../../constants/filter';
+import StarPurple500Icon from '@mui/icons-material/StarPurple500';
+import StarRateIcon from '@mui/icons-material/StarRate';
+import { childCare, cooking, language, price, rating } from '../../constants/filter';
 import { matchingNannyApi } from '../../api/home.api';
 
 
@@ -16,6 +18,7 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
   const [cookings, setCookings] = useState(cooking);
   const [childCares, setChildCares] = useState(childCare);
   const [prices, setPrices] = useState(price);
+  const [ratings, setRatings] = useState(rating);
 
   const getActiveNames = (array) => {
     return array.filter((item) => item.active === true).map((item) => item.value);
@@ -280,6 +283,56 @@ const NannyFilter = ({ setIsFilter, setData, setIsLoading }) => {
 
                   onClick={() => {
                     setPrices((prevItems) =>
+                      prevItems.map((item, index) => ({
+                        ...item,
+                        active: index === key ? true : false,
+                      })),
+                    );
+                  }}
+                >
+                  {item?.name}
+                </Button>
+              );
+            })}
+          </Box>
+        </Typography>
+
+        <Typography component="div"
+          className='filter-item'
+        >
+          <Button
+            size="small"
+            sx={{
+              width: '136px',
+              borderRadius: '16px',
+              backgroundColor: '#ebebeb',
+              color: '#0ab718',
+              marginLeft: '14px',
+              pointerEvents: "none"
+            }}
+            startIcon={<StarPurple500Icon sx={{ color: '#0ab718' }} />}
+          >
+            評価
+          </Button>
+          <Box margin={'10px'} display={'flex'} flexWrap={'wrap'}>
+            {ratings.map((item, key) => {
+              return (
+                <Button
+                  className={item.active && 'filter-rating__btn--active'}
+                  variant="outlined"
+                  key={key}
+                  size="small"
+                  sx={{
+                    borderRadius: '16px',
+                    color: 'black',
+                    width: 'auto',
+                    padding: '0.75em 1em',
+                    margin: '6px 10px',
+                    fontSize: '12px',
+                  }}
+                  endIcon={<StarRateIcon color={item.active ? "#fff" : "#0ab718"}/>}
+                  onClick={() => {
+                    setRatings((prevItems) =>
                       prevItems.map((item, index) => ({
                         ...item,
                         active: index === key ? true : false,

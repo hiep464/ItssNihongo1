@@ -28,3 +28,11 @@ export const price = [
     { name: '700,000 VND', value: 700000, active: false },
     { name: '900,000 VND', value: 900000, active: false },
 ];
+
+export const rating = [
+    { name: "1", value: 1, active: false },
+    { name: "2", value: 2, active: false },
+    { name: "3", value: 3, active: false },
+    { name: "4", value: 4, active: false },
+    { name: "5", value: 5, active: false },
+]

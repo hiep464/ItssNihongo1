@@ -31,11 +31,23 @@ const ProfileContainer = () => {
         onSubmit: values => {
             dispatch(onDualRingLoading());
             if (user.userId) {
-                const { address, gender, name, nationality, password, phone, want_to } = values;
-                updateProfileUserApi(user.userId, {
-                    userInfo: { address, gender, name, nationality, phone, wantTo: want_to },
-                    password: password
-                })
+                const form = {
+                    userInfo: {
+                        address: values.address,
+                        gender: values.gender,
+                        name: values.name,
+                        nationality: values.nationality,
+                        phone: values.phone,
+                        wantTo: values.want_to
+                    },
+                    password: values.password
+                };
+
+                if (form.password.trim().length < 1) {
+                    delete form["password"]
+                }
+
+                updateProfileUserApi(user.userId, form)
                     .then(res => {
                         dispatch(offDualRingLoading())
                         setMessage(message => message + 'success')

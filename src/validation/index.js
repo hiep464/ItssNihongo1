@@ -15,5 +15,5 @@ export const validateProfile = yup.object().shape({
     gender: validateString('gender'),
     address: validateString('address'),
     want_to: validateString('want_to'),
-    password: yup.string().required('Password is required').matches(REGEX.REGEX_PASSWORD, "Invalid Password")
+    // password: yup.string().required('Password is required').matches(REGEX.REGEX_PASSWORD, "Invalid Password")
 })
