@@ -17,7 +17,7 @@ const Profile = ({ formik, handleSelectNationality, nationHeight, setNationHeigh
                     <p className="profile-error-message">{formik.errors.name}</p>
                 </div>
                 <div className="profile-form__item">
-                    <label className="profile-form__label">国籍</label>
+                    <label className="profile-form__label">言語</label>
                     <input type="text" name="nationality" className="profile-form__input"
                         value={formik.values.nationality}
                         readOnly
