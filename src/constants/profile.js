@@ -7,12 +7,12 @@ export const SPANISH = "Spanish"
 export const CHINESE = "Chinese"
 
 export const nationalities = [
-    { id: 1, value: VIETNAMESE },
-    { id: 2, value: ENGLISH },
-    { id: 3, value: JAPANESE },
-    { id: 4, value: FRENCH },
-    { id: 5, value: SPANISH },
-    { id: 6, value: CHINESE },
+    { id: 1, value: VIETNAMESE, certificate: require('../assets/img/vietnamese.png') },
+    { id: 2, value: ENGLISH, certificate: require('../assets/img/english.png') },
+    { id: 3, value: JAPANESE, certificate: require('../assets/img/japanese.png') },
+    { id: 4, value: FRENCH, certificate: require('../assets/img/french.png') },
+    { id: 5, value: SPANISH, certificate: require('../assets/img/spanish.png') },
+    { id: 6, value: CHINESE, certificate: require('../assets/img/chinese.png') },
 ]
 // constants for want_to
 export const CHILD_CARE = "ChildCare"

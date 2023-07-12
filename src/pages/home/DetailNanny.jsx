@@ -7,16 +7,16 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Button, styled } from '@mui/material';
-import TextField from '@mui/material/TextField';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BookingForm from '../../components/StaffDetailComponent/BookingForm';
-import { useAutoAnimate } from '@formkit/auto-animate/react'
-import { motion } from "framer-motion"
-import { useNavigate } from 'react-router-dom'
-
+import { BsEyeFill } from 'react-icons/bs'
+import { nationalities } from '../../constants/profile';
+import { useDispatch, useSelector } from 'react-redux';
+import { authSelector } from '../../redux/selector';
+import { handleRatingApi } from '../../api/rating.api';
+import { offDualRingLoading, onDualRingLoading } from '../../redux/slices/loading.slice';
 
 
 const style = {
@@ -49,30 +49,22 @@ export default function DetailNanny() {
         user_language: [],
     });
     const { id } = useParams();
-    var isLogin = localStorage.getItem('isLogin');
-    var currentUser = localStorage.getItem('userId');
+    const { userId } = useSelector(authSelector);
+    const dispatch = useDispatch();
 
     const [open, setOpen] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
+    const [openLanguageDetail, setOpenLanguageDetail] = React.useState(false);
     const [currentSelectDeleteComment, setCurrentSelectDeleteComment] = React.useState(0);
 
     const [value, setValue] = React.useState(2);
     const [isBooking, setIsBooking] = React.useState(false);
     const [review, setReview] = React.useState('');
-    const [parent, enableAnimations] = useAutoAnimate(/* optional config */)
-
-    // Lấy giá trị ngày hôm nay
-    let today = new Date();
-    console.log(today);
-
-    // Lấy giá trị ngày mai
-    let tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    console.log(tomorrow);
+    // const [parent, enableAnimations] = useAutoAnimate(/* optional config */)
 
     const fetchData = async () => {
         const reponse = await fetch(
-            'https://babybuddies-be-dev.onrender.com/api/v1/staffs/'+ id,
+            'https://babybuddies-be-dev.onrender.com/api/v1/staffs/' + id,
         );
         const reponseJSON = await reponse.json();
         setNanny(reponseJSON.result);
@@ -80,6 +72,7 @@ export default function DetailNanny() {
 
     React.useEffect(() => {
         fetchData();
+        //eslint-disable-next-line
     }, []);
 
     function getNannyLanguages(nanny) {
@@ -91,6 +84,23 @@ export default function DetailNanny() {
     }
     var nannyLanguages = getNannyLanguages(nanny);
     var nannyLanguagesString = nannyLanguages ? nannyLanguages.join(', ') : '';
+
+    var nannyLanguagesCer = () => {
+        let certificate = [...nationalities]
+            .filter(nationality => {
+                // return [...nannyLanguages].some(language => language === nationality.value);
+                return [...nannyLanguages].includes(nationality.value);
+            })
+            .map(element => (
+                <img key={element.id}
+                    className={styles.modalLanguageDesImg}
+                    src={element.certificate}
+                    alt=""
+                />
+            ))
+
+        return certificate;
+    };
 
     // format số tiền 100000 => 100,000
     function formatNumber(number) {
@@ -112,45 +122,43 @@ export default function DetailNanny() {
     }
 
     function FeedBack() {
-        console.log(value);
-        console.log(review);
-        const url = 'https://babybuddies-be-dev.onrender.com/api/v1/ratings/staff/' + id;
-        console.log(url);
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+        if (userId) {
+            dispatch(onDualRingLoading());
+            handleRatingApi(id, {
                 star: value,
                 review: review,
-                userId: currentUser
-            }),
-        }).then((e) => {
-            console.log(e)
-
-            if (e.status !== 200) {
-                handleClose();
-                notify_failed('評価の追加に失敗しました！まず、このスタッフを予約する必要があります。');
-            } else {
-                //load lai phan danh gia cua nanny sau khi post
-                fetchData();
-                //dong modal
-                handleClose();
-                notify('評価の追加に成功しました！');
-            }
-        })
+                userId: userId
+            })
+                .then(res => {
+                    fetchData();
+                    handleClose();
+                    dispatch(offDualRingLoading());
+                    notify('評価の追加に成功しました！');
+                })
+                .catch(err => {
+                    handleClose();
+                    dispatch(offDualRingLoading());
+                    notify_failed('評価の追加に失敗しました！まず、このスタッフを予約する必要があります。');
+                })
+        } else {
+            notify_failed('ログインしていないため、評価することはできません。');
+        }
     }
-    console.log(nanny)
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleOpenLanguageDetail = () => setOpenLanguageDetail(true);
+    const handleCloseLanguageDetail = () => setOpenLanguageDetail(false);
+
+
     const handleOpenDelete = (id) => {
-        console.log('select: ',id);
+        console.log('select: ', id);
         setCurrentSelectDeleteComment(id);
         setOpenDelete(true)
     };
+
     const handleCloseDelete = () => {
-        console.log('select: ',0);
+        console.log('select: ', 0);
         setCurrentSelectDeleteComment(0);
         setOpenDelete(false)
     };
@@ -158,7 +166,7 @@ export default function DetailNanny() {
     //handleDelete
     const handleDeleteCMT = () => {
         console.log("Now delete comment: ", currentSelectDeleteComment);
-        
+
         axios.delete(`https://babybuddies-be-dev.onrender.com/api/v1/ratings/${currentSelectDeleteComment}/delete`).then(() => {
             notify("コメントの削除に成功しました！");
             setOpenDelete(false);
@@ -221,58 +229,6 @@ export default function DetailNanny() {
         zIndex: 1000
     }
 
-    const blue = {
-        100: '#DAECFF',
-        200: '#b6daff',
-        400: '#3399FF',
-        500: '#007FFF',
-        600: '#0072E5',
-        900: '#003A75',
-    };
-
-    const grey = {
-        50: '#f6f8fa',
-        100: '#eaeef2',
-        200: '#d0d7de',
-        300: '#afb8c1',
-        400: '#8c959f',
-        500: '#6e7781',
-        600: '#57606a',
-        700: '#424a53',
-        800: '#32383f',
-        900: '#24292f',
-    };
-
-    const StyledTextarea = styled(TextareaAutosize)(
-        ({ theme }) => `
-        width: 770px;
-        font-family: IBM Plex Sans, sans-serif;
-        font-size: 0.875rem;
-        font-weight: 400;
-        line-height: 1.5;
-        padding: 12px;
-        border-radius: 12px;
-        color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-        background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-        border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-        box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
-      
-        &:hover {
-          border-color: ${blue[400]};
-        }
-      
-        &:focus {
-          border-color: ${blue[400]};
-          box-shadow: 0 0 0 3px ${theme.palette.mode === 'dark' ? blue[500] : blue[200]};
-        }
-      
-        // firefox
-        &:focus-visible {
-          outline: 0;
-        }
-      `,
-    );
-
     const notify = (message) => toast.success(message, {
         position: "bottom-right",
         autoClose: 4000,
@@ -296,7 +252,7 @@ export default function DetailNanny() {
     });;
 
     return (
-        <div 
+        <div
             className='main-session home-container'
         >
             <ToastContainer
@@ -321,7 +277,7 @@ export default function DetailNanny() {
                             >
                                 <BookingForm
                                     nanny={nanny}
-                                    setisbooking={setIsBooking}
+                                    setIsBooking={setIsBooking}
                                     notify={notify}
                                 >
                                 </BookingForm>
@@ -339,9 +295,9 @@ export default function DetailNanny() {
 
                             <label className={styles.labelName}>性別</label>
                             <ul>
-                                <li className={styles.font24}> 
-                                    <span className={styles.dot}></span> 
-                                    
+                                <li className={styles.font24}>
+                                    <span className={styles.dot}></span>
+
                                     {nanny.gender === 'male' ? '男' : '女'}
                                 </li>
                             </ul>
@@ -366,7 +322,43 @@ export default function DetailNanny() {
                                 <p className={styles.inputFieldText}>{nanny.care_exp}</p>
                             </span>
 
-                            <label className={styles.labelName}>言語</label>
+                            <label className={styles.labelName}>
+                                言語
+                                <span
+                                    className={styles.modalLanguageDesIcon}
+                                    onClick={handleOpenLanguageDetail}
+                                >
+                                    <BsEyeFill />
+                                </span>
+                            </label>
+                            <Modal
+                                open={openLanguageDetail}
+                                onClose={handleCloseLanguageDetail}
+                                aria-labelledby="modal-language"
+                                aria-describedby="modal-language-des"
+                            >
+                                {/* Modal delete */}
+                                <Box
+                                    // sx={styleViewImage}
+                                    className={styles.modalLanguageDescription}
+                                >
+                                    <Typography
+                                        id="modal-language"
+                                        variant="h6"
+                                        component="h2"
+                                        fontWeight="bold"
+                                        fontSize="28px"
+                                        textAlign={'center'}
+                                    >
+                                        資格
+                                    </Typography>
+                                    <div
+                                        id="modal-language-des"
+                                    >
+                                        {nannyLanguagesCer()}
+                                    </div>
+                                </Box>
+                            </Modal>
                             <span className={styles.inputField}>
                                 <p className={styles.inputFieldText}>{nannyLanguagesString}</p>
                             </span>
@@ -400,10 +392,10 @@ export default function DetailNanny() {
                                     >
                                         予約
                                     </BookingButton>
-                                    <FeedbackButton 
-                                        variant="contained" 
+                                    <FeedbackButton
+                                        variant="contained"
                                         onClick={handleOpen}
-                                        sx={{width: '300px', fontWeight: 600}}
+                                        sx={{ width: '300px', fontWeight: 600 }}
                                     >
                                         フィードバック
                                     </FeedbackButton>
@@ -414,6 +406,9 @@ export default function DetailNanny() {
                                     aria-labelledby="modal-modal-title"
                                     aria-describedby="modal-modal-description"
                                     closeAfterTransition
+                                    sx={{
+                                        zIndex: 1000
+                                    }}
                                 >
                                     {/* Modal Feedback */}
                                     <Box sx={style} borderRadius={5} border="1px solid">
@@ -479,45 +474,45 @@ export default function DetailNanny() {
 
                     <span className={styles.commentText}>コメント</span>
                     <div
-                        ref={parent}
-                        className={styles.container3} 
+                        // ref={parent}
+                        className={styles.container3}
                     >
-                    <Modal
-                        open={openDelete}
-                        onClose={handleCloseDelete}
-                        aria-labelledby="modal-modal-title1"
-                        aria-describedby="modal-modal-description1"
-                    >
-                        {/* Modal delete */}
-                        <Box sx={styleDelete} borderRadius={5} border="1px solid">
-                            <Typography
-                                id="modal-modal-title1"
-                                variant="h6"
-                                component="h2"
-                                fontWeight="bold"
-                                fontSize="28px"
-                                textAlign={'center'}
-                            >
-                                コメントを削除しますか？
-                            </Typography>
-                            <Typography
-                                id="modal-modal-description"
-                                sx={{ mt: 2 }}
-                                fontWeight="semibold"
-                                textAlign={'center'}
-                            >
-                                コメントを削除してもよろしいですか？
-                                削除した後は復元することはできません。
-                            </Typography>
+                        <Modal
+                            open={openDelete}
+                            onClose={handleCloseDelete}
+                            aria-labelledby="modal-modal-title1"
+                            aria-describedby="modal-modal-description1"
+                        >
+                            {/* Modal delete */}
+                            <Box sx={styleDelete} borderRadius={5} border="1px solid">
+                                <Typography
+                                    id="modal-modal-title1"
+                                    variant="h6"
+                                    component="h2"
+                                    fontWeight="bold"
+                                    fontSize="28px"
+                                    textAlign={'center'}
+                                >
+                                    コメントを削除しますか？
+                                </Typography>
+                                <Typography
+                                    id="modal-modal-description"
+                                    sx={{ mt: 2 }}
+                                    fontWeight="semibold"
+                                    textAlign={'center'}
+                                >
+                                    コメントを削除してもよろしいですか？
+                                    削除した後は復元することはできません。
+                                </Typography>
 
-                            <Typography
-                                sx={{
-                                    marginTop: '20px',
-                                    alignItems: 'center',
-                                    display: 'flex',
-                                    justifyContent: 'space-evenly',
-                                }}
-                            >
+                                <Typography
+                                    sx={{
+                                        marginTop: '20px',
+                                        alignItems: 'center',
+                                        display: 'flex',
+                                        justifyContent: 'space-evenly',
+                                    }}
+                                >
                                     <MyButton
                                         onClick={handleCloseDelete}
                                     >
@@ -528,20 +523,20 @@ export default function DetailNanny() {
                                     >
                                         Delete
                                     </MyButton>
-                            </Typography>
-                        </Box>
-                    </Modal>
+                                </Typography>
+                            </Box>
+                        </Modal>
                         {nanny &&
                             nanny.ratings.map((item, index) => (
                                 <div key={index} className={styles.prevComment}>
                                     <div className={styles.close}>
                                         <span style={{ fontWeight: 'bold', marginLeft: '16px' }}>
-                                            <span className={styles.commentUser}> {item.username ? item.username  : 'Phan Dang Minh' } </span>
+                                            <span className={styles.commentUser}> {item.username ? item.username : 'Phan Dang Minh'} </span>
                                             {item.star}
                                             <span className={styles.greenStar2}>&#9733;</span>
                                         </span>
                                         {
-                                            (item.user_id == currentUser) && (
+                                            (item.user_id === userId) && (
                                                 <span className={styles.delete} onClick={() => handleOpenDelete(item.id)}>
                                                     X
                                                 </span>
