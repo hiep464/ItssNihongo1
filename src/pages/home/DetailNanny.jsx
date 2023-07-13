@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './ListNanny.module.scss';
 import { useParams } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { authSelector } from '../../redux/selector';
 import { handleRatingApi } from '../../api/rating.api';
 import { offDualRingLoading, onDualRingLoading } from '../../redux/slices/loading.slice';
+import CertificateModal from '../../components/StaffDetailComponent/CertificateModal';
 
 
 const style = {
@@ -44,7 +45,7 @@ const styleDelete = {
 };
 
 export default function DetailNanny() {
-    const [nanny, setNanny] = React.useState({
+    const [nanny, setNanny] = useState({
         ratings: [],
         user_language: [],
     });
@@ -52,14 +53,16 @@ export default function DetailNanny() {
     const { userId } = useSelector(authSelector);
     const dispatch = useDispatch();
 
-    const [open, setOpen] = React.useState(false);
-    const [openDelete, setOpenDelete] = React.useState(false);
-    const [openLanguageDetail, setOpenLanguageDetail] = React.useState(false);
-    const [currentSelectDeleteComment, setCurrentSelectDeleteComment] = React.useState(0);
+    const [open, setOpen] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [openLanguageDetail, setOpenLanguageDetail] = useState(false);
+    const [openCookingDetail, setOpenCookingDetail] = useState(false);
+    const [openChildcareDetail, setOpenChildcareDetail] = useState(false)
+    const [currentSelectDeleteComment, setCurrentSelectDeleteComment] = useState(0);
 
-    const [value, setValue] = React.useState(2);
-    const [isBooking, setIsBooking] = React.useState(false);
-    const [review, setReview] = React.useState('');
+    const [value, setValue] = useState(2);
+    const [isBooking, setIsBooking] = useState(false);
+    const [review, setReview] = useState('');
     // const [parent, enableAnimations] = useAutoAnimate(/* optional config */)
 
     const fetchData = async () => {
@@ -85,7 +88,7 @@ export default function DetailNanny() {
     var nannyLanguages = getNannyLanguages(nanny);
     var nannyLanguagesString = nannyLanguages ? nannyLanguages.join(', ') : '';
 
-    var nannyLanguagesCer = () => {
+    const nannyLanguagesCer = () => {
         let certificate = [...nationalities]
             .filter(nationality => {
                 // return [...nannyLanguages].some(language => language === nationality.value);
@@ -93,7 +96,7 @@ export default function DetailNanny() {
             })
             .map(element => (
                 <img key={element.id}
-                    className={styles.modalLanguageDesImg}
+                    className={styles.modalStaffDetailItemImg}
                     src={element.certificate}
                     alt=""
                 />
@@ -101,6 +104,22 @@ export default function DetailNanny() {
 
         return certificate;
     };
+
+    const nannyCookingCertificate = () => {
+        return <img
+            className={styles.modalStaffDetailItemImg}
+            src={require("../../assets/img/cooking-certificate.jpg")}
+            alt=''
+        />
+    }
+
+    const nannyChildcareCertificate = () => {
+        return <img
+            className={styles.modalStaffDetailItemImg}
+            src={require("../../assets/img/childcare-certificate.jpg")}
+            alt=''
+        />
+    }
 
     // format số tiền 100000 => 100,000
     function formatNumber(number) {
@@ -149,6 +168,8 @@ export default function DetailNanny() {
 
     const handleOpenLanguageDetail = () => setOpenLanguageDetail(true);
     const handleCloseLanguageDetail = () => setOpenLanguageDetail(false);
+    const handleChangeCookingDetail = () => setOpenCookingDetail(!openCookingDetail);
+    const handleChangeChildcareDetail = () => setOpenChildcareDetail(!openChildcareDetail);
 
 
     const handleOpenDelete = (id) => {
@@ -253,7 +274,7 @@ export default function DetailNanny() {
 
     return (
         <div
-            className='main-session home-container'
+            className='main-session'
         >
             <ToastContainer
                 position="top-left"
@@ -312,12 +333,38 @@ export default function DetailNanny() {
                                 <p className={styles.inputFieldText}>{nanny.address}</p>
                             </span>
 
-                            <label className={styles.labelName}>料理経験</label>
+                            <label className={styles.labelName}>
+                                料理経験
+                                <span
+                                    className={styles.modalStaffDetailItemIcon}
+                                    onClick={handleChangeCookingDetail}
+                                >
+                                    <BsEyeFill />
+                                </span>
+                            </label>
+                            <CertificateModal
+                                isOpen={openCookingDetail}
+                                onCloseModal={handleChangeCookingDetail}
+                                renderData={nannyCookingCertificate()}
+                            />
                             <span className={styles.inputField}>
                                 <p className={styles.inputFieldText}>{nanny.cook_exp}</p>
                             </span>
 
-                            <label className={styles.labelName}>子供の世話経験</label>
+                            <label className={styles.labelName}>
+                                子供の世話経験
+                                <span
+                                    className={styles.modalStaffDetailItemIcon}
+                                    onClick={handleChangeChildcareDetail}
+                                >
+                                    <BsEyeFill />
+                                </span>
+                            </label>
+                            <CertificateModal
+                                isOpen={openChildcareDetail}
+                                onCloseModal={handleChangeChildcareDetail}
+                                renderData={nannyChildcareCertificate()}
+                            />
                             <span className={styles.inputField}>
                                 <p className={styles.inputFieldText}>{nanny.care_exp}</p>
                             </span>
@@ -325,40 +372,17 @@ export default function DetailNanny() {
                             <label className={styles.labelName}>
                                 言語
                                 <span
-                                    className={styles.modalLanguageDesIcon}
+                                    className={styles.modalStaffDetailItemIcon}
                                     onClick={handleOpenLanguageDetail}
                                 >
                                     <BsEyeFill />
                                 </span>
                             </label>
-                            <Modal
-                                open={openLanguageDetail}
-                                onClose={handleCloseLanguageDetail}
-                                aria-labelledby="modal-language"
-                                aria-describedby="modal-language-des"
-                            >
-                                {/* Modal delete */}
-                                <Box
-                                    // sx={styleViewImage}
-                                    className={styles.modalLanguageDescription}
-                                >
-                                    <Typography
-                                        id="modal-language"
-                                        variant="h6"
-                                        component="h2"
-                                        fontWeight="bold"
-                                        fontSize="28px"
-                                        textAlign={'center'}
-                                    >
-                                        資格
-                                    </Typography>
-                                    <div
-                                        id="modal-language-des"
-                                    >
-                                        {nannyLanguagesCer()}
-                                    </div>
-                                </Box>
-                            </Modal>
+                            <CertificateModal
+                                isOpen={openLanguageDetail}
+                                onCloseModal={handleCloseLanguageDetail}
+                                renderData={nannyLanguagesCer()}
+                            />
                             <span className={styles.inputField}>
                                 <p className={styles.inputFieldText}>{nannyLanguagesString}</p>
                             </span>
